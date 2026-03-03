@@ -1,0 +1,30 @@
+[
+  {
+    "id": "poi-1",
+    "name": "Mary Gates Hall Elevator",
+    "type": "elevator",
+    "location": { "lat": 47.6517, "lng": -122.3082 },
+    "tags": ["indoor", "accessible-entry"]
+  },
+  {
+    "id": "poi-2",
+    "name": "Suzzallo Library Accessible Restroom",
+    "type": "restroom",
+    "location": { "lat": 47.6557, "lng": -122.3094 },
+    "tags": ["gender-neutral", "wheelchair"]
+  },
+  {
+    "id": "poi-3",
+    "name": "Red Square Ramp",
+    "type": "ramp",
+    "location": { "lat": 47.6561, "lng": -122.3080 },
+    "tags": ["outdoor"]
+  },
+  {
+    "id": "poi-4",
+    "name": "Husky Union Building North Entrance",
+    "type": "entrance",
+    "location": { "lat": 47.6550, "lng": -122.3052 },
+    "tags": ["automatic-door"]
+  }
+]

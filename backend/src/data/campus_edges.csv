@@ -1,0 +1,6 @@
+start_lat,start_lng,end_lat,end_lng,distance_meters,slope_percent,has_stairs,surface,is_closed
+47.6517,-122.3082,47.6534,-122.3076,210,4.5,false,paved,false
+47.6534,-122.3076,47.6550,-122.3052,280,6.8,false,paved,false
+47.6517,-122.3082,47.6561,-122.3080,460,7.5,false,brick,false
+47.6561,-122.3080,47.6557,-122.3094,180,2.5,false,paved,true
+47.6534,-122.3076,47.6557,-122.3094,350,10.5,true,brick,false

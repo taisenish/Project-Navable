@@ -1,0 +1,16 @@
+[
+  {
+    "id": "alert-1",
+    "title": "Construction Near Red Square",
+    "description": "Temporary sidewalk narrowing and detour signs in place.",
+    "severity": "warning",
+    "location": { "lat": 47.6560, "lng": -122.3081 }
+  },
+  {
+    "id": "alert-2",
+    "title": "Power Outage Resolved",
+    "description": "Elevator service has resumed at Kane Hall.",
+    "severity": "info",
+    "location": { "lat": 47.6571, "lng": -122.3098 }
+  }
+]
