@@ -32,7 +32,7 @@ const slides: Slide[] = [
     title: 'Welcome to NavAble',
     subtitle: 'Your accessible campus companion',
     body:
-      'Navigate University of Nevada, Reno campus with confidence. Find accessible routes, ramps, elevators, and real-time updates tailored to your needs.',
+      'Navigate University of Washington, Seattle campus with confidence. Find accessible routes, ramps, elevators, and real-time updates tailored to your needs.',
     progress: '1 of 5',
     backgroundColor: '#8A45F6',
     renderIcon: () => <Image source={require('../assets/images/navable_logo.png')} style={styles.logoIcon} />,
@@ -148,14 +148,13 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: 24,
-    overflow: 'hidden',
   },
   content: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     paddingHorizontal: 28,
+    paddingTop: 44,
   },
   iconRing: {
     width: 96,
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 28,
+    marginBottom: 20,
   },
   iconInner: {
     width: 76,
@@ -181,24 +180,24 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#FFFFFF',
-    fontSize: 40,
-    lineHeight: 44,
+    fontSize: 34,
+    lineHeight: 38,
     textAlign: 'center',
     fontWeight: '800',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   subtitle: {
     color: '#FFFFFF',
-    fontSize: 30,
-    lineHeight: 34,
+    fontSize: 28,
+    lineHeight: 32,
     textAlign: 'center',
     fontWeight: '600',
-    marginBottom: 18,
+    marginBottom: 14,
   },
   body: {
     color: '#FFFFFF',
-    fontSize: 22,
-    lineHeight: 30,
+    fontSize: 21,
+    lineHeight: 28,
     textAlign: 'center',
     opacity: 0.95,
     maxWidth: 700,
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 28,
     right: 28,
-    bottom: 28,
+    bottom: 16,
     alignItems: 'center',
   },
   button: {
@@ -219,14 +218,14 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
   },
   buttonText: {
-    fontSize: 24,
+    fontSize: 22,
     color: '#101010',
     fontWeight: '500',
   },
   progress: {
-    marginTop: 12,
+    marginTop: 10,
     color: '#F2F2F2',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '400',
   },
 });

@@ -63,6 +63,7 @@ LOCAL_DATABASE_URL=sqlite:///./navable.db
 - `EXPO_PUBLIC_API_BASE_URL` (required): backend base URL ending with `/api/v1`.
 - `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` (required for iOS sign-in): Google OAuth iOS client ID.
 - `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` (required for Android sign-in): Google OAuth Android client ID.
+- `GOOGLE_MAPS_IOS_API_KEY` (required for iOS native Google Street View in custom dev client): iOS SDK key injected at build time via config plugin. Do **not** use `EXPO_PUBLIC_` for this key.
 - iOS note: the app URL scheme must include the reversed iOS client ID prefix (`com.googleusercontent.apps.<client-id-without-suffix>`), configured in `app.json`.
 
 Development example (`frontend/.env.development.local`):
@@ -70,6 +71,7 @@ Development example (`frontend/.env.development.local`):
 EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-ios-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=your-android-client-id.apps.googleusercontent.com
+GOOGLE_MAPS_IOS_API_KEY=your-restricted-ios-sdk-key
 ```
 
 Production example (`frontend/.env.production`):
@@ -77,6 +79,7 @@ Production example (`frontend/.env.production`):
 EXPO_PUBLIC_API_BASE_URL=https://api.yourdomain.com/api/v1
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-ios-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=your-android-client-id.apps.googleusercontent.com
+GOOGLE_MAPS_IOS_API_KEY=your-restricted-ios-sdk-key
 ```
 
 ### Run All Services
@@ -165,6 +168,11 @@ What each frontend value means:
   - Prod example: `https://api.yourdomain.com/api/v1`
 - `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` (required for iOS login): OAuth iOS client ID from Google Cloud Credentials.
 - `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` (required for Android login): OAuth Android client ID from Google Cloud Credentials.
+- `GOOGLE_MAPS_IOS_API_KEY` (required for iOS native Street View): non-public iOS SDK key used only at prebuild/run time by config plugin.
+
+Google Maps key handling:
+- Backend-only key: `GOOGLE_MAPS_API_KEY` is used by backend routes (`/maps/place-search`, `/maps/directions`, `/maps/uw-static`) so frontend never needs web-service Google keys.
+- iOS SDK key: `GOOGLE_MAPS_IOS_API_KEY` is required in the iOS app binary for native `GMSPanoramaView`. Restrict it in Google Cloud to bundle ID `com.navable.app`.
 
 Quality commands:
 ```bash

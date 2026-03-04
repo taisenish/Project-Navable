@@ -1,9 +1,13 @@
 import { useMemo } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
+import { GoogleStreetViewIOS, isGoogleStreetViewIOSAvailable } from '../../components/map/google-street-view-ios';
 import { TopBar } from '../../components/top-bar';
 
 type ExpoMapsModule = {
+  GoogleMaps?: {
+    StreetView: React.ComponentType<Record<string, unknown>>;
+  };
   AppleMaps?: {
     View: React.ComponentType<Record<string, unknown>>;
   };
@@ -24,14 +28,56 @@ const U_DISTRICT_CENTER = {
 
 export default function View3DScreen() {
   const expoMaps = useMemo(loadExpoMaps, []);
+  const GoogleStreetView = expoMaps?.GoogleMaps?.StreetView;
   const AppleMapsView = expoMaps?.AppleMaps?.View;
 
-  const canRenderNative3D = Platform.OS === 'ios' && Boolean(AppleMapsView);
+  const canRenderStreetView = Platform.OS === 'android' && Boolean(GoogleStreetView);
+  const canRenderIosStreetView = Platform.OS === 'ios' && isGoogleStreetViewIOSAvailable;
+  const canRenderIosFallback = Platform.OS === 'ios' && Boolean(AppleMapsView);
 
   return (
     <View style={styles.screen}>
       <TopBar />
-      {canRenderNative3D && AppleMapsView ? (
+      {canRenderStreetView && GoogleStreetView ? (
+        <View style={styles.mapWrap}>
+          <GoogleStreetView
+            style={styles.map}
+            position={{
+              coordinates: U_DISTRICT_CENTER,
+              zoom: 0.8,
+              tilt: 0,
+              bearing: 0,
+            }}
+            isPanningGesturesEnabled
+            isStreetNamesEnabled
+            isUserNavigationEnabled
+            isZoomGesturesEnabled
+          />
+          <View style={styles.badge}>
+            <Text style={styles.badgeTitle}>Google Street View</Text>
+            <Text style={styles.badgeBody}>U District panorama mode. Drag and zoom to explore.</Text>
+          </View>
+        </View>
+      ) : canRenderIosStreetView ? (
+        <View style={styles.mapWrap}>
+          <GoogleStreetViewIOS
+            style={styles.map}
+            latitude={U_DISTRICT_CENTER.latitude}
+            longitude={U_DISTRICT_CENTER.longitude}
+            zoom={0.8}
+            tilt={0}
+            bearing={0}
+            isPanningGesturesEnabled
+            isStreetNamesEnabled
+            isUserNavigationEnabled
+            isZoomGesturesEnabled
+          />
+          <View style={styles.badge}>
+            <Text style={styles.badgeTitle}>Google Street View (iOS)</Text>
+            <Text style={styles.badgeBody}>Powered by native GMSPanoramaView.</Text>
+          </View>
+        </View>
+      ) : canRenderIosFallback && AppleMapsView ? (
         <View style={styles.mapWrap}>
           <AppleMapsView
             style={styles.map}
@@ -53,15 +99,15 @@ export default function View3DScreen() {
             }}
           />
           <View style={styles.badge}>
-            <Text style={styles.badgeTitle}>U District 3D</Text>
-            <Text style={styles.badgeBody}>Pinch, pan, and rotate to explore buildings.</Text>
+            <Text style={styles.badgeTitle}>3D Map Fallback (iOS)</Text>
+            <Text style={styles.badgeBody}>Google Street View is Android-only in expo-maps.</Text>
           </View>
         </View>
       ) : (
         <View style={styles.content}>
-          <Text style={styles.title}>3D View Unavailable</Text>
+          <Text style={styles.title}>Street View Unavailable</Text>
           <Text style={styles.subtitle}>
-            3D map rendering requires iOS native `expo-maps` in a development build.
+            This build does not expose Google Street View on this platform/runtime.
           </Text>
         </View>
       )}

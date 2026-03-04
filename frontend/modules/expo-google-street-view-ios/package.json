@@ -1,0 +1,12 @@
+{
+  "name": "expo-google-street-view-ios",
+  "version": "1.0.0",
+  "description": "Local Expo module exposing Google Street View on iOS via GMSPanoramaView",
+  "main": "index.js",
+  "keywords": ["expo", "google", "street-view", "ios"],
+  "license": "MIT",
+  "peerDependencies": {
+    "expo": "*",
+    "react": "*"
+  }
+}
