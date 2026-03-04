@@ -86,3 +86,27 @@ export type GoogleWebLoginRequest = {
   code: string;
   redirect_uri: string;
 };
+
+export type PlaceSuggestion = {
+  place_id: string;
+  name: string;
+  address: string;
+  location: Coordinate;
+};
+
+export type DirectionsStep = {
+  instruction: string;
+  distance_text: string;
+  duration_text: string;
+  end_location: Coordinate;
+};
+
+export type DirectionsResponse = {
+  distance_text: string;
+  duration_text: string;
+  start_location: Coordinate;
+  end_location: Coordinate;
+  overview_polyline: string;
+  steps: DirectionsStep[];
+  google_maps_url: string;
+};

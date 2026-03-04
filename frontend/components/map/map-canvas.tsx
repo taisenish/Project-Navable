@@ -13,7 +13,7 @@ type Props = {
 export function MapCanvas({ route, pois, alerts }: Props) {
   return (
     <ThemedView style={styles.wrapper}>
-      <ThemedText type="subtitle">Campus Map Overlay</ThemedText>
+      <ThemedText type="subtitle" style={styles.header}>Campus Map Overlay</ThemedText>
       <ThemedText>
         {route
           ? `Polyline points: ${route.polyline.length} | Distance: ${route.leg.distance_meters}m`
@@ -37,10 +37,15 @@ export function MapCanvas({ route, pois, alerts }: Props) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderRadius: 12,
+    flex: 1,
+    borderRadius: 0,
     padding: 14,
-    borderWidth: 1,
+    borderWidth: 0,
+    backgroundColor: '#252933',
     gap: 8,
+  },
+  header: {
+    color: '#FFFFFF',
   },
   row: {
     flexDirection: 'row',

@@ -119,3 +119,32 @@ class UwStaticMapParams(BaseModel):
     width: int = Field(default=600, ge=200, le=1280)
     height: int = Field(default=320, ge=200, le=1280)
     zoom: int = Field(default=15, ge=10, le=20)
+    center_lat: float | None = None
+    center_lng: float | None = None
+    destination_lat: float | None = None
+    destination_lng: float | None = None
+    path_polyline: str | None = None
+
+
+class PlaceSuggestion(BaseModel):
+    place_id: str
+    name: str
+    address: str
+    location: Coordinate
+
+
+class RouteStepDirection(BaseModel):
+    instruction: str
+    distance_text: str
+    duration_text: str
+    end_location: Coordinate
+
+
+class GoogleDirectionsResponse(BaseModel):
+    distance_text: str
+    duration_text: str
+    start_location: Coordinate
+    end_location: Coordinate
+    overview_polyline: str
+    steps: list[RouteStepDirection]
+    google_maps_url: str

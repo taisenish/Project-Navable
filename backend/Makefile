@@ -17,11 +17,11 @@ setup:
 
 run:
 	source $(VENV) && \
-	$(UVICORN) src.app:app --reload --host 127.0.0.1 --port 8000 && \
+	$(UVICORN) src.app:app --reload --host 0.0.0.0 --port 8000 && \
 	sleep 1 && \
 	echo && \
 	echo "********************************************" && \
-	echo "✅ Running at: http://127.0.0.1:8000/" && \
+	echo "✅ Running at: http://0.0.0.0:8000/ (LAN reachable)" && \
 	echo "********************************************"
 
 test:

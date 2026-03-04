@@ -5,16 +5,29 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": [
-      "frontend",
-      "com.googleusercontent.apps.147401588179-pp6a7j35v6rp5j6psqlfjq4j9e98rn40"
-    ],
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "scheme": "com.navable.app",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.navable.app"
+      "bundleIdentifier": "com.navable.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "NavAble uses your location to show your position on the campus map.",
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        },
+        "LSApplicationQueriesSchemes": [
+          "comgooglemaps"
+        ],
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.147401588179-pp6a7j35v6rp5j6psqlfjq4j9e98rn40"
+            ]
+          }
+        ]
+      }
     },
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "android": {
       "package": "com.navable.app",
       "adaptiveIcon": {
@@ -33,6 +46,12 @@
     "plugins": [
       "expo-router",
       [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "NavAble uses your location to show your position on the campus map."
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
@@ -43,7 +62,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-maps"
     ],
     "experiments": {
       "typedRoutes": true,

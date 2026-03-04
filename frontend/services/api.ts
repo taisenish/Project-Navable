@@ -1,9 +1,11 @@
 import { config } from '@/services/config';
 import type {
   Alert,
+  DirectionsResponse,
   GoogleLoginResponse,
   GoogleNativeLoginRequest,
   GoogleWebLoginRequest,
+  PlaceSuggestion,
   Poi,
   RouteRequest,
   RouteResponse,
@@ -50,4 +52,26 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(payload),
     }),
+  searchPlaces: (query: string, limit = 8) =>
+    request<PlaceSuggestion[]>(
+      `/maps/place-search?q=${encodeURIComponent(query)}&limit=${encodeURIComponent(String(limit))}`,
+    ),
+  getDirections: (payload: {
+    destinationLat: number;
+    destinationLng: number;
+    originLat?: number;
+    originLng?: number;
+  }) => {
+    const params = new URLSearchParams({
+      destination_lat: String(payload.destinationLat),
+      destination_lng: String(payload.destinationLng),
+    });
+    if (payload.originLat !== undefined) {
+      params.set('origin_lat', String(payload.originLat));
+    }
+    if (payload.originLng !== undefined) {
+      params.set('origin_lng', String(payload.originLng));
+    }
+    return request<DirectionsResponse>(`/maps/directions?${params.toString()}`);
+  },
 };
