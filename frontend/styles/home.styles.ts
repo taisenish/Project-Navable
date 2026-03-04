@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { radius } from '@/styles/tokens';
+import { radius } from './tokens';
 
 export const homeStyles = StyleSheet.create({
   screen: {
@@ -285,7 +285,7 @@ export const homeStyles = StyleSheet.create({
     borderTopRightRadius: 18,
     paddingHorizontal: 14,
     paddingTop: 14,
-    paddingBottom: 98,
+    paddingBottom: 25,
     borderWidth: 1,
     borderColor: 'rgba(168, 138, 242, 0.62)',
     gap: 4,

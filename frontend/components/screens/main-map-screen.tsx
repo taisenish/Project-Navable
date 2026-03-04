@@ -1,3 +1,6 @@
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import * as Location from 'expo-location';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -5,26 +8,23 @@ import {
   Animated,
   AppState,
   Easing,
-  Image,
   Keyboard,
   Linking,
   Pressable,
-  ScrollView,
-  TextInput,
+  Text,
   View,
 } from 'react-native';
-import * as Location from 'expo-location';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import AntDesign from '@expo/vector-icons/AntDesign';
 
-import { CampusMap } from '@/components/map/campus-map';
-import { ThemedText } from '@/components/themed-text';
-import { useRouteCache } from '@/hooks/use-route-cache';
-import { api } from '@/services/api';
-import { config } from '@/services/config';
-import { homeStyles as styles } from '@/styles/home.styles';
-import type { Alert as CampusAlert, DirectionsResponse, PlaceSuggestion, Poi, RouteResponse } from '@/types/api';
-import { decodeGooglePolyline } from '@/utils/polyline';
+import { HomeChipRow } from '../home/home-chip-row';
+import { HomeNavigationCard } from '../home/home-navigation-card';
+import { HomeTopPanel } from '../home/home-top-panel';
+import { CampusMap } from '../map/campus-map';
+import { useRouteCache } from '../../hooks/use-route-cache';
+import { api } from '../../services/api';
+import { config } from '../../services/config';
+import { homeStyles as styles } from '../../styles/home.styles';
+import type { Alert as CampusAlert, DirectionsResponse, PlaceSuggestion, Poi, RouteResponse } from '../../types/api';
+import { decodeGooglePolyline } from '../../utils/polyline';
 
 const UW_CENTER = { lat: 47.6553, lng: -122.3035 };
 const UW_FOUNTAIN_CENTER = { lat: 47.6539, lng: -122.3078 };
@@ -78,10 +78,7 @@ function buildMapState(params?: {
   };
 }
 
-function distanceMeters(
-  a: { lat: number; lng: number },
-  b: { lat: number; lng: number },
-) {
+function distanceMeters(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
   const earth = 6371000;
   const dLat = ((b.lat - a.lat) * Math.PI) / 180;
   const dLng = ((b.lng - a.lng) * Math.PI) / 180;
@@ -95,10 +92,7 @@ function distanceMeters(
   return earth * y;
 }
 
-function bearingDegrees(
-  from: { lat: number; lng: number },
-  to: { lat: number; lng: number },
-) {
+function bearingDegrees(from: { lat: number; lng: number }, to: { lat: number; lng: number }) {
   const lat1 = (from.lat * Math.PI) / 180;
   const lat2 = (to.lat * Math.PI) / 180;
   const dLng = ((to.lng - from.lng) * Math.PI) / 180;
@@ -177,19 +171,15 @@ export function MainMapScreen() {
     setLocationError('Location permission is required to show your live position.');
     setUserLocation({ lat: UW_CENTER.lat, lng: UW_CENTER.lng, heading: 0 });
     if (!canAskAgain) {
-      Alert.alert(
-        'Enable Location Access',
-        'Location permission was denied. Enable it in iOS Settings to show your live location.',
-        [
-          { text: 'Not now', style: 'cancel' },
-          {
-            text: 'Open Settings',
-            onPress: () => {
-              void Linking.openSettings();
-            },
+      Alert.alert('Enable Location Access', 'Location permission was denied. Enable it in iOS Settings to show your live location.', [
+        { text: 'Not now', style: 'cancel' },
+        {
+          text: 'Open Settings',
+          onPress: () => {
+            void Linking.openSettings();
           },
-        ],
-      );
+        },
+      ]);
     }
   };
 
@@ -207,10 +197,7 @@ export function MainMapScreen() {
         headingSub = null;
 
         const existing = await Location.getForegroundPermissionsAsync();
-        const permission =
-          existing.status === 'granted'
-            ? existing
-            : await Location.requestForegroundPermissionsAsync();
+        const permission = existing.status === 'granted' ? existing : await Location.requestForegroundPermissionsAsync();
         if (!mounted) {
           return;
         }
@@ -301,11 +288,7 @@ export function MainMapScreen() {
       setError(null);
       setIsLoading(true);
       try {
-        const [cachedRoute, fetchedPois, fetchedAlerts] = await Promise.all([
-          getRoute(),
-          api.getPois(),
-          api.getAlerts(),
-        ]);
+        const [cachedRoute, fetchedPois, fetchedAlerts] = await Promise.all([getRoute(), api.getPois(), api.getAlerts()]);
         setRoute(cachedRoute);
         setPois(fetchedPois);
         setAlerts(fetchedAlerts);
@@ -477,12 +460,7 @@ export function MainMapScreen() {
   const activeStep = isNavigating ? directions?.steps[activeStepIndex] ?? null : null;
   const showSelectedPlaceIntroCard = Boolean(selectedPlace && directions && !isNavigating && !hasStartedNavigationForSelection);
   const followCameraHeading = useMemo(() => {
-    if (
-      isNavigating &&
-      navigationCameraMode === 'follow' &&
-      userLocation &&
-      activeStep
-    ) {
+    if (isNavigating && navigationCameraMode === 'follow' && userLocation && activeStep) {
       return bearingDegrees(userLocation, activeStep.end_location);
     }
     return userLocation?.heading ?? 0;
@@ -554,156 +532,50 @@ export function MainMapScreen() {
   }, [directions, isNavigating, navigationCameraMode, userLocation]);
 
   return (
-      <View style={styles.screen}>
-      <View style={styles.topBar}>
-        <View style={styles.brandRow}>
-          <View style={styles.logoBubble}>
-            <Image source={require('@/assets/images/navable_logo.png')} style={styles.logo} />
-          </View>
-          <View>
-            <ThemedText style={styles.brandTitle}>NavAble</ThemedText>
-            <ThemedText style={styles.brandSubtitle}>Accessible Campus Navigation</ThemedText>
-          </View>
-        </View>
-
-        <View style={styles.searchWrap}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search address or place..."
-            placeholderTextColor="#E9D8FF"
-            accessibilityLabel="Search buildings and facilities"
-            value={searchQuery}
-            onChangeText={onSearchChange}
-            autoCorrect={false}
-            autoCapitalize="none"
-            returnKeyType="search"
-            onSubmitEditing={() => void onSubmitSearch()}
-            onBlur={Keyboard.dismiss}
-          />
-
-          {searchQuery.trim().length > 0 ? (
-            <Pressable
-              style={styles.searchClearButton}
-              onPress={onClearSearch}
-              accessibilityRole="button"
-              accessibilityLabel="Clear search">
-              <AntDesign name="close-circle" size={20} color="#FFFFFF" />
-            </Pressable>
-          ) : null}
-
-          {isSearching ? <ActivityIndicator style={styles.searchLoader} color="#FFFFFF" /> : null}
-
-          {hasSearchResults ? (
-            <View style={styles.searchResults}>
-              <ScrollView
-                style={styles.searchResultsScroll}
-                keyboardShouldPersistTaps="handled"
-                nestedScrollEnabled
-                showsVerticalScrollIndicator>
-                {searchResults.map((item) => (
-                  <Pressable
-                    key={item.place_id}
-                    style={styles.searchResultItem}
-                    onPress={() => void onSelectPlace(item)}>
-                    <ThemedText style={styles.searchResultName}>{item.name}</ThemedText>
-                    <ThemedText style={styles.searchResultAddress}>{item.address}</ThemedText>
-                  </Pressable>
-                ))}
-              </ScrollView>
-            </View>
-          ) : null}
-        </View>
-
-        {showSelectedPlaceIntroCard ? (
-          <View style={styles.selectedPlaceCard}>
-            <View style={styles.selectedPlaceTextWrap}>
-              <ThemedText style={styles.selectedPlaceName}>{selectedPlace?.name ?? ''}</ThemedText>
-              <ThemedText style={styles.selectedPlaceAddress}>{selectedPlace?.address ?? ''}</ThemedText>
-              {routeSummary ? <ThemedText style={styles.selectedPlaceMeta}>{routeSummary}</ThemedText> : null}
-            </View>
-            <View style={styles.selectedPlaceActionStack}>
-              <Pressable
-                style={styles.selectedPlaceCancelButton}
-                onPress={exitRoute}
-                accessibilityRole="button"
-                accessibilityLabel="Cancel route">
-                <ThemedText style={styles.selectedPlaceCancelButtonText}>Cancel</ThemedText>
-              </Pressable>
-              <Pressable
-                style={styles.selectedPlaceButton}
-                onPress={startNavigation}
-                accessibilityRole="button"
-                accessibilityLabel="Start navigation">
-                <ThemedText style={styles.selectedPlaceButtonText}>Start</ThemedText>
-              </Pressable>
-            </View>
-          </View>
-        ) : null}
-      </View>
+    <View style={styles.screen}>
+      <HomeTopPanel
+        searchQuery={searchQuery}
+        isSearching={isSearching}
+        hasSearchResults={hasSearchResults}
+        searchResults={searchResults}
+        showSelectedPlaceIntroCard={showSelectedPlaceIntroCard}
+        selectedPlace={selectedPlace}
+        routeSummary={routeSummary}
+        onSearchChange={onSearchChange}
+        onSubmitSearch={() => void onSubmitSearch()}
+        onClearSearch={onClearSearch}
+        onSelectPlace={(place) => void onSelectPlace(place)}
+        onStartNavigation={startNavigation}
+        onCancelRoute={exitRoute}
+      />
 
       <View style={styles.mapArea}>
-        {(isLoading || isRouting) ? <ActivityIndicator style={styles.loader} /> : null}
-        {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
-        {locationError ? <ThemedText style={styles.error}>{locationError}</ThemedText> : null}
+        {isLoading || isRouting ? <ActivityIndicator style={styles.loader} /> : null}
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+        {locationError ? <Text style={styles.error}>{locationError}</Text> : null}
 
-        <Animated.View
-          pointerEvents={showBaseChips ? 'auto' : 'none'}
-          style={[
-            styles.chipRowWrap,
-            {
-              opacity: chipBarAnim,
-              maxHeight: chipBarAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 52],
-              }),
-              transform: [
-                {
-                  translateY: chipBarAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [-18, 0],
-                  }),
-                },
-              ],
-              marginBottom: chipBarAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 8],
-              }),
-            },
-          ]}>
-          <View style={styles.chipRow}>
-            <View style={[styles.chip, styles.greenChip]}>
-              <ThemedText style={styles.chipLabel}>Ramps ({rampsCount})</ThemedText>
-            </View>
-            <View style={[styles.chip, styles.redChip]}>
-              <ThemedText style={styles.chipLabel}>Entrances ({entrancesCount})</ThemedText>
-            </View>
-            <View style={[styles.chip, styles.blueChip]}>
-              <ThemedText style={styles.chipLabel}>Alerts ({alerts.length})</ThemedText>
-            </View>
-          </View>
-        </Animated.View>
+        <HomeChipRow
+          rampsCount={rampsCount}
+          entrancesCount={entrancesCount}
+          alertsCount={alerts.length}
+          chipBarAnim={chipBarAnim}
+          showBaseChips={showBaseChips}
+        />
 
-        {routeSummary && !showSelectedPlaceIntroCard ? <ThemedText style={styles.routeSummary}>{routeSummary}</ThemedText> : null}
+        {routeSummary && !showSelectedPlaceIntroCard ? <Text style={styles.routeSummary}>{routeSummary}</Text> : null}
         {directions && !showSelectedPlaceIntroCard ? (
-          <Pressable
-            style={styles.topLeftExitButton}
-            onPress={exitRoute}
-            accessibilityRole="button"
-            accessibilityLabel="Exit route">
+          <Pressable style={styles.topLeftExitButton} onPress={exitRoute} accessibilityRole="button" accessibilityLabel="Exit route">
             <AntDesign name="close" size={18} color="#1D1233" />
           </Pressable>
         ) : null}
         {directions && (isNavigating || hasStartedNavigationForSelection) ? (
           <View style={styles.routeActionsRow}>
-            <Pressable
-              style={[styles.navigateButton, isNavigating ? styles.stopButton : undefined]}
-              onPress={isNavigating ? stopNavigation : startNavigation}>
-              <ThemedText style={styles.navigateButtonText}>
-                {isNavigating ? 'Stop Navigation' : 'Start Navigation'}
-              </ThemedText>
+            <Pressable style={[styles.navigateButton, isNavigating ? styles.stopButton : undefined]} onPress={isNavigating ? stopNavigation : startNavigation}>
+              <Text style={styles.navigateButtonText}>{isNavigating ? 'Stop Navigation' : 'Start Navigation'}</Text>
             </Pressable>
           </View>
         ) : null}
+
         <View style={styles.mapContainer}>
           <CampusMap
             fallbackMapUrl={mapState.url}
@@ -739,27 +611,21 @@ export function MainMapScreen() {
               }
               accessibilityRole="button"
               accessibilityLabel={navigationCameraMode === 'follow' ? 'Show full route' : 'Follow my directions'}>
-              <Ionicons
-                name={navigationCameraMode === 'follow' ? 'navigate-sharp' : 'navigate-outline'}
-                size={22}
-                color="#FFFFFF"
-              />
+              <Ionicons name={navigationCameraMode === 'follow' ? 'navigate-sharp' : 'navigate-outline'} size={22} color="#FFFFFF" />
             </Pressable>
           ) : null}
 
           {isNavigating && activeStep ? (
-            <View style={styles.navCard}>
-              <ThemedText style={styles.navCardTitle}>
-                Step {activeStepIndex + 1} of {directions?.steps.length ?? 0}
-              </ThemedText>
-              <ThemedText style={styles.navInstruction}>{activeStep.instruction}</ThemedText>
-              <ThemedText style={styles.navMeta}>
-                {activeStep.distance_text} • {activeStep.duration_text}
-              </ThemedText>
-            </View>
+            <HomeNavigationCard
+              activeStepIndex={activeStepIndex}
+              totalSteps={directions?.steps.length ?? 0}
+              instruction={activeStep.instruction}
+              distanceText={activeStep.distance_text}
+              durationText={activeStep.duration_text}
+            />
           ) : null}
         </View>
       </View>
-      </View>
+    </View>
   );
 }

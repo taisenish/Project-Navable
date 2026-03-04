@@ -5,7 +5,9 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/NavAble.png",
-    "scheme": "com.navable.app",
+    "scheme": "frontend2",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.navable.app",
@@ -16,20 +18,10 @@
         },
         "LSApplicationQueriesSchemes": [
           "comgooglemaps"
-        ],
-        "CFBundleURLTypes": [
-          {
-            "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.147401588179-pp6a7j35v6rp5j6psqlfjq4j9e98rn40"
-            ]
-          }
         ]
       }
     },
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "android": {
-      "package": "com.navable.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -37,7 +29,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.dedhaw.frontend2"
     },
     "web": {
       "output": "static",

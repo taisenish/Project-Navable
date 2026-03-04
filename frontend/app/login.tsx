@@ -1,16 +1,12 @@
 import * as AuthSession from 'expo-auth-session';
-import * as Haptics from 'expo-haptics';
+import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import { router } from 'expo-router';
 import { useEffect, useMemo } from 'react';
-import { ActivityIndicator, Image, ImageBackground, Platform, Pressable, View } from 'react-native';
-import * as Google from 'expo-auth-session/providers/google';
+import { ActivityIndicator, Image, ImageBackground, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { useAuthSession } from '@/hooks/use-auth-session';
-import { config } from '@/services/config';
-import { loginStyles as styles } from '@/styles/login.styles';
+import { config } from '../services/config';
+import { useAuthSession } from '../state/auth-session';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -41,20 +37,16 @@ export default function LoginScreen() {
         return;
       }
 
-      try {
-        const token = response.params?.id_token ?? response.authentication?.idToken;
-        if (!token) {
-          throw new Error('Missing native ID token');
-        }
-        const authResult = await signInWithGoogleNative(token);
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-        if (authResult.isNewUser) {
-          router.replace('/onboarding?step=0');
-        } else {
-          router.replace('/');
-        }
-      } catch {
-        await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      const token = response.params?.id_token ?? response.authentication?.idToken;
+      if (!token) {
+        return;
+      }
+
+      const authResult = await signInWithGoogleNative(token);
+      if (authResult.isNewUser) {
+        router.replace('/onboarding');
+      } else {
+        router.replace('/(tabs)');
       }
     };
 
@@ -62,39 +54,83 @@ export default function LoginScreen() {
   }, [response, signInWithGoogleNative]);
 
   return (
-    <ThemedView style={styles.container}>
-      <ImageBackground
-        source={require('@/assets/images/login_bg_gradient.png')}
-        style={styles.backgroundImage}
-        imageStyle={styles.backgroundImageStyle}
-        resizeMode="cover">
-        <View style={styles.centerContent}>
-          <View style={styles.centerBlock}>
-            <View style={styles.logoCircle}>
-              <Image source={require('@/assets/images/navable_logo.png')} style={styles.logoImage} />
-            </View>
-            <ThemedText style={styles.title}>NavAble</ThemedText>
+    <View style={styles.container}>
+      <ImageBackground source={require('../assets/images/login_bg_gradient.png')} style={styles.bg} resizeMode="cover">
+        <View style={styles.content}>
+          <View style={styles.logoCircle}>
+            <Image source={require('../assets/images/navable_logo.png')} style={styles.logo} />
           </View>
+          <Text style={styles.title}>NavAble</Text>
 
-          <View style={styles.bottomBlock}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Continue with Google"
-              disabled={!request || !hasClientId || isLoading}
-              style={[styles.primaryButton, (!request || !hasClientId || isLoading) && styles.disabled]}
-              onPress={() => void promptAsync()}>
-              {isLoading ? <ActivityIndicator color="#2E155F" /> : <ThemedText style={styles.buttonText}>Continue with Google</ThemedText>}
-            </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Continue with Google"
+            disabled={!request || !hasClientId || isLoading}
+            style={[styles.button, (!request || !hasClientId || isLoading) && styles.buttonDisabled]}
+            onPress={() => void promptAsync()}>
+            {isLoading ? <ActivityIndicator color="#2E155F" /> : <Text style={styles.buttonText}>Continue with Google</Text>}
+          </Pressable>
 
-            {!hasClientId ? (
-              <ThemedText style={styles.error}>
-                Missing Google OAuth client IDs in frontend env.
-              </ThemedText>
-            ) : null}
-            {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
-          </View>
+          {!hasClientId ? <Text style={styles.error}>Missing Google OAuth client ID env vars.</Text> : null}
+          {error ? <Text style={styles.error}>{error}</Text> : null}
         </View>
       </ImageBackground>
-    </ThemedView>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  bg: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    gap: 18,
+  },
+  logoCircle: {
+    width: 98,
+    height: 98,
+    borderRadius: 49,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    width: 60,
+    height: 60,
+  },
+  title: {
+    color: '#fff',
+    fontSize: 52,
+    fontWeight: '800',
+  },
+  button: {
+    marginTop: 24,
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonDisabled: {
+    opacity: 0.6,
+  },
+  buttonText: {
+    color: '#2E155F',
+    fontSize: 22,
+    fontWeight: '700',
+  },
+  error: {
+    color: '#FCE7E7',
+    textAlign: 'center',
+    fontSize: 14,
+  },
+});

@@ -1,4 +1,4 @@
-import { config } from '@/services/config';
+import { config } from './config';
 import type {
   Alert,
   DirectionsResponse,
@@ -10,7 +10,7 @@ import type {
   RouteRequest,
   RouteResponse,
   UserPreferenceRecord,
-} from '@/types/api';
+} from '../types/api';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${config.apiBaseUrl}${path}`, {

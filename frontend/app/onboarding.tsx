@@ -1,247 +1,232 @@
-import { router, useLocalSearchParams } from 'expo-router';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { useEffect, useMemo, useRef } from 'react';
-import { Animated, Easing, Image, Pressable, View } from 'react-native';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { router } from 'expo-router';
+import { useMemo, useRef, useState } from 'react';
+import {
+  Animated,
+  Easing,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  type ViewStyle,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { onboardingStyles as styles } from '@/styles/onboarding.styles';
-
-type Card = {
-  color: string;
+type Slide = {
+  key: string;
   title: string;
   subtitle: string;
   body: string;
-  iconName?: 'accessible-icon' | 'info-circle' | 'cube' | 'account-heart';
-  iconFamily?: 'fa5' | 'ant' | 'fa6' | 'mc';
-  useLogo?: boolean;
+  progress: string;
+  backgroundColor: string;
+  renderIcon: () => React.ReactNode;
 };
 
-const cards: Card[] = [
+const slides: Slide[] = [
   {
-    color: '#7B3FF3',
+    key: 'welcome',
     title: 'Welcome to NavAble',
     subtitle: 'Your accessible campus companion',
-    body: 'Navigate campus with confidence. Find accessible routes, ramps, elevators, and real-time updates tailored to your needs.',
-    useLogo: true,
+    body:
+      'Navigate University of Nevada, Reno campus with confidence. Find accessible routes, ramps, elevators, and real-time updates tailored to your needs.',
+    progress: '1 of 5',
+    backgroundColor: '#8A45F6',
+    renderIcon: () => <Image source={require('../assets/images/navable_logo.png')} style={styles.logoIcon} />,
   },
   {
-    color: '#23B300',
+    key: 'routes',
     title: 'Find Accessible Routes',
     subtitle: 'Navigate with ease',
-    body: "Find accessible routes, ramps, elevators. We'll show you the best path to get you where you need to go.",
-    iconName: 'accessible-icon',
-    iconFamily: 'fa5',
+    body: 'Find accessible routes, ramps, elevators. We\'ll show you the best path to get you where you need to go.',
+    progress: '2 of 5',
+    backgroundColor: '#22B300',
+    renderIcon: () => <FontAwesome5 name="accessible-icon" size={34} color="#0D0D0D" />,
   },
   {
-    color: '#3C79DF',
+    key: 'alerts',
     title: 'Real time information',
     subtitle: 'Stay informed',
-    body: 'Get updates about construction zones, temporary closures and accessibility changes. We keep you in the loop so you can plan ahead.',
-    iconName: 'info-circle',
-    iconFamily: 'ant',
+    body:
+      'Get updates about construction zones, temporary closures and accessibility changes. We keep you in the loop so you can plan ahead.',
+    progress: '3 of 5',
+    backgroundColor: '#3D7ADF',
+    renderIcon: () => <AntDesign name="info-circle" size={34} color="#0D0D0D" />,
   },
   {
-    color: '#B041D7',
+    key: 'explore',
     title: '3D Campus Exploration',
     subtitle: 'See your route',
     body: 'Visualize buildings and features in 3D. Rotate, zoom and explore the campus before you even step outside.',
-    iconName: 'cube',
-    iconFamily: 'fa6',
+    progress: '4 of 5',
+    backgroundColor: '#B345D9',
+    renderIcon: () => <FontAwesome6 name="cube" size={32} color="#0D0D0D" />,
   },
   {
-    color: '#3AA5A1',
+    key: 'personalized',
     title: 'Personalized Experience',
     subtitle: 'Your accessibility, your way',
     body: 'Customize settings for vision, mobility, or other accessibility needs. NavAble adapts for you!',
-    iconName: 'account-heart',
-    iconFamily: 'mc',
+    progress: '5 of 5',
+    backgroundColor: '#37A4A3',
+    renderIcon: () => <MaterialCommunityIcons name="account-heart" size={34} color="#0D0D0D" />,
   },
 ];
 
 export default function OnboardingScreen() {
-  const params = useLocalSearchParams<{ step?: string }>();
-  const parsed = Number(params.step ?? '0');
-  const step = Number.isFinite(parsed) ? Math.max(0, Math.min(cards.length - 1, Math.floor(parsed))) : 0;
-  const card = cards[step];
+  const [index, setIndex] = useState(0);
+  const opacity = useRef(new Animated.Value(1)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
 
-  const animValue = useRef(new Animated.Value(0)).current;
-  const activeAnimationRef = useRef<Animated.CompositeAnimation | null>(null);
+  const current = useMemo(() => slides[index], [index]);
 
-  useEffect(() => {
-    activeAnimationRef.current?.stop();
-    animValue.setValue(0);
+  const advance = () => {
+    Animated.parallel([
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 120,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+      Animated.timing(translateY, {
+        toValue: 8,
+        duration: 120,
+        easing: Easing.out(Easing.quad),
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      if (index >= slides.length - 1) {
+        router.replace('/(tabs)');
+        return;
+      }
 
-    let animation: Animated.CompositeAnimation;
+      setIndex((prev) => prev + 1);
+      translateY.setValue(-8);
 
-    if (step === 1) {
-      animation = Animated.loop(
-        Animated.sequence([
-          Animated.timing(animValue, { toValue: 1, duration: 220, useNativeDriver: true }),
-          Animated.timing(animValue, { toValue: -1, duration: 440, useNativeDriver: true }),
-          Animated.timing(animValue, { toValue: 0, duration: 220, useNativeDriver: true }),
-        ])
-      );
-    } else if (step === 2) {
-      animation = Animated.loop(
-        Animated.sequence([
-          Animated.timing(animValue, { toValue: 1, duration: 550, useNativeDriver: true }),
-          Animated.timing(animValue, { toValue: 0, duration: 550, useNativeDriver: true }),
-        ])
-      );
-    } else if (step === 3) {
-      animation = Animated.loop(
-        Animated.timing(animValue, {
+      Animated.parallel([
+        Animated.timing(opacity, {
           toValue: 1,
-          duration: 1300,
-          easing: Easing.linear,
+          duration: 180,
+          easing: Easing.out(Easing.cubic),
           useNativeDriver: true,
-        })
-      );
-    } else if (step === 4) {
-      animation = Animated.loop(
-        Animated.sequence([
-          Animated.timing(animValue, { toValue: 0.35, duration: 160, useNativeDriver: true }),
-          Animated.timing(animValue, { toValue: 0.08, duration: 120, useNativeDriver: true }),
-          Animated.timing(animValue, { toValue: 0.4, duration: 180, useNativeDriver: true }),
-          Animated.timing(animValue, { toValue: 0, duration: 280, useNativeDriver: true }),
-          Animated.delay(340),
-        ])
-      );
-    } else {
-      animation = Animated.loop(
-        Animated.sequence([
-          Animated.timing(animValue, { toValue: 1, duration: 800, useNativeDriver: true }),
-          Animated.timing(animValue, { toValue: 0, duration: 800, useNativeDriver: true }),
-        ])
-      );
-    }
-
-    activeAnimationRef.current = animation;
-    animation.start();
-
-    return () => {
-      animation.stop();
-    };
-  }, [animValue, step]);
-
-  const animatedStyle = useMemo(() => {
-    if (step === 1) {
-      return {
-        transform: [
-          {
-            rotate: animValue.interpolate({
-              inputRange: [-1, 0, 1],
-              outputRange: ['-12deg', '0deg', '12deg'],
-            }),
-          },
-        ],
-      };
-    }
-    if (step === 2) {
-      return {
-        transform: [
-          {
-            scale: animValue.interpolate({
-              inputRange: [0, 1],
-              outputRange: [1, 1.16],
-            }),
-          },
-        ],
-        opacity: animValue.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0.75, 1],
         }),
-      };
-    }
-    if (step === 3) {
-      return {
-        transform: [
-          {
-            rotate: animValue.interpolate({
-              inputRange: [0, 1],
-              outputRange: ['0deg', '360deg'],
-            }),
-          },
-        ],
-      };
-    }
-    if (step === 4) {
-      return {
-        transform: [
-          {
-            scale: animValue.interpolate({
-              inputRange: [0, 0.4],
-              outputRange: [1, 1.22],
-            }),
-          },
-        ],
-      };
-    }
-
-    return {
-      transform: [
-        {
-          translateY: animValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, -7],
-          }),
-        },
-      ],
-    };
-  }, [animValue, step]);
-
-  const iconNode = useMemo(() => {
-    if (card.useLogo) {
-      return <Image source={require('@/assets/images/navable_logo.png')} style={styles.logoImage} />;
-    }
-
-    if (card.iconFamily === 'fa5' && card.iconName === 'accessible-icon') {
-      return <FontAwesome5 name="accessible-icon" size={34} color="black" />;
-    }
-    if (card.iconFamily === 'ant' && card.iconName === 'info-circle') {
-      return <AntDesign name="info-circle" size={34} color="black" />;
-    }
-    if (card.iconFamily === 'fa6' && card.iconName === 'cube') {
-      return <FontAwesome6 name="cube" size={34} color="black" />;
-    }
-    if (card.iconFamily === 'mc' && card.iconName === 'account-heart') {
-      return <MaterialCommunityIcons name="account-heart" size={34} color="black" />;
-    }
-    return null;
-  }, [card.iconFamily, card.iconName, card.useLogo]);
-
-  const onContinue = () => {
-    if (step < cards.length - 1) {
-      router.replace(`/onboarding?step=${step + 1}`);
-      return;
-    }
-    router.replace('/');
+        Animated.timing(translateY, {
+          toValue: 0,
+          duration: 180,
+          easing: Easing.out(Easing.cubic),
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
   };
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor: card.color }]}>
-      <View style={styles.topSpacer} />
+    <SafeAreaView style={[styles.container, { backgroundColor: current.backgroundColor } as ViewStyle]}>
+      <Animated.View style={[styles.content, { opacity, transform: [{ translateY }] }]}> 
+        <View style={styles.iconRing}>
+          <View style={styles.iconInner}>{current.renderIcon()}</View>
+        </View>
 
-      <View style={styles.centerBlock}>
-        <Animated.View style={animatedStyle}>
-          <View style={styles.iconCircle}>{iconNode}</View>
-        </Animated.View>
+        <Text style={styles.title}>{current.title}</Text>
+        <Text style={styles.subtitle}>{current.subtitle}</Text>
+        <Text style={styles.body}>{current.body}</Text>
 
-        <ThemedText style={styles.title}>{card.title}</ThemedText>
-        <ThemedText style={styles.subtitle}>{card.subtitle}</ThemedText>
-        <ThemedText style={styles.body}>{card.body}</ThemedText>
-      </View>
-
-      <View style={styles.bottomBlock}>
-        <Pressable accessibilityRole="button" accessibilityLabel="Continue onboarding" style={styles.primaryButton} onPress={onContinue}>
-          <ThemedText style={styles.buttonText}>Continue  &gt;</ThemedText>
-        </Pressable>
-        <ThemedText style={styles.pageIndicator}>{`${step + 1} of 5`}</ThemedText>
-      </View>
-    </ThemedView>
+        <View style={styles.bottomArea}>
+          <Pressable style={styles.button} onPress={advance}>
+            <Text style={styles.buttonText}>{index === slides.length - 1 ? 'Get Started  >' : 'Continue  >'}</Text>
+          </Pressable>
+          <Text style={styles.progress}>{current.progress}</Text>
+        </View>
+      </Animated.View>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    borderRadius: 24,
+    overflow: 'hidden',
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 28,
+  },
+  iconRing: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    borderWidth: 8,
+    borderColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 28,
+  },
+  iconInner: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoIcon: {
+    width: 42,
+    height: 42,
+  },
+  title: {
+    color: '#FFFFFF',
+    fontSize: 40,
+    lineHeight: 44,
+    textAlign: 'center',
+    fontWeight: '800',
+    marginBottom: 12,
+  },
+  subtitle: {
+    color: '#FFFFFF',
+    fontSize: 30,
+    lineHeight: 34,
+    textAlign: 'center',
+    fontWeight: '600',
+    marginBottom: 18,
+  },
+  body: {
+    color: '#FFFFFF',
+    fontSize: 22,
+    lineHeight: 30,
+    textAlign: 'center',
+    opacity: 0.95,
+    maxWidth: 700,
+  },
+  bottomArea: {
+    position: 'absolute',
+    left: 28,
+    right: 28,
+    bottom: 28,
+    alignItems: 'center',
+  },
+  button: {
+    width: '100%',
+    borderRadius: 12,
+    backgroundColor: '#F3F4F6',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 14,
+  },
+  buttonText: {
+    fontSize: 24,
+    color: '#101010',
+    fontWeight: '500',
+  },
+  progress: {
+    marginTop: 12,
+    color: '#F2F2F2',
+    fontSize: 20,
+    fontWeight: '400',
+  },
+});

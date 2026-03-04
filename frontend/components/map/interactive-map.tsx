@@ -1,11 +1,10 @@
-import { Image, LayoutChangeEvent, StyleSheet, View } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useMemo, useState } from 'react';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { Image, type LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
-import { config } from '@/services/config';
+import { config } from '../../services/config';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const MIN_SCALE = 1.25;
@@ -76,8 +75,8 @@ export function InteractiveMap({
       startY.value = translateY.value;
     })
     .onUpdate((event) => {
-      const maxX = ((viewportW.value * scale.value) - viewportW.value) / 2;
-      const maxY = ((viewportH.value * scale.value) - viewportH.value) / 2;
+      const maxX = (viewportW.value * scale.value - viewportW.value) / 2;
+      const maxY = (viewportH.value * scale.value - viewportH.value) / 2;
       const nextX = startX.value + event.translationX;
       const nextY = startY.value + event.translationY;
 
@@ -97,18 +96,14 @@ export function InteractiveMap({
       const nextScale = Math.max(MIN_SCALE, Math.min(startScale.value * event.scale, MAX_SCALE));
       scale.value = nextScale;
 
-      const maxX = ((viewportW.value * nextScale) - viewportW.value) / 2;
-      const maxY = ((viewportH.value * nextScale) - viewportH.value) / 2;
+      const maxX = (viewportW.value * nextScale - viewportW.value) / 2;
+      const maxY = (viewportH.value * nextScale - viewportH.value) / 2;
       translateX.value = Math.max(-maxX, Math.min(translateX.value, maxX));
       translateY.value = Math.max(-maxY, Math.min(translateY.value, maxY));
     });
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value },
-      { translateY: translateY.value },
-      { scale: scale.value },
-    ],
+    transform: [{ translateX: translateX.value }, { translateY: translateY.value }, { scale: scale.value }],
   }));
 
   const userMarkerStyle = useMemo(() => {
@@ -161,7 +156,7 @@ export function InteractiveMap({
       </GestureDetector>
 
       <View style={styles.hintBadge}>
-        <ThemedText style={styles.hintText}>Drag to explore • Pinch to zoom</ThemedText>
+        <Text style={styles.hintText}>Drag to explore • Pinch to zoom</Text>
       </View>
     </View>
   );

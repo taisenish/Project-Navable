@@ -1,9 +1,9 @@
-import { Platform, View } from 'react-native';
 import { useMemo, useRef } from 'react';
+import { Platform, View } from 'react-native';
 
-import { InteractiveMap } from '@/components/map/interactive-map';
-import type { Coordinate } from '@/types/api';
-import { decodeGooglePolyline } from '@/utils/polyline';
+import { InteractiveMap } from './interactive-map';
+import type { Coordinate } from '../../types/api';
+import { decodeGooglePolyline } from '../../utils/polyline';
 
 type Props = {
   centerLat: number;
@@ -26,7 +26,6 @@ type ExpoMapsModule = {
 
 function loadExpoMaps(): ExpoMapsModule | null {
   try {
-    // Optional runtime dependency. If missing, we fallback to static-map interaction.
     return require('expo-maps') as ExpoMapsModule;
   } catch {
     return null;

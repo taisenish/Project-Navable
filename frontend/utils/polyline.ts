@@ -1,4 +1,4 @@
-import type { Coordinate } from '@/types/api';
+import type { Coordinate } from '../types/api';
 
 export function decodeGooglePolyline(encoded: string): Coordinate[] {
   if (!encoded) {

@@ -1,200 +1,200 @@
-import { type ReactNode, useEffect, useState } from 'react';
-import { router } from 'expo-router';
-import { Image, Pressable, ScrollView, Switch, View } from 'react-native';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Feather from '@expo/vector-icons/Feather';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { useMemo, useState } from 'react';
 
-import { ThemedText } from '@/components/themed-text';
-import { useAuthSession } from '@/hooks/use-auth-session';
-import { usePreferences } from '@/hooks/use-preferences';
-import { settingsStyles as styles } from '@/styles/settings.styles';
-import type { SurfaceType } from '@/types/api';
+import { TopBar } from '../../components/top-bar';
+import { useAuthSession } from '../../state/auth-session';
 
-const surfaceOptions: SurfaceType[] = ['paved', 'brick', 'gravel', 'mixed'];
+type SettingsRow = {
+  key: string;
+  label: string;
+  icon: React.ReactNode;
+};
 
-export default function TabSettingsScreen() {
-  const { user, userId, isLoading: isAuthLoading, signOut } = useAuthSession();
-  const { preferences, save, isLoading, error } = usePreferences(userId);
-  const [preferElevators, setPreferElevators] = useState(true);
-  const [shortestDistance, setShortestDistance] = useState(true);
-  const [fastestTime, setFastestTime] = useState(false);
-  const [communityReports, setCommunityReports] = useState(true);
-  const [routeAlerts, setRouteAlerts] = useState(true);
-  const [voiceGuidance, setVoiceGuidance] = useState(true);
-  const [largeText, setLargeText] = useState(false);
+export default function SettingsScreen() {
+  const { user, signOut } = useAuthSession();
+  const [values, setValues] = useState<Record<string, boolean>>({
+    avoidStairs: true,
+    preferElevators: true,
+    avoidSteepSlopes: true,
+    surfacePreferences: true,
+    shortestDistance: true,
+    fastestTime: false,
+    communityReports: true,
+    routeAlerts: true,
+    voiceGuidance: true,
+    largeText: false,
+  });
 
-  useEffect(() => {
-    if (!isAuthLoading && !user) {
-      router.replace('/login');
-    }
-  }, [isAuthLoading, user]);
-
-  const onLogout = async () => {
-    await signOut();
-    router.replace('/login');
-  };
-
-  const onToggleSteepSlope = (value: boolean) => {
-    const max_slope_percent = value ? 5 : 12;
-    void save({ ...preferences, max_slope_percent });
-  };
-
-  const onToggleSurfacePreference = (value: boolean) => {
-    const preferredSurfaces: SurfaceType[] = ['paved', 'brick', 'mixed'];
-    const nextSurfaces = value ? preferredSurfaces : surfaceOptions;
-    void save({ ...preferences, allowed_surfaces: nextSurfaces });
-  };
-
-  const avoidsSteepSlopes = preferences.max_slope_percent <= 5;
-  const prefersSmoothSurfaces = !preferences.allowed_surfaces.includes('gravel');
-
-  const renderRow = (
-    key: string,
-    label: string,
-    value: boolean,
-    onValueChange: (next: boolean) => void,
-    icon: ReactNode,
-  ) => (
-    <View key={key} style={styles.row}>
-      <View style={styles.rowLeft}>
-        <View style={styles.iconWrap}>{icon}</View>
-        <ThemedText style={styles.rowLabel}>{label}</ThemedText>
-      </View>
-      <Switch
-        value={value}
-        onValueChange={onValueChange}
-        trackColor={{ false: '#BFB9CF', true: '#A987F8' }}
-        thumbColor={value ? '#7B3FF3' : '#F1EFF8'}
-      />
-    </View>
+  const sections = useMemo(
+    () => [
+      {
+        title: 'Accessibility Preferences',
+        rows: [
+          { key: 'avoidStairs', label: 'Avoid Stairs', icon: <MaterialCommunityIcons name="stairs" size={18} color="#111" /> },
+          { key: 'preferElevators', label: 'Prefer Elevators', icon: <Ionicons name="swap-vertical" size={18} color="#111" /> },
+          { key: 'avoidSteepSlopes', label: 'Avoid Steep Slopes', icon: <FontAwesome6 name="mountain" size={16} color="#111" /> },
+          { key: 'surfacePreferences', label: 'Surface Preferences', icon: <MaterialCommunityIcons name="texture-box" size={18} color="#111" /> },
+        ] as SettingsRow[],
+      },
+      {
+        title: 'Route Preferences',
+        rows: [
+          { key: 'shortestDistance', label: 'Shortest Distance', icon: <MaterialCommunityIcons name="arrow-left-right" size={18} color="#111" /> },
+          { key: 'fastestTime', label: 'Fastest Time', icon: <MaterialCommunityIcons name="fast-forward" size={18} color="#111" /> },
+        ] as SettingsRow[],
+      },
+      {
+        title: 'Notifications',
+        rows: [
+          { key: 'communityReports', label: 'Community Report References', icon: <MaterialCommunityIcons name="message-outline" size={18} color="#111" /> },
+          { key: 'routeAlerts', label: 'Route Disruption Alerts', icon: <Ionicons name="warning-outline" size={18} color="#111" /> },
+        ] as SettingsRow[],
+      },
+      {
+        title: 'Preferences',
+        rows: [
+          { key: 'voiceGuidance', label: 'Voice Guidance', icon: <MaterialCommunityIcons name="microphone-outline" size={18} color="#111" /> },
+          { key: 'largeText', label: 'Large Text Mode', icon: <FontAwesome5 name="text-height" size={16} color="#111" /> },
+        ] as SettingsRow[],
+      },
+    ],
+    [],
   );
 
-  const accessibilityRows = [
-    renderRow(
-      'avoid-stairs',
-      'Avoid Stairs',
-      preferences.avoid_stairs,
-      (value) => void save({ ...preferences, avoid_stairs: value }),
-      <FontAwesome6 name="person-cane" size={16} color="#14131A" />,
-    ),
-    renderRow(
-      'prefer-elevators',
-      'Prefer Elevators',
-      preferElevators,
-      setPreferElevators,
-      <MaterialCommunityIcons name="elevator-passenger" size={16} color="#14131A" />,
-    ),
-    renderRow(
-      'steep-slopes',
-      'Avoid Steep Slopes',
-      avoidsSteepSlopes,
-      onToggleSteepSlope,
-      <MaterialCommunityIcons name="slope-uphill" size={16} color="#14131A" />,
-    ),
-    renderRow(
-      'surface',
-      'Surface Preferences',
-      prefersSmoothSurfaces,
-      onToggleSurfacePreference,
-      <FontAwesome5 name="layer-group" size={14} color="#14131A" />,
-    ),
-  ];
-
-  const routeRows = [
-    renderRow(
-      'shortest',
-      'Shortest Distance',
-      shortestDistance,
-      setShortestDistance,
-      <Ionicons name="swap-horizontal" size={16} color="#14131A" />,
-    ),
-    renderRow(
-      'fastest',
-      'Fastest Time',
-      fastestTime,
-      setFastestTime,
-      <Ionicons name="play-skip-forward" size={16} color="#14131A" />,
-    ),
-  ];
-
-  const notificationRows = [
-    renderRow(
-      'community',
-      'Community Report References',
-      communityReports,
-      setCommunityReports,
-      <Feather name="message-square" size={16} color="#14131A" />,
-    ),
-    renderRow(
-      'alerts',
-      'Route Distribution Alerts',
-      routeAlerts,
-      setRouteAlerts,
-      <Feather name="alert-triangle" size={16} color="#14131A" />,
-    ),
-  ];
-
-  const preferenceRows = [
-    renderRow(
-      'voice',
-      'Voice Guidance',
-      voiceGuidance,
-      setVoiceGuidance,
-      <Ionicons name="mic-outline" size={16} color="#14131A" />,
-    ),
-    renderRow(
-      'large-text',
-      'Large Text Mode',
-      largeText,
-      setLargeText,
-      <FontAwesome6 name="text-height" size={15} color="#14131A" />,
-    ),
-  ];
-
-  const renderCard = (title: string, rows: ReactNode[]) => {
-    return (
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <ThemedText style={styles.cardTitle}>{title}</ThemedText>
-        </View>
-        <View style={styles.cardRows}>{rows}</View>
-      </View>
-    );
+  const toggle = (key: string) => {
+    setValues((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
     <View style={styles.screen}>
-      <View style={styles.topBar}>
-        <View style={styles.brandRow}>
-          <View style={styles.logoBubble}>
-            <Image source={require('@/assets/images/navable_logo.png')} style={styles.logo} />
-          </View>
-          <View style={styles.titleStack}>
-            <ThemedText style={styles.brandTitle}>NavAble</ThemedText>
-            <ThemedText style={styles.brandSubtitle}>Accessible Campus Navigation</ThemedText>
-          </View>
+      <TopBar />
+      <View style={styles.header}>
+        <View>
+          <Text style={styles.title}>Settings</Text>
+          <Text style={styles.email}>{user?.email ?? 'Signed in'}</Text>
         </View>
-
-        <Pressable accessibilityRole="button" style={styles.logoutButton} onPress={() => void onLogout()}>
-          <Ionicons name="log-out-outline" size={16} color="#FFFFFF" />
-          <ThemedText style={styles.logoutText}>Logout</ThemedText>
+        <Pressable style={styles.logoutButton} onPress={() => void signOut()}>
+          <Text style={styles.logoutButtonText}>Log Out</Text>
         </Pressable>
       </View>
 
-      <ScrollView contentContainerStyle={styles.container}>
-        <ThemedText style={styles.pageTitle}>Settings</ThemedText>
-
-        {renderCard('Accessibility Preferences', accessibilityRows)}
-        {renderCard('Route Preferences', routeRows)}
-        {renderCard('Notifications', notificationRows)}
-        {renderCard('Preferences', preferenceRows)}
-
-        {isLoading ? <ThemedText>Loading preferences...</ThemedText> : null}
-        {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}>
+        {sections.map((section) => (
+          <View key={section.title} style={styles.sectionCard}>
+            <Text style={styles.sectionTitle}>{section.title}</Text>
+            {section.rows.map((row, index) => (
+              <View key={row.key} style={[styles.row, index !== section.rows.length - 1 && styles.rowDivider]}>
+                <View style={styles.rowLeft}>
+                  <View style={styles.iconWrap}>{row.icon}</View>
+                  <Text style={styles.rowLabel}>{row.label}</Text>
+                </View>
+                <Switch
+                  trackColor={{ false: '#D3D4DA', true: '#B083FF' }}
+                  thumbColor={values[row.key] ? '#7B3FF3' : '#FFFFFF'}
+                  ios_backgroundColor="#D3D4DA"
+                  value={Boolean(values[row.key])}
+                  onValueChange={() => toggle(row.key)}
+                />
+              </View>
+            ))}
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#F4F5F7',
+  },
+  header: {
+    paddingHorizontal: 16,
+    paddingTop: 6,
+    paddingBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 34,
+    fontWeight: '700',
+    color: '#111111',
+  },
+  email: {
+    marginTop: 2,
+    color: '#52525B',
+    fontSize: 13,
+  },
+  logoutButton: {
+    backgroundColor: '#E64D4D',
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+  },
+  logoutButtonText: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingHorizontal: 12,
+    paddingBottom: 28,
+    gap: 12,
+  },
+  sectionCard: {
+    backgroundColor: '#ECE7F5',
+    borderRadius: 16,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#DAD1EE',
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#1E1E22',
+    paddingHorizontal: 12,
+    paddingTop: 12,
+    paddingBottom: 8,
+  },
+  row: {
+    minHeight: 54,
+    paddingHorizontal: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#F3EFFA',
+  },
+  rowDivider: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#D7D2E6',
+  },
+  rowLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    paddingRight: 10,
+  },
+  iconWrap: {
+    width: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8,
+  },
+  rowLabel: {
+    fontSize: 17,
+    color: '#1A1A1A',
+    fontWeight: '500',
+  },
+});

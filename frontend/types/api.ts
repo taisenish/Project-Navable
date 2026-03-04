@@ -69,10 +69,6 @@ export type AuthUser = {
   picture_url?: string | null;
 };
 
-export type GoogleLoginRequest = {
-  id_token: string;
-};
-
 export type GoogleLoginResponse = {
   user: AuthUser;
   is_new_user: boolean;

@@ -1,5 +1,5 @@
-import { MainMapScreen } from '@/components/screens/main-map-screen';
+import { MainMapScreen } from '../../components/screens/main-map-screen';
 
-export default function TabMapScreen() {
+export default function MapScreen() {
   return <MainMapScreen />;
 }
