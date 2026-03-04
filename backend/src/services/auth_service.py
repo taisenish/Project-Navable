@@ -23,7 +23,6 @@ class GoogleAuthService:
         self.oauth_ios_client_id = oauth_ios_client_id
 
     def _verify_id_token_with_audience(self, id_token: str, audience: str | None) -> dict[str, str]:
-        # Imported lazily so unit tests that do not exercise OAuth can run without this package.
         from google.auth.transport.requests import Request as GoogleRequest  # type: ignore[import-not-found]
         from google.oauth2 import id_token as google_id_token  # type: ignore[import-not-found]
 
@@ -55,7 +54,7 @@ class GoogleAuthService:
         for audience in audiences:
             try:
                 return self._verify_id_token_with_audience(id_token, audience)
-            except Exception as exc:  # pragma: no cover - keeps detail for last error
+            except Exception as exc:
                 last_error = exc
 
         raise ValueError(f'Native token verification failed for configured audiences: {last_error}')

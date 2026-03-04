@@ -64,7 +64,6 @@ class RoutingEngine:
         warnings: list[str] = []
         selected: list[CampusEdge] = []
 
-        # Candidate path strategy: pick edges from seed data that best satisfy preferences.
         for edge in edges:
             violations = self._violates(edge, req.preferences)
             if not violations:

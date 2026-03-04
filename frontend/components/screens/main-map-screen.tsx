@@ -1,5 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, AppState, Image, Keyboard, Linking, Pressable, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Animated,
+  AppState,
+  Easing,
+  Image,
+  Keyboard,
+  Linking,
+  Pressable,
+  ScrollView,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import * as Location from 'expo-location';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -339,6 +353,7 @@ export function MainMapScreen() {
   const showBaseChips = !directions;
   const rampsCount = pois.filter((poi) => poi.type === 'ramp').length;
   const entrancesCount = pois.filter((poi) => poi.type === 'entrance').length;
+  const chipBarAnim = useRef(new Animated.Value(1)).current;
 
   const routeSummary = useMemo(() => {
     if (directions) {
@@ -392,10 +407,6 @@ export function MainMapScreen() {
 
   const onSubmitSearch = async () => {
     Keyboard.dismiss();
-    if (searchResults.length > 0) {
-      await onSelectPlace(searchResults[0]);
-      return;
-    }
 
     const nextQuery = searchQuery.trim();
     if (nextQuery.length < 2) {
@@ -405,11 +416,7 @@ export function MainMapScreen() {
     try {
       setIsSearching(true);
       const results = await api.searchPlaces(nextQuery, 6);
-      if (results.length > 0) {
-        await onSelectPlace(results[0]);
-      } else {
-        setSearchResults([]);
-      }
+      setSearchResults(results);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to search places');
     } finally {
@@ -481,6 +488,15 @@ export function MainMapScreen() {
     }
     return userLocation?.heading ?? 0;
   }, [activeStep, isNavigating, navigationCameraMode, userLocation]);
+
+  useEffect(() => {
+    Animated.timing(chipBarAnim, {
+      toValue: showBaseChips ? 1 : 0,
+      duration: 260,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: false,
+    }).start();
+  }, [chipBarAnim, showBaseChips]);
 
   useEffect(() => {
     if (!isNavigating || !directions || !userLocation) {
@@ -581,15 +597,21 @@ export function MainMapScreen() {
 
           {hasSearchResults ? (
             <View style={styles.searchResults}>
-              {searchResults.map((item) => (
-                <Pressable
-                  key={item.place_id}
-                  style={styles.searchResultItem}
-                  onPress={() => void onSelectPlace(item)}>
-                  <ThemedText style={styles.searchResultName}>{item.name}</ThemedText>
-                  <ThemedText style={styles.searchResultAddress}>{item.address}</ThemedText>
-                </Pressable>
-              ))}
+              <ScrollView
+                style={styles.searchResultsScroll}
+                keyboardShouldPersistTaps="handled"
+                nestedScrollEnabled
+                showsVerticalScrollIndicator>
+                {searchResults.map((item) => (
+                  <Pressable
+                    key={item.place_id}
+                    style={styles.searchResultItem}
+                    onPress={() => void onSelectPlace(item)}>
+                    <ThemedText style={styles.searchResultName}>{item.name}</ThemedText>
+                    <ThemedText style={styles.searchResultAddress}>{item.address}</ThemedText>
+                  </Pressable>
+                ))}
+              </ScrollView>
             </View>
           ) : null}
         </View>
@@ -626,7 +648,30 @@ export function MainMapScreen() {
         {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
         {locationError ? <ThemedText style={styles.error}>{locationError}</ThemedText> : null}
 
-        {showBaseChips ? (
+        <Animated.View
+          pointerEvents={showBaseChips ? 'auto' : 'none'}
+          style={[
+            styles.chipRowWrap,
+            {
+              opacity: chipBarAnim,
+              maxHeight: chipBarAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 52],
+              }),
+              transform: [
+                {
+                  translateY: chipBarAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-18, 0],
+                  }),
+                },
+              ],
+              marginBottom: chipBarAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 8],
+              }),
+            },
+          ]}>
           <View style={styles.chipRow}>
             <View style={[styles.chip, styles.greenChip]}>
               <ThemedText style={styles.chipLabel}>Ramps ({rampsCount})</ThemedText>
@@ -638,7 +683,7 @@ export function MainMapScreen() {
               <ThemedText style={styles.chipLabel}>Alerts ({alerts.length})</ThemedText>
             </View>
           </View>
-        ) : null}
+        </Animated.View>
 
         {routeSummary && !showSelectedPlaceIntroCard ? <ThemedText style={styles.routeSummary}>{routeSummary}</ThemedText> : null}
         {directions && !showSelectedPlaceIntroCard ? (

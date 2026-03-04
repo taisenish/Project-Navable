@@ -69,7 +69,6 @@ class MapsService:
         if not query.strip():
             return []
 
-        # Global text search so users can navigate to any destination.
         response = requests.get(
             'https://maps.googleapis.com/maps/api/place/textsearch/json',
             params={

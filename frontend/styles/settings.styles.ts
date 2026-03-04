@@ -72,7 +72,7 @@ export const settingsStyles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
     paddingTop: 18,
-    paddingBottom: 20,
+    paddingBottom: 140,
     gap: 12,
   },
   pageTitle: {

@@ -3,9 +3,9 @@ from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.api.routes import router
-from src.core.config import get_settings
-from src.db import init_db
+from src.routes.base import router as base_router
+from src.utils.config import get_settings
+from src.utils.db import init_db
 
 
 def create_app() -> FastAPI:
@@ -19,7 +19,7 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    app.include_router(router, prefix=settings.api_prefix)
+    app.include_router(base_router, prefix=settings.api_prefix)
 
     @app.on_event("startup")
     def on_startup() -> None:

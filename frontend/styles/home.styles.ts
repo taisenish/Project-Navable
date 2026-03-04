@@ -77,6 +77,10 @@ export const homeStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D9C5FF',
     backgroundColor: '#F7F1FF',
+    maxHeight: 260,
+  },
+  searchResultsScroll: {
+    maxHeight: 260,
   },
   searchResultItem: {
     paddingHorizontal: 12,
@@ -178,7 +182,9 @@ export const homeStyles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 8,
     paddingHorizontal: 12,
-    marginBottom: 8,
+  },
+  chipRowWrap: {
+    overflow: 'hidden',
   },
   chip: {
     borderRadius: 18,
