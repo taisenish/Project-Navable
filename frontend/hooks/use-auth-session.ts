@@ -7,6 +7,11 @@ import type { AuthUser } from '@/types/api';
 
 const AUTH_USER_KEY = 'navable:auth-user';
 
+type SignInResult = {
+  user: AuthUser;
+  isNewUser: boolean;
+};
+
 export function useAuthSession() {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,22 +24,43 @@ export function useAuthSession() {
     setIsLoading(false);
   }, []);
 
-  const signInWithGoogleIdToken = useCallback(async (idToken: string) => {
+  const persistUser = useCallback(async (nextUser: AuthUser) => {
+    await storage.set(AUTH_USER_KEY, nextUser);
+    setUser(nextUser);
+    return nextUser;
+  }, []);
+
+  const signInWithGoogleNative = useCallback(async (idToken: string): Promise<SignInResult> => {
     if (!idToken) {
       throw new Error('Missing Google ID token');
     }
 
     setError(null);
     try {
-      const result = await api.loginWithGoogle({ id_token: idToken });
-      await storage.set(AUTH_USER_KEY, result.user);
-      setUser(result.user);
-      return result.user;
+      const result = await api.loginWithGoogleNative({ id_token: idToken });
+      const user = await persistUser(result.user);
+      return { user, isNewUser: result.is_new_user };
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Google sign-in failed');
+      setError(err instanceof Error ? err.message : 'Google native sign-in failed');
       throw err;
     }
-  }, []);
+  }, [persistUser]);
+
+  const signInWithGoogleWeb = useCallback(async (code: string, redirectUri: string): Promise<SignInResult> => {
+    if (!code || !redirectUri) {
+      throw new Error('Missing web auth code or redirect URI');
+    }
+
+    setError(null);
+    try {
+      const result = await api.loginWithGoogleWeb({ code, redirect_uri: redirectUri });
+      const user = await persistUser(result.user);
+      return { user, isNewUser: result.is_new_user };
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Google web sign-in failed');
+      throw err;
+    }
+  }, [persistUser]);
 
   const signOut = useCallback(async () => {
     await storage.set<AuthUser | null>(AUTH_USER_KEY, null);
@@ -51,7 +77,8 @@ export function useAuthSession() {
     isLoading,
     error,
     refresh,
-    signInWithGoogleIdToken,
+    signInWithGoogleNative,
+    signInWithGoogleWeb,
     signOut,
   };
 }

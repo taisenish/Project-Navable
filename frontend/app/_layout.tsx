@@ -11,7 +11,8 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="login" options={{ title: 'Sign In' }} />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ title: 'NavAble' }} />
         <Stack.Screen name="map" options={{ title: 'Campus Map' }} />
         <Stack.Screen name="route-details" options={{ title: 'Route Details' }} />

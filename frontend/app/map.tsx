@@ -1,12 +1,13 @@
 import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView } from 'react-native';
 
 import { MapCanvas } from '@/components/map/map-canvas';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useRouteCache } from '@/hooks/use-route-cache';
 import { api } from '@/services/api';
+import { mapStyles as styles } from '@/styles/map.styles';
 import type { Alert, Poi, RouteResponse } from '@/types/api';
 
 export default function MapScreen() {
@@ -71,36 +72,3 @@ export default function MapScreen() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    gap: 12,
-  },
-  section: {
-    gap: 6,
-    padding: 12,
-    borderRadius: 10,
-    borderWidth: 1,
-  },
-  button: {
-    backgroundColor: '#0a7ea4',
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  secondaryButton: {
-    borderWidth: 1,
-    borderColor: '#0a7ea4',
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-  error: {
-    color: '#c0392b',
-  },
-});

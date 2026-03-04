@@ -1,14 +1,16 @@
 import * as Haptics from 'expo-haptics';
 import { Link, router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { AccessibilityInfo, ActivityIndicator, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { AccessibilityInfo, ActivityIndicator, Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { UwStaticMap } from '@/components/map/uw-static-map';
 import { useAuthSession } from '@/hooks/use-auth-session';
 import { usePreferences } from '@/hooks/use-preferences';
 import { useRouteCache } from '@/hooks/use-route-cache';
 import { api } from '@/services/api';
+import { homeStyles as styles } from '@/styles/home.styles';
 import { parseCoordinate } from '@/utils/coordinates';
 
 export default function SearchScreen() {
@@ -59,93 +61,59 @@ export default function SearchScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Campus Navigator</ThemedText>
-      <ThemedText>Accessible routing for UW using Google + campus data.</ThemedText>
-      {user ? <ThemedText>{`Signed in as ${user.email}`}</ThemedText> : null}
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.heroCard}>
+          <ThemedText type="title">Campus Navigator</ThemedText>
+          <ThemedText>Accessible routing for UW using Google + campus data.</ThemedText>
+          {user ? <ThemedText style={styles.userLabel}>{`Signed in as ${user.email}`}</ThemedText> : null}
+        </View>
 
-      <View style={styles.form}>
-        <ThemedText type="defaultSemiBold">Origin (lat,lng)</ThemedText>
-        <TextInput
-          accessibilityLabel="Origin coordinate"
-          accessibilityHint="Enter latitude and longitude separated by a comma"
-          value={originRaw}
-          onChangeText={setOriginRaw}
-          style={styles.input}
-        />
+        <UwStaticMap />
 
-        <ThemedText type="defaultSemiBold">Destination (lat,lng)</ThemedText>
-        <TextInput
-          accessibilityLabel="Destination coordinate"
-          accessibilityHint="Enter latitude and longitude separated by a comma"
-          value={destinationRaw}
-          onChangeText={setDestinationRaw}
-          style={styles.input}
-        />
-      </View>
+        <View style={styles.form}>
+          <ThemedText type="defaultSemiBold">Origin (lat,lng)</ThemedText>
+          <TextInput
+            accessibilityLabel="Origin coordinate"
+            accessibilityHint="Enter latitude and longitude separated by a comma"
+            value={originRaw}
+            onChangeText={setOriginRaw}
+            style={styles.input}
+          />
 
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Generate accessible route"
-        onPress={requestRoute}
-        style={styles.primaryButton}>
-        {isLoading ? <ActivityIndicator color="#fff" /> : <ThemedText style={styles.buttonText}>Get Route</ThemedText>}
-      </Pressable>
+          <ThemedText type="defaultSemiBold">Destination (lat,lng)</ThemedText>
+          <TextInput
+            accessibilityLabel="Destination coordinate"
+            accessibilityHint="Enter latitude and longitude separated by a comma"
+            value={destinationRaw}
+            onChangeText={setDestinationRaw}
+            style={styles.input}
+          />
+        </View>
 
-      <Link href="/settings" asChild>
-        <Pressable accessibilityRole="button" style={styles.secondaryButton}>
-          <ThemedText>Adjust Accessibility Preferences</ThemedText>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Generate accessible route"
+          onPress={requestRoute}
+          style={styles.primaryButton}>
+          {isLoading ? <ActivityIndicator color="#fff" /> : <ThemedText style={styles.buttonText}>Get Route</ThemedText>}
         </Pressable>
-      </Link>
 
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="Sign out"
-        style={styles.secondaryButton}
-        onPress={() => void signOut()}>
-        <ThemedText>Sign Out</ThemedText>
-      </Pressable>
+        <Link href="/settings" asChild>
+          <Pressable accessibilityRole="button" style={styles.secondaryButton}>
+            <ThemedText>Adjust Accessibility Preferences</ThemedText>
+          </Pressable>
+        </Link>
 
-      {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Sign out"
+          style={styles.secondaryButton}
+          onPress={() => void signOut()}>
+          <ThemedText>Sign Out</ThemedText>
+        </Pressable>
+
+        {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
+      </ScrollView>
     </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    gap: 14,
-  },
-  form: {
-    gap: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#8a8a8a',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    color: '#111',
-    backgroundColor: '#fff',
-  },
-  primaryButton: {
-    backgroundColor: '#0a7ea4',
-    borderRadius: 10,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  secondaryButton: {
-    borderWidth: 1,
-    borderColor: '#0a7ea4',
-    borderRadius: 10,
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-  error: {
-    color: '#c0392b',
-  },
-});

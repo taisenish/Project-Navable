@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Switch, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, Switch, TextInput, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useAuthSession } from '@/hooks/use-auth-session';
 import { usePreferences } from '@/hooks/use-preferences';
+import { settingsStyles as styles } from '@/styles/settings.styles';
 import type { SurfaceType } from '@/types/api';
 
 const surfaceOptions: SurfaceType[] = ['paved', 'brick', 'gravel', 'mixed'];
@@ -94,49 +95,3 @@ export default function SettingsScreen() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    gap: 14,
-  },
-  row: {
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 12,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  slopeRow: {
-    gap: 8,
-  },
-  input: {
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    backgroundColor: '#fff',
-  },
-  surfaceWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  surfaceChip: {
-    borderWidth: 1,
-    borderRadius: 999,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  surfaceChipActive: {
-    backgroundColor: '#0a7ea4',
-    borderColor: '#0a7ea4',
-  },
-  surfaceChipTextActive: {
-    color: '#fff',
-  },
-  error: {
-    color: '#c0392b',
-  },
-});

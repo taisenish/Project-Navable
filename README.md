@@ -42,7 +42,9 @@ Members: Dev Dhawan, Arsiema Sisay, Nebiat Markos, Mumtaz Sheikhaden, Taise Nish
 ### Backend (`backend/.env`)
 - `APP_ENV` (required): set to `development` locally.
 - `GOOGLE_MAPS_API_KEY` (required when map API integrations are enabled): Google Maps server API key.
-- `GOOGLE_OAUTH_CLIENT_ID` (required for Google OAuth login): Google OAuth client ID used by backend token verification.
+- `GOOGLE_OAUTH_CLIENT_ID` (required for Google web OAuth): Google OAuth Web client ID.
+- `GOOGLE_OAUTH_CLIENT_SECRET` (required for Google web OAuth): Google OAuth Web client secret used for code exchange.
+- `GOOGLE_OAUTH_IOS_CLIENT_ID` (required for iOS OAuth): Google OAuth iOS client ID.
 - `DATABASE_URL` (optional): remote database connection string.
 - `LOCAL_DATABASE_URL` (required fallback): local SQLite URL, recommended `sqlite:///./navable.db`.
 
@@ -50,21 +52,22 @@ Example:
 ```bash
 APP_ENV=development
 GOOGLE_MAPS_API_KEY=your-google-maps-server-key
-GOOGLE_OAUTH_CLIENT_ID=your-google-oauth-client-id.apps.googleusercontent.com
+GOOGLE_OAUTH_CLIENT_ID=your-web-client-id.apps.googleusercontent.com
+GOOGLE_OAUTH_CLIENT_SECRET=your-web-client-secret
+GOOGLE_OAUTH_IOS_CLIENT_ID=your-ios-client-id.apps.googleusercontent.com
 DATABASE_URL=
 LOCAL_DATABASE_URL=sqlite:///./navable.db
 ```
 
 ### Frontend (`frontend/.env.development.local` and `frontend/.env.production`)
 - `EXPO_PUBLIC_API_BASE_URL` (required): backend base URL ending with `/api/v1`.
-- `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` (required for web sign-in): Google OAuth Web client ID.
 - `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` (required for iOS sign-in): Google OAuth iOS client ID.
 - `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` (required for Android sign-in): Google OAuth Android client ID.
+- iOS note: the app URL scheme must include the reversed iOS client ID prefix (`com.googleusercontent.apps.<client-id-without-suffix>`), configured in `app.json`.
 
 Development example (`frontend/.env.development.local`):
 ```bash
 EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1
-EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your-web-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-ios-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=your-android-client-id.apps.googleusercontent.com
 ```
@@ -72,7 +75,6 @@ EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=your-android-client-id.apps.googleuserconte
 Production example (`frontend/.env.production`):
 ```bash
 EXPO_PUBLIC_API_BASE_URL=https://api.yourdomain.com/api/v1
-EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=your-web-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=your-ios-client-id.apps.googleusercontent.com
 EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=your-android-client-id.apps.googleusercontent.com
 ```
@@ -99,6 +101,8 @@ Required backend env in `backend/.env`:
 APP_ENV=development
 GOOGLE_MAPS_API_KEY=
 GOOGLE_OAUTH_CLIENT_ID=
+GOOGLE_OAUTH_CLIENT_SECRET=
+GOOGLE_OAUTH_IOS_CLIENT_ID=
 DATABASE_URL=
 LOCAL_DATABASE_URL=sqlite:///./navable.db
 ```
@@ -106,13 +110,17 @@ LOCAL_DATABASE_URL=sqlite:///./navable.db
 What each backend value means:
 - `APP_ENV` (required): environment label. Use `development` locally.
 - `GOOGLE_MAPS_API_KEY` (required when Google Maps services are enabled): server key from Google Cloud.
-- `GOOGLE_OAUTH_CLIENT_ID` (required for Google login): OAuth client ID used by backend to validate token audience.
+- `GOOGLE_OAUTH_CLIENT_ID` (required for Google web login): OAuth Web client ID.
+- `GOOGLE_OAUTH_CLIENT_SECRET` (required for Google web login): OAuth Web client secret used by backend during code exchange.
+- `GOOGLE_OAUTH_IOS_CLIENT_ID` (required for iOS login): OAuth iOS client ID used by backend for native token audience checks.
 - `DATABASE_URL` (optional): full remote DB connection string (Postgres/MySQL/etc). Leave empty for local-only mode.
 - `LOCAL_DATABASE_URL` (required fallback): local SQLite URL. Default `sqlite:///./navable.db` works for local dev.
 
 Available endpoints (base URL `http://127.0.0.1:8000/api/v1`):
 - `GET /health`
-- `POST /auth/google`
+- `GET /maps/uw-static`
+- `POST /auth/google/ios`
+- `POST /auth/google/web`
 - `POST /route`
 - `GET /poi`
 - `GET /alerts`
@@ -133,10 +141,13 @@ npm install
 npm run start
 ```
 
+Frontend styling:
+- Shared visual tokens and screen style files are in `frontend/styles/`.
+- Main app screens import styles from these files instead of defining inline `StyleSheet.create(...)`.
+
 Required frontend env in `frontend/.env.development.local`:
 ```bash
 EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:8000/api/v1
-EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=
 EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=
 ```
@@ -144,7 +155,6 @@ EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=
 Required frontend env in `frontend/.env.production`:
 ```bash
 EXPO_PUBLIC_API_BASE_URL=https://api.navable.example/api/v1
-EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID=
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=
 EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID=
 ```
@@ -153,7 +163,6 @@ What each frontend value means:
 - `EXPO_PUBLIC_API_BASE_URL` (required): backend API base URL ending in `/api/v1`.
   - Local example: `http://127.0.0.1:8000/api/v1`
   - Prod example: `https://api.yourdomain.com/api/v1`
-- `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` (required for web login): OAuth Web client ID from Google Cloud Credentials.
 - `EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID` (required for iOS login): OAuth iOS client ID from Google Cloud Credentials.
 - `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` (required for Android login): OAuth Android client ID from Google Cloud Credentials.
 

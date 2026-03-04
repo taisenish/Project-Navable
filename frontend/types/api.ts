@@ -75,4 +75,14 @@ export type GoogleLoginRequest = {
 
 export type GoogleLoginResponse = {
   user: AuthUser;
+  is_new_user: boolean;
+};
+
+export type GoogleNativeLoginRequest = {
+  id_token: string;
+};
+
+export type GoogleWebLoginRequest = {
+  code: string;
+  redirect_uri: string;
 };

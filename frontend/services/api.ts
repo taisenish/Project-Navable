@@ -1,8 +1,9 @@
 import { config } from '@/services/config';
 import type {
   Alert,
-  GoogleLoginRequest,
   GoogleLoginResponse,
+  GoogleNativeLoginRequest,
+  GoogleWebLoginRequest,
   Poi,
   RouteRequest,
   RouteResponse,
@@ -39,8 +40,13 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(record),
     }),
-  loginWithGoogle: (payload: GoogleLoginRequest) =>
-    request<GoogleLoginResponse>('/auth/google', {
+  loginWithGoogleNative: (payload: GoogleNativeLoginRequest) =>
+    request<GoogleLoginResponse>('/auth/google/ios', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  loginWithGoogleWeb: (payload: GoogleWebLoginRequest) =>
+    request<GoogleLoginResponse>('/auth/google/web', {
       method: 'POST',
       body: JSON.stringify(payload),
     }),

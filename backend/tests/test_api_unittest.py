@@ -84,7 +84,7 @@ class ApiTests(unittest.TestCase):
         self.assertGreaterEqual(len(route.polyline), 2)
 
     def test_upsert_google_user(self) -> None:
-        user = self.auth_service.upsert_user(
+        user, is_new = self.auth_service.upsert_user(
             {
                 'sub': 'google-sub-1',
                 'email': 'student@uw.edu',
@@ -94,6 +94,7 @@ class ApiTests(unittest.TestCase):
         )
         self.assertEqual(user.user_id, 'google-sub-1')
         self.assertEqual(user.email, 'student@uw.edu')
+        self.assertTrue(is_new)
 
 
 if __name__ == '__main__':

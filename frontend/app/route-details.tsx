@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useRouteCache } from '@/hooks/use-route-cache';
+import { routeDetailsStyles as styles } from '@/styles/route-details.styles';
 import type { RouteResponse } from '@/types/api';
 
 export default function RouteDetailsScreen() {
@@ -39,16 +40,3 @@ export default function RouteDetailsScreen() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    gap: 12,
-  },
-  step: {
-    padding: 12,
-    borderWidth: 1,
-    borderRadius: 10,
-    gap: 6,
-  },
-});

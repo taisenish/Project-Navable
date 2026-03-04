@@ -94,6 +94,15 @@ class GoogleLoginRequest(BaseModel):
     id_token: str = Field(min_length=1)
 
 
+class GoogleNativeLoginRequest(BaseModel):
+    id_token: str = Field(min_length=1)
+
+
+class GoogleWebLoginRequest(BaseModel):
+    code: str = Field(min_length=1)
+    redirect_uri: str = Field(min_length=1)
+
+
 class AuthUser(BaseModel):
     user_id: str
     email: str
@@ -103,3 +112,10 @@ class AuthUser(BaseModel):
 
 class GoogleLoginResponse(BaseModel):
     user: AuthUser
+    is_new_user: bool
+
+
+class UwStaticMapParams(BaseModel):
+    width: int = Field(default=600, ge=200, le=1280)
+    height: int = Field(default=320, ge=200, le=1280)
+    zoom: int = Field(default=15, ge=10, le=20)
