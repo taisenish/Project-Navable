@@ -11,7 +11,6 @@ import {
   Pressable,
   ScrollView,
   TextInput,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import * as Location from 'expo-location';
@@ -555,7 +554,6 @@ export function MainMapScreen() {
   }, [directions, isNavigating, navigationCameraMode, userLocation]);
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.screen}>
       <View style={styles.topBar}>
         <View style={styles.brandRow}>
@@ -763,6 +761,5 @@ export function MainMapScreen() {
         </View>
       </View>
       </View>
-    </TouchableWithoutFeedback>
   );
 }
