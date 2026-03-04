@@ -71,15 +71,16 @@ export const settingsStyles = StyleSheet.create({
   },
   container: {
     paddingHorizontal: 10,
-    paddingVertical: 14,
-    gap: 12,
+    paddingTop: 18,
     paddingBottom: 20,
+    gap: 12,
   },
   pageTitle: {
     color: '#111017',
     fontWeight: '700',
-    fontSize: 36,
-    marginBottom: 2,
+    fontSize: 34,
+    lineHeight: 38,
+    marginBottom: 6,
     paddingHorizontal: 10,
   },
   card: {
@@ -96,12 +97,14 @@ export const settingsStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#BAB4CA',
     paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingTop: 10,
+    paddingBottom: 9,
   },
   cardTitle: {
     color: '#201D2B',
-    fontSize: 28,
-    fontWeight: '500',
+    fontSize: 24,
+    lineHeight: 28,
+    fontWeight: '600',
   },
   cardRows: {
     backgroundColor: '#DAD6E5',

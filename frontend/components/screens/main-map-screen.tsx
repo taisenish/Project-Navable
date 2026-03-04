@@ -336,6 +336,9 @@ export function MainMapScreen() {
   }, [searchQuery, selectedPlace]);
 
   const hasSearchResults = searchResults.length > 0 && !(selectedPlace && directions);
+  const showBaseChips = !directions;
+  const rampsCount = pois.filter((poi) => poi.type === 'ramp').length;
+  const entrancesCount = pois.filter((poi) => poi.type === 'entrance').length;
 
   const routeSummary = useMemo(() => {
     if (directions) {
@@ -419,6 +422,15 @@ export function MainMapScreen() {
     if (selectedPlace && value.trim() !== selectedPlace.name) {
       setSelectedPlace(null);
     }
+  };
+
+  const onClearSearch = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+    if (!directions) {
+      setSelectedPlace(null);
+    }
+    Keyboard.dismiss();
   };
 
   const startNavigation = () => {
@@ -555,6 +567,16 @@ export function MainMapScreen() {
             onBlur={Keyboard.dismiss}
           />
 
+          {searchQuery.trim().length > 0 ? (
+            <Pressable
+              style={styles.searchClearButton}
+              onPress={onClearSearch}
+              accessibilityRole="button"
+              accessibilityLabel="Clear search">
+              <AntDesign name="close-circle" size={20} color="#FFFFFF" />
+            </Pressable>
+          ) : null}
+
           {isSearching ? <ActivityIndicator style={styles.searchLoader} color="#FFFFFF" /> : null}
 
           {hasSearchResults ? (
@@ -603,6 +625,20 @@ export function MainMapScreen() {
         {(isLoading || isRouting) ? <ActivityIndicator style={styles.loader} /> : null}
         {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
         {locationError ? <ThemedText style={styles.error}>{locationError}</ThemedText> : null}
+
+        {showBaseChips ? (
+          <View style={styles.chipRow}>
+            <View style={[styles.chip, styles.greenChip]}>
+              <ThemedText style={styles.chipLabel}>Ramps ({rampsCount})</ThemedText>
+            </View>
+            <View style={[styles.chip, styles.redChip]}>
+              <ThemedText style={styles.chipLabel}>Entrances ({entrancesCount})</ThemedText>
+            </View>
+            <View style={[styles.chip, styles.blueChip]}>
+              <ThemedText style={styles.chipLabel}>Alerts ({alerts.length})</ThemedText>
+            </View>
+          </View>
+        ) : null}
 
         {routeSummary && !showSelectedPlaceIntroCard ? <ThemedText style={styles.routeSummary}>{routeSummary}</ThemedText> : null}
         {directions && !showSelectedPlaceIntroCard ? (

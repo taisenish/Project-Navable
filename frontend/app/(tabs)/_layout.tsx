@@ -58,6 +58,12 @@ export default function TabsLayout() {
           tabBarIcon: ({ color }) => <Ionicons name="settings-sharp" size={24} color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="explore"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

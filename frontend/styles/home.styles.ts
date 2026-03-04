@@ -55,8 +55,15 @@ export const homeStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.2)',
     color: '#fff',
-    paddingHorizontal: 14,
+    paddingLeft: 14,
+    paddingRight: 70,
     fontSize: 16,
+  },
+  searchClearButton: {
+    position: 'absolute',
+    right: 38,
+    top: 10,
+    zIndex: 12,
   },
   searchLoader: {
     position: 'absolute',
@@ -119,10 +126,11 @@ export const homeStyles = StyleSheet.create({
   selectedPlaceActionStack: {
     justifyContent: 'center',
     gap: 8,
+    width: 84,
   },
   selectedPlaceCancelButton: {
-    minWidth: 78,
-    height: 34,
+    width: '100%',
+    height: 32,
     borderRadius: radius.pill,
     backgroundColor: 'rgba(43, 26, 82, 0.85)',
     alignItems: 'center',
@@ -133,12 +141,12 @@ export const homeStyles = StyleSheet.create({
   },
   selectedPlaceCancelButtonText: {
     color: '#EFE8FF',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '700',
   },
   selectedPlaceButton: {
-    minWidth: 78,
-    height: 34,
+    width: '100%',
+    height: 32,
     borderRadius: radius.pill,
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
@@ -150,7 +158,7 @@ export const homeStyles = StyleSheet.create({
   },
   selectedPlaceButtonText: {
     color: '#2A1652',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '700',
   },
   mapArea: {
@@ -169,15 +177,19 @@ export const homeStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 8,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
     marginBottom: 8,
   },
   chip: {
-    borderRadius: radius.pill,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    borderRadius: 18,
+    minHeight: 40,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.35)',
   },
   greenChip: {
     backgroundColor: '#20B300',
@@ -188,10 +200,12 @@ export const homeStyles = StyleSheet.create({
   blueChip: {
     backgroundColor: '#3A6FF2',
   },
-  chipText: {
+  chipLabel: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 11,
+    lineHeight: 13,
     fontWeight: '700',
+    textAlign: 'center',
   },
   routeSummary: {
     color: '#E6EAF5',
