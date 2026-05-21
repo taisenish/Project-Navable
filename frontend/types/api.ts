@@ -49,12 +49,16 @@ export type Poi = {
 
 export type AlertSeverity = 'info' | 'warning' | 'critical';
 
+export type AlertStatus = 'active' | 'resolved' | 'investigating';
+
 export type Alert = {
   id: string;
   title: string;
   description: string;
   severity: AlertSeverity;
   location?: Coordinate | null;
+  status?: AlertStatus;
+  is_resolved?: boolean;
 };
 
 export type UserPreferenceRecord = {

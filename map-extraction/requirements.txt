@@ -1,0 +1,3 @@
+# No external dependencies required!
+# This extraction script relies strictly on Python 3 standard library modules:
+# urllib, ssl, json, math, csv, pathlib

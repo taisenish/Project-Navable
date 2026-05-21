@@ -23,3 +23,12 @@ def list_pois(
 @router.get("/alerts", response_model=list[Alert])
 def list_alerts(data: UWDataService = Depends(get_uw_data_service)) -> list[Alert]:
     return data.load_alerts()
+
+
+@router.post("/alerts", response_model=Alert)
+def create_or_update_alert(
+    alert: Alert,
+    data: UWDataService = Depends(get_uw_data_service),
+) -> Alert:
+    data.save_alert(alert)
+    return alert

@@ -1,30 +1,8179 @@
 [
   {
-    "id": "poi-1",
-    "name": "Mary Gates Hall Elevator",
-    "type": "elevator",
-    "location": { "lat": 47.6517, "lng": -122.3082 },
-    "tags": ["indoor", "accessible-entry"]
-  },
-  {
-    "id": "poi-2",
-    "name": "Suzzallo Library Accessible Restroom",
-    "type": "restroom",
-    "location": { "lat": 47.6557, "lng": -122.3094 },
-    "tags": ["gender-neutral", "wheelchair"]
-  },
-  {
-    "id": "poi-3",
-    "name": "Red Square Ramp",
-    "type": "ramp",
-    "location": { "lat": 47.6561, "lng": -122.3080 },
-    "tags": ["outdoor"]
-  },
-  {
-    "id": "poi-4",
-    "name": "Husky Union Building North Entrance",
+    "id": "uw-990143",
+    "name": "CHDD South Assisted Entry",
     "type": "entrance",
-    "location": { "lat": 47.6550, "lng": -122.3052 },
-    "tags": ["automatic-door"]
+    "location": {
+      "lat": 47.648205,
+      "lng": -122.308632
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990144",
+    "name": "CHDD Clinic Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648518,
+      "lng": -122.308266
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990147",
+    "name": "CHDD School Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64851,
+      "lng": -122.307877
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990148",
+    "name": "Portage Bay Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649097,
+      "lng": -122.309616
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990149",
+    "name": "South Campus Center Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649456,
+      "lng": -122.310272
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990150",
+    "name": "Marine Science and Ocean Teaching Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650112,
+      "lng": -122.312553
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990151",
+    "name": "Ocean Sciences Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651115,
+      "lng": -122.312759
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990184",
+    "name": "Magnuson Health Sciences/UW Medical Center Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650135,
+      "lng": -122.308861
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990185",
+    "name": "William H. Foege Genome Sciences/Bioengineering Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651966,
+      "lng": -122.313026
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990215",
+    "name": "Portage Bay Parking Facility Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652805,
+      "lng": -122.313828
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990232",
+    "name": "Fisheries Teaching and Research Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652641,
+      "lng": -122.315498
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-990233",
+    "name": "Fisheries Science Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653152,
+      "lng": -122.316185
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005861",
+    "name": "Mercer Court- Building B Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654514,
+      "lng": -122.317253
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005862",
+    "name": "Mercer Court-Building C Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654537,
+      "lng": -122.317459
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005863",
+    "name": "Mercer Court-Building B Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654037,
+      "lng": -122.317238
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005864",
+    "name": "Mercer Court-Building C Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654114,
+      "lng": -122.317535
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005865",
+    "name": "Mercer Court-Building D Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654575,
+      "lng": -122.318161
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005866",
+    "name": "Mercer Court-Building D Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654732,
+      "lng": -122.318092
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005867",
+    "name": "Mercer Court-Building E Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654633,
+      "lng": -122.318321
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005868",
+    "name": "Mercer Court-Building E Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654758,
+      "lng": -122.31823
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005869",
+    "name": "Mercer Court-Building A Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654758,
+      "lng": -122.317314
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005870",
+    "name": "Henderson Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655239,
+      "lng": -122.31694
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005943",
+    "name": "Benjamin Hall Research Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655342,
+      "lng": -122.321121
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005944",
+    "name": "Ethnic Cultural Center Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655266,
+      "lng": -122.314682
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005945",
+    "name": "Lander Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655685,
+      "lng": -122.31514
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005946",
+    "name": "Maple Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655701,
+      "lng": -122.316162
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005947",
+    "name": "Terry Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655865,
+      "lng": -122.316895
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005948",
+    "name": "Alder Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655693,
+      "lng": -122.313797
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005949",
+    "name": "Ethnic Cultural Theater Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655247,
+      "lng": -122.314178
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005975",
+    "name": "3930 Brooklyn Avenue N.E. Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655056,
+      "lng": -122.314308
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005976",
+    "name": "Purchasing And Accounting Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654343,
+      "lng": -122.313614
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005977",
+    "name": "Gould Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654881,
+      "lng": -122.313118
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005978",
+    "name": "UW Police Station Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654457,
+      "lng": -122.31237
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005986",
+    "name": "Schmitz Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65657,
+      "lng": -122.312546
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005987",
+    "name": "Transportation Services Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656384,
+      "lng": -122.313637
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005988",
+    "name": "Floyd and Delores Jones Playhouse Theater Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656769,
+      "lng": -122.313629
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005989",
+    "name": "Poplar Hall & Arts Ticket Office Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656353,
+      "lng": -122.314194
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005990",
+    "name": "Elm Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656498,
+      "lng": -122.315048
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005991",
+    "name": "Condon Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656685,
+      "lng": -122.3162
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005992",
+    "name": "Cedar Apartments Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656971,
+      "lng": -122.316124
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005996",
+    "name": "Social Work / Speech & Hearing Sciences Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657475,
+      "lng": -122.312401
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005997",
+    "name": "Eagleson Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658108,
+      "lng": -122.312302
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005998",
+    "name": "1415 N.E. 45th Street Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.661133,
+      "lng": -122.31234
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1005999",
+    "name": "4545 15th Avenue NE Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.661568,
+      "lng": -122.312202
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006000",
+    "name": "William H. Gates Hall Assited Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659397,
+      "lng": -122.310822
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006001",
+    "name": "Parrington Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657539,
+      "lng": -122.310295
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006002",
+    "name": "Henry Art Gallery and Allen Center for The Visual Arts Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656353,
+      "lng": -122.311691
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006003",
+    "name": "Odegaard Undergraduate Library Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656342,
+      "lng": -122.310234
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006004",
+    "name": "Meany Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655693,
+      "lng": -122.31057
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006005",
+    "name": "Gerberding Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655338,
+      "lng": -122.309547
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006006",
+    "name": "Architecture Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65472,
+      "lng": -122.310982
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006007",
+    "name": "Nanoengineering and Sciences Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654633,
+      "lng": -122.309853
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006008",
+    "name": "Johnson Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654781,
+      "lng": -122.309135
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006009",
+    "name": "Atmospheric Sciences-Geophysics Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654121,
+      "lng": -122.30896
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006010",
+    "name": "Chemistry Library Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653568,
+      "lng": -122.309853
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006015",
+    "name": "Guthrie Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653942,
+      "lng": -122.310593
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006016",
+    "name": "Physics / Astronomy Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653568,
+      "lng": -122.311272
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006017",
+    "name": "Physics / Astronomy Auditorium Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653248,
+      "lng": -122.310768
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006018",
+    "name": "Kincaid Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652706,
+      "lng": -122.310738
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006019",
+    "name": "Life Sciences Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652477,
+      "lng": -122.310188
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006020",
+    "name": "Benson Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652946,
+      "lng": -122.309631
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006022",
+    "name": "Bagley Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653446,
+      "lng": -122.308456
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006972",
+    "name": "Chemistry Library Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652908,
+      "lng": -122.308388
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006973",
+    "name": "Bloedel Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651291,
+      "lng": -122.307777
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006974",
+    "name": "Wilson Annex Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651455,
+      "lng": -122.305077
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006975",
+    "name": "Husky Stadium Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650402,
+      "lng": -122.302246
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1006976",
+    "name": "Women's Fastpitch Softball Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65081,
+      "lng": -122.299919
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007005",
+    "name": "Indoor Practice Facility (Dempsey Indoor Center) Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651299,
+      "lng": -122.299942
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007006",
+    "name": "Alaska Airlines Arena at Hec Edmundson Pavilion Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651875,
+      "lng": -122.302879
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007007",
+    "name": "Graves Annex Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652466,
+      "lng": -122.301018
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007008",
+    "name": "Conibear Shellhouse Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652729,
+      "lng": -122.299774
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007011",
+    "name": "Intramural Activities Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653679,
+      "lng": -122.301689
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007012",
+    "name": "Husky Ballpark Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655334,
+      "lng": -122.299416
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007013",
+    "name": "Huskey Soccer Stadium Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655399,
+      "lng": -122.299118
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007114",
+    "name": "Husky Track Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656296,
+      "lng": -122.299194
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007115",
+    "name": "Merrill Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657959,
+      "lng": -122.290543
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007116",
+    "name": "Northwest Horticultural Society Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657993,
+      "lng": -122.290031
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007117",
+    "name": "Douglas Research Conservatory Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657768,
+      "lng": -122.289085
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007118",
+    "name": "Roberts Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652157,
+      "lng": -122.305214
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007119",
+    "name": "Mueller Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652073,
+      "lng": -122.305489
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007120",
+    "name": "More Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652832,
+      "lng": -122.30513
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007121",
+    "name": "Bill & Melinda Gates Center for Computer Science & Engineering Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652946,
+      "lng": -122.304436
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007124",
+    "name": "Mechanical Engineering Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653793,
+      "lng": -122.304657
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007125",
+    "name": "Paul G. Allen Center For Computer Science & Engineering Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653446,
+      "lng": -122.305862
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007126",
+    "name": "Electrical and Computer Engineering Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653709,
+      "lng": -122.306374
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007127",
+    "name": "Aerospace Engineering Research Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654125,
+      "lng": -122.305756
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007133",
+    "name": "Guthrie Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654179,
+      "lng": -122.306229
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007134",
+    "name": "Loew Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654427,
+      "lng": -122.304688
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007135",
+    "name": "Engineering Library Assisted Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654602,
+      "lng": -122.304642
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007136",
+    "name": "Husky Union Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655418,
+      "lng": -122.305168
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007137",
+    "name": "University of Washington Club Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655628,
+      "lng": -122.30426
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007138",
+    "name": "Fluke Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656178,
+      "lng": -122.303253
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007139",
+    "name": "Hall Health Center Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656204,
+      "lng": -122.304375
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1007140",
+    "name": "Padelford Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657158,
+      "lng": -122.304398
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012923",
+    "name": "Mary Gates Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655003,
+      "lng": -122.307808
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012924",
+    "name": "Sieg Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654797,
+      "lng": -122.3069
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012925",
+    "name": "Allen Library Assisted",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655697,
+      "lng": -122.307167
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012926",
+    "name": "Suzzalo Library Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65588,
+      "lng": -122.308624
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012927",
+    "name": "Gowen Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656219,
+      "lng": -122.30751
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012928",
+    "name": "Kane Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656673,
+      "lng": -122.309021
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012929",
+    "name": "Savery Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657009,
+      "lng": -122.308426
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012930",
+    "name": "Smith Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65683,
+      "lng": -122.306984
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012931",
+    "name": "Miller Hall Assted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657043,
+      "lng": -122.306351
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012991",
+    "name": "Thomson Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656429,
+      "lng": -122.305786
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012992",
+    "name": "Communications Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656895,
+      "lng": -122.305214
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012993",
+    "name": "Music Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657749,
+      "lng": -122.305824
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012994",
+    "name": "Raitt Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65794,
+      "lng": -122.307472
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012995",
+    "name": "Art Building Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658344,
+      "lng": -122.306412
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012996",
+    "name": "Clark Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657574,
+      "lng": -122.304855
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1012997",
+    "name": "Intellectual House Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658401,
+      "lng": -122.304825
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013029",
+    "name": "McMahon Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658142,
+      "lng": -122.304001
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013030",
+    "name": "Lewis Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658829,
+      "lng": -122.305183
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013031",
+    "name": "Oliver Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659828,
+      "lng": -122.304359
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013032",
+    "name": "Madrona Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65992,
+      "lng": -122.30529
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013033",
+    "name": "McCarty Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660496,
+      "lng": -122.305344
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013034",
+    "name": "Hansee Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660786,
+      "lng": -122.306541
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013035",
+    "name": "Hughes Penthouse Theatre Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660839,
+      "lng": -122.308205
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013036",
+    "name": "Theodor Jacobsen Observatory Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660389,
+      "lng": -122.309242
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013037",
+    "name": "Hutchinson Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659786,
+      "lng": -122.30703
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013038",
+    "name": "Bank of America Executive Education Center Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659439,
+      "lng": -122.307747
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013039",
+    "name": "Dempsey Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659092,
+      "lng": -122.307762
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013040",
+    "name": "Paccar Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659153,
+      "lng": -122.308609
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-1013041",
+    "name": "Denny Hall Assisted Entry",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658157,
+      "lng": -122.309067
+    },
+    "tags": [
+      "accessible",
+      "assisted-entry"
+    ]
+  },
+  {
+    "id": "uw-969804",
+    "name": "Electrical & Computer Engineering Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653561,
+      "lng": -122.306305
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969805",
+    "name": "3941 University Way N.E.",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655018,
+      "lng": -122.313614
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969807",
+    "name": "Child Care Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655014,
+      "lng": -122.315308
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969810",
+    "name": "3710 Brooklyn Avenue N.E.",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652161,
+      "lng": -122.314178
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969811",
+    "name": "3716 Brooklyn Avenue N.E.",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65226,
+      "lng": -122.314178
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969813",
+    "name": "3939 University Way N.E.",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654926,
+      "lng": -122.313614
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969820",
+    "name": "Isaacson Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657875,
+      "lng": -122.289955
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969821",
+    "name": "Douglas Research Conservatory",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657787,
+      "lng": -122.288879
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969822",
+    "name": "Fisheries Teaching & Research Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652546,
+      "lng": -122.315567
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969826",
+    "name": "Chemistry Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652924,
+      "lng": -122.308372
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969829",
+    "name": "Fluke Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655827,
+      "lng": -122.303223
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969834",
+    "name": "John M. Wallace Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653038,
+      "lng": -122.314865
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969836",
+    "name": "Social Work / Speech & Hearing Sciences Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657433,
+      "lng": -122.312424
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969838",
+    "name": "Condon Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656582,
+      "lng": -122.31617
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969843",
+    "name": "Ceramic & Metal Arts Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659737,
+      "lng": -122.29229
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969844",
+    "name": "Kincaid Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652657,
+      "lng": -122.3106
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969845",
+    "name": "Aerospace & Engineering Research Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653954,
+      "lng": -122.305801
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969848",
+    "name": "Guthrie Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653954,
+      "lng": -122.310959
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969849",
+    "name": "Gould Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654915,
+      "lng": -122.312721
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969864",
+    "name": "Bloedel Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651279,
+      "lng": -122.30764
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-969865",
+    "name": "Instructional Center Annex",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655167,
+      "lng": -122.314125
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973147",
+    "name": "Eagleson Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658104,
+      "lng": -122.312408
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973158",
+    "name": "Henderson Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655258,
+      "lng": -122.316986
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973161",
+    "name": "Communications Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656994,
+      "lng": -122.305382
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973165",
+    "name": "North Physics Laboratory – Cyclotron Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659924,
+      "lng": -122.302879
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973166",
+    "name": "Magnuson Health Sciences Center T Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65089,
+      "lng": -122.309227
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973170",
+    "name": "Fialkow Biomedical Sciences Research Pavilion",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651138,
+      "lng": -122.311615
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973171",
+    "name": "Magnuson Health Sciences Center J Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65144,
+      "lng": -122.311295
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973172",
+    "name": "Magnuson Health Sciences Center RR Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649387,
+      "lng": -122.308319
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973173",
+    "name": "Lewis Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658859,
+      "lng": -122.305344
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973174",
+    "name": "Clark Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657627,
+      "lng": -122.304871
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973176",
+    "name": "Architecture Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654564,
+      "lng": -122.310928
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973177",
+    "name": "Denny Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658409,
+      "lng": -122.308891
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973178",
+    "name": "Engineering Annex",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653667,
+      "lng": -122.304298
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973180",
+    "name": "Aerodynamics Laboratory",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654198,
+      "lng": -122.305443
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973181",
+    "name": "Harris Hydraulics Laboratory",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64999,
+      "lng": -122.31144
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973189",
+    "name": "Mary Gates Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655094,
+      "lng": -122.307991
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973190",
+    "name": "Guggenheim Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654266,
+      "lng": -122.306328
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973192",
+    "name": "Johnson Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654453,
+      "lng": -122.308853
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973199",
+    "name": "Gowen Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656368,
+      "lng": -122.307777
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973200",
+    "name": "Kirsten Wind Tunnel",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654423,
+      "lng": -122.305832
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973201",
+    "name": "Bagley Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653473,
+      "lng": -122.30883
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973202",
+    "name": "Smith Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656631,
+      "lng": -122.30719
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973204",
+    "name": "Institute on Human Development and Disability South",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648132,
+      "lng": -122.308662
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973207",
+    "name": "Magnuson Health Sciences Center BB Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650047,
+      "lng": -122.30777
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973208",
+    "name": "Magnuson Health Sciences Center C Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650181,
+      "lng": -122.308678
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973209",
+    "name": "Magnuson Health Sciences Center E Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650509,
+      "lng": -122.309334
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973210",
+    "name": "Magnuson Health Sciences Center F Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650459,
+      "lng": -122.30986
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973211",
+    "name": "Magnuson Health Sciences Center G Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650806,
+      "lng": -122.309929
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973212",
+    "name": "Magnuson Health Sciences Center H Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650738,
+      "lng": -122.310516
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973213",
+    "name": "Physics-Astronomy Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653736,
+      "lng": -122.311333
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973240",
+    "name": "Haring Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648144,
+      "lng": -122.30751
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973245",
+    "name": "Magnuson Health Sciences Center D Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650173,
+      "lng": -122.309235
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973246",
+    "name": "1429 N.E. Boat Street",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650314,
+      "lng": -122.312744
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973249",
+    "name": "Magnuson Health Sciences Center I Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651104,
+      "lng": -122.310738
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973250",
+    "name": "Ocean Sciences Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651245,
+      "lng": -122.312698
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973251",
+    "name": "Anderson Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651749,
+      "lng": -122.307571
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973253",
+    "name": "Hitchcock Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651901,
+      "lng": -122.311516
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973255",
+    "name": "Benson Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653027,
+      "lng": -122.309547
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973256",
+    "name": "Fishery Sciences",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653156,
+      "lng": -122.316284
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973261",
+    "name": "Atmospheric Sciences-Geophysics Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65398,
+      "lng": -122.309387
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973263",
+    "name": "Loew Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654289,
+      "lng": -122.304512
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973265",
+    "name": "Lee Paul Sieg Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654884,
+      "lng": -122.306496
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973267",
+    "name": "Community Design Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65519,
+      "lng": -122.31356
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973271",
+    "name": "Kane Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656593,
+      "lng": -122.309189
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973277",
+    "name": "Art Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658401,
+      "lng": -122.306442
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973281",
+    "name": "Bank of America Executive Education Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659576,
+      "lng": -122.3078
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973282",
+    "name": "Hutchinson Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659554,
+      "lng": -122.306618
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973293",
+    "name": "William H. Foege Bioengineering",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652336,
+      "lng": -122.312515
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973294",
+    "name": "William H. Foege Genome Sciences",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651932,
+      "lng": -122.313141
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973295",
+    "name": "Benjamin Hall Interdisciplinary Research Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655422,
+      "lng": -122.321388
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973328",
+    "name": "4545 Roosevelt",
+    "type": "entrance",
+    "location": {
+      "lat": 47.662281,
+      "lng": -122.317909
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973398",
+    "name": "Bill & Melinda Gates Center for Computer Science & Engineering",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652889,
+      "lng": -122.304504
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973400",
+    "name": "Life Sciences Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652225,
+      "lng": -122.30983
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973401",
+    "name": "Life Sciences Greenhouse",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651997,
+      "lng": -122.309715
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973402",
+    "name": "Hans Rosling Center for Population Health",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654484,
+      "lng": -122.311684
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973403",
+    "name": "Health Sciences Education Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651642,
+      "lng": -122.310516
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973405",
+    "name": "Founders Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658817,
+      "lng": -122.307098
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973406",
+    "name": "Haring Center Modular 1 (W-35 Parking Lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653328,
+      "lng": -122.315414
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973407",
+    "name": "Haring Center Modular 2 (W-35 Parking Lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653328,
+      "lng": -122.315193
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973408",
+    "name": "Haring Center Modular 3 (W-35 Parking Lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653145,
+      "lng": -122.315422
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973409",
+    "name": "Haring Center Modular 4 (W-35 Parking Lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653145,
+      "lng": -122.315201
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973410",
+    "name": "Haring Center Modular 5 (W-35 Parking Lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652977,
+      "lng": -122.315353
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-973411",
+    "name": "Haring Center Modular 6 (W-35 Parking Lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652874,
+      "lng": -122.315353
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974399",
+    "name": "Mueller Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652283,
+      "lng": -122.305367
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974424",
+    "name": "Marine Sciences Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649891,
+      "lng": -122.31292
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974448",
+    "name": "More Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652477,
+      "lng": -122.304855
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974540",
+    "name": "Magnuson Health Sciences Center B Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649818,
+      "lng": -122.309006
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974752",
+    "name": "Molecular Engineering & Sciences Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654392,
+      "lng": -122.309662
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974753",
+    "name": "PACCAR Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659138,
+      "lng": -122.308571
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974844",
+    "name": "Marine Studies Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65247,
+      "lng": -122.314964
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974857",
+    "name": "Padelford Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656998,
+      "lng": -122.304237
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974917",
+    "name": "Institute on Human Development and Disability Clinic",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648499,
+      "lng": -122.308266
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974966",
+    "name": "Northwest Horticultural Society Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658051,
+      "lng": -122.290184
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-974994",
+    "name": "Mechanical Engineering Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653679,
+      "lng": -122.304741
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975177",
+    "name": "Wilson Annex",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651386,
+      "lng": -122.305176
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975183",
+    "name": "Ocean Research Building 2",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652397,
+      "lng": -122.314201
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975188",
+    "name": "Oceanography Dock Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648838,
+      "lng": -122.311005
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975226",
+    "name": "Oceanography Teaching Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650059,
+      "lng": -122.312431
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975233",
+    "name": "North Physics Laboratory – Van de Graaff Accelerator",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660114,
+      "lng": -122.302879
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975234",
+    "name": "Winkenwerder Forest Sciences Laboratory",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651466,
+      "lng": -122.306877
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975241",
+    "name": "Portage Bay Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64875,
+      "lng": -122.309532
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975246",
+    "name": "Wilson Ceramic Laboratory",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651684,
+      "lng": -122.304848
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975248",
+    "name": "Urban Horticulture Field House",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656704,
+      "lng": -122.288742
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975254",
+    "name": "Parrington Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657436,
+      "lng": -122.31031
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975264",
+    "name": "Oceanography Storage Shed",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648708,
+      "lng": -122.310432
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975265",
+    "name": "Roberts Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652042,
+      "lng": -122.305061
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975266",
+    "name": "Miller Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657207,
+      "lng": -122.30632
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975283",
+    "name": "Magnuson Health Sciences Center A Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650173,
+      "lng": -122.308159
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975284",
+    "name": "Magnuson Health Sciences Center AA Wing",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64975,
+      "lng": -122.308456
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975305",
+    "name": "Physics-Astronomy Tower",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653343,
+      "lng": -122.311775
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975335",
+    "name": "Music Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657661,
+      "lng": -122.305794
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975337",
+    "name": "Raitt Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657913,
+      "lng": -122.307243
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975341",
+    "name": "Physics-Astronomy Auditorium",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65295,
+      "lng": -122.31105
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975342",
+    "name": "South Campus Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649502,
+      "lng": -122.310867
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975351",
+    "name": "Savery Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657124,
+      "lng": -122.30835
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975356",
+    "name": "Wilcox Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651852,
+      "lng": -122.30455
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975359",
+    "name": "North Physics Laboratory – Cyclotron Shop",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659107,
+      "lng": -122.302902
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975360",
+    "name": "Theodor Jacobsen Observatory",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660343,
+      "lng": -122.309288
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975365",
+    "name": "Thomson Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656548,
+      "lng": -122.305824
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975367",
+    "name": "William H. Gates Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659233,
+      "lng": -122.310898
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975376",
+    "name": "Paul G. Allen Center for Computer Science & Engineering",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653255,
+      "lng": -122.305832
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975417",
+    "name": "Nanoengineering & Sciences Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654736,
+      "lng": -122.309792
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-987516",
+    "name": "Oceanography Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64912,
+      "lng": -122.310616
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1013415",
+    "name": "Dempsey Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659248,
+      "lng": -122.307686
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1026064",
+    "name": "George F. Russell, Jr. Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658566,
+      "lng": -122.312386
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1026065",
+    "name": "Merrill Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657825,
+      "lng": -122.290543
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028808",
+    "name": "Gerberding Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655472,
+      "lng": -122.309372
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028809",
+    "name": "Purchasing & Accounting Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654396,
+      "lng": -122.313652
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028810",
+    "name": "Roosevelt Commons East",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660439,
+      "lng": -122.31694
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028811",
+    "name": "Roosevelt Commons East",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660439,
+      "lng": -122.31694
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028812",
+    "name": "Roosevelt Commons West",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660522,
+      "lng": -122.317398
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028813",
+    "name": "Schmitz Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656567,
+      "lng": -122.312691
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028814",
+    "name": "University of Washington Club",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655617,
+      "lng": -122.30407
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028815",
+    "name": "University Of Washington Tower Building C",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660309,
+      "lng": -122.315132
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028816",
+    "name": "University Of Washington Tower Building O",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660866,
+      "lng": -122.315125
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028818",
+    "name": "University Of Washington Tower Building T",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660748,
+      "lng": -122.314659
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028819",
+    "name": "University of Washington Tower Building S - Washington Commons",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660233,
+      "lng": -122.314667
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028821",
+    "name": "Instructional Center Annex",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65501,
+      "lng": -122.314224
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028822",
+    "name": "Husky Union Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655403,
+      "lng": -122.305397
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028823",
+    "name": "Guggenheim Annex",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654591,
+      "lng": -122.306427
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028824",
+    "name": "Cunningham Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657215,
+      "lng": -122.311058
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028825",
+    "name": "Hall Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656155,
+      "lng": -122.304085
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028826",
+    "name": "Intellectual House",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658287,
+      "lng": -122.304787
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028827",
+    "name": "Waterfront Activities Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648552,
+      "lng": -122.29982
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028828",
+    "name": "ASUW Shell House",
+    "type": "entrance",
+    "location": {
+      "lat": 47.647785,
+      "lng": -122.300064
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028829",
+    "name": "Intramural Activities Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65369,
+      "lng": -122.301338
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028830",
+    "name": "4545 Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.661842,
+      "lng": -122.312325
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028832",
+    "name": "Fleet Services Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.662842,
+      "lng": -122.301392
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028833",
+    "name": "Fleet Services Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.662842,
+      "lng": -122.301392
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028834",
+    "name": "Plant Operations Annex 4",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654728,
+      "lng": -122.303566
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028835",
+    "name": "Plant Operations Annex 6",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654434,
+      "lng": -122.303352
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028836",
+    "name": "Plant Operations Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654198,
+      "lng": -122.303734
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028837",
+    "name": "West Receiving Station",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653664,
+      "lng": -122.312523
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028838",
+    "name": "Plant Services Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.662003,
+      "lng": -122.301491
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028839",
+    "name": "Power Plant",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653721,
+      "lng": -122.303665
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028840",
+    "name": "Publications Services Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655273,
+      "lng": -122.320351
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028841",
+    "name": "Roberts Annex",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652145,
+      "lng": -122.304298
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028842",
+    "name": "Southwest Maintenance Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654755,
+      "lng": -122.315262
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028843",
+    "name": "Transportation Services Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656441,
+      "lng": -122.313675
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028844",
+    "name": "UW Police Station",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654373,
+      "lng": -122.312729
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028845",
+    "name": "West Campus Utility Plant",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653961,
+      "lng": -122.312981
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028846",
+    "name": "Visitor Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656261,
+      "lng": -122.310814
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028860",
+    "name": "Samuel E. Kelly Ethnic Cultural Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655071,
+      "lng": -122.314781
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1028904",
+    "name": "Chemistry Library Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653709,
+      "lng": -122.309959
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1049676",
+    "name": "Golf Driving Range Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658779,
+      "lng": -122.297218
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1065807",
+    "name": "Interdisciplinary Engineering Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655056,
+      "lng": -122.304283
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1071062",
+    "name": "Collegiana",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660217,
+      "lng": -122.315765
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1091956",
+    "name": "Gateway Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660404,
+      "lng": -122.313988
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1105524",
+    "name": "Sports Medicine Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649361,
+      "lng": -122.302147
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1116882",
+    "name": "Corp Yard 1",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659309,
+      "lng": -122.293289
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1116883",
+    "name": "Corp Yard 2",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65826,
+      "lng": -122.294167
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1117852",
+    "name": "Brooklyn Trail Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654743,
+      "lng": -122.314766
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1118177",
+    "name": "Alumni House",
+    "type": "entrance",
+    "location": {
+      "lat": 47.661091,
+      "lng": -122.312202
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1118728",
+    "name": "4245 Roosevelt Way N.E.",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658981,
+      "lng": -122.318336
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1118729",
+    "name": "4225 Roosevelt Way N.E.",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658329,
+      "lng": -122.318306
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1120937",
+    "name": "Environmental Safety Office Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658897,
+      "lng": -122.293846
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1120938",
+    "name": "Environmental Safety Storage Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659683,
+      "lng": -122.293167
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-1129841",
+    "name": "Bowman Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.662979,
+      "lng": -122.295296
+    },
+    "tags": [
+      "building",
+      "academic"
+    ]
+  },
+  {
+    "id": "uw-975058",
+    "name": "Burke Museum of Natural History and Culture",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660423,
+      "lng": -122.311531
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-975211",
+    "name": "Meany Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655788,
+      "lng": -122.310715
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-975239",
+    "name": "Floyd & Delores Jones Playhouse",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656647,
+      "lng": -122.313583
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-975268",
+    "name": "Henry Art Gallery & Allen Center for The Visual Arts",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656525,
+      "lng": -122.3116
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-975280",
+    "name": "Glenn Hughes Penthouse Theatre",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660709,
+      "lng": -122.308105
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-975348",
+    "name": "The Kelly Ethnic Cultural Center Theatre",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65517,
+      "lng": -122.314102
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-1060045",
+    "name": "Brechemin Auditorium",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657551,
+      "lng": -122.305573
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-1060046",
+    "name": "Jacob Lawrence Gallery",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658646,
+      "lng": -122.306557
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-1060047",
+    "name": "Cabaret Theatre",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659908,
+      "lng": -122.306999
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-1118727",
+    "name": "Faye G. Allen Center for the Visual Arts",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656105,
+      "lng": -122.31163
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-1122667",
+    "name": "ArtsUW Ticket Office",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656914,
+      "lng": -122.313934
+    },
+    "tags": [
+      "arts",
+      "museum",
+      "gallery"
+    ]
+  },
+  {
+    "id": "uw-974868",
+    "name": "Graves Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653069,
+      "lng": -122.302292
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975186",
+    "name": "Shellhouse Annex",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652538,
+      "lng": -122.299294
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975194",
+    "name": "Nordstrom Tennis Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651859,
+      "lng": -122.300056
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975243",
+    "name": "Conibear Shellhouse",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652905,
+      "lng": -122.299759
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975263",
+    "name": "Husky Stadium",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650379,
+      "lng": -122.301941
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975269",
+    "name": "Alaska Airlines Arena at Hec Edmundson Pavilion",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652107,
+      "lng": -122.302109
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975324",
+    "name": "Graves Annex Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652313,
+      "lng": -122.300941
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975345",
+    "name": "Husky Softball Stadium",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650703,
+      "lng": -122.299973
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975374",
+    "name": "Dempsey Indoor",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651501,
+      "lng": -122.299332
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975378",
+    "name": "Husky Ballpark",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654751,
+      "lng": -122.299133
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-975429",
+    "name": "Softball Performance Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651451,
+      "lng": -122.300484
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-1049675",
+    "name": "Husky Soccer Stadium",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65559,
+      "lng": -122.298264
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-1049836",
+    "name": "Husky Track",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656845,
+      "lng": -122.298431
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-1112441",
+    "name": "Husky Basketball Training Center",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65202,
+      "lng": -122.301285
+    },
+    "tags": [
+      "sports",
+      "recreation",
+      "athletics"
+    ]
+  },
+  {
+    "id": "uw-973514",
+    "name": "Elm Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656574,
+      "lng": -122.315056
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-974863",
+    "name": "McMahon Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658192,
+      "lng": -122.303665
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-974927",
+    "name": "Laurel Village Building M",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660774,
+      "lng": -122.291954
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-974947",
+    "name": "Stevens Court J",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653835,
+      "lng": -122.316483
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975056",
+    "name": "McCarty Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660629,
+      "lng": -122.304871
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975235",
+    "name": "Commodore-Duchess",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655605,
+      "lng": -122.312447
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975276",
+    "name": "Hansee Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660774,
+      "lng": -122.306519
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975292",
+    "name": "Laurel Village Building N",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660774,
+      "lng": -122.291496
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975293",
+    "name": "Laurel Village Building P",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660778,
+      "lng": -122.290924
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975294",
+    "name": "Laurel Village Building Q",
+    "type": "entrance",
+    "location": {
+      "lat": 47.66053,
+      "lng": -122.290443
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975295",
+    "name": "Laurel Village Building R",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660385,
+      "lng": -122.291611
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975296",
+    "name": "Laurel Village Building S",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660358,
+      "lng": -122.291107
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975297",
+    "name": "Laurel Village Building T",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660267,
+      "lng": -122.290512
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975298",
+    "name": "Laurel Village Building U",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660023,
+      "lng": -122.290459
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975299",
+    "name": "Laurel Village Building V",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659794,
+      "lng": -122.290474
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975300",
+    "name": "Laurel Village Building W",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659443,
+      "lng": -122.290565
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975301",
+    "name": "Laurel Village Building X",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659439,
+      "lng": -122.29097
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975302",
+    "name": "Laurel Village Building Y",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659878,
+      "lng": -122.291115
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975307",
+    "name": "Stevens Court B",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654121,
+      "lng": -122.314941
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975308",
+    "name": "Stevens Court C",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653828,
+      "lng": -122.315102
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975309",
+    "name": "Stevens Court D",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653851,
+      "lng": -122.315948
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975310",
+    "name": "Stevens Court H",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654034,
+      "lng": -122.315582
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975312",
+    "name": "Stevens Court K",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654209,
+      "lng": -122.316612
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975313",
+    "name": "Stevens Court L",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654495,
+      "lng": -122.316216
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975340",
+    "name": "Laurel Village Building C",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660133,
+      "lng": -122.291443
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975353",
+    "name": "Stevens Court M",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654156,
+      "lng": -122.316086
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975397",
+    "name": "Cedar West Apartments",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657215,
+      "lng": -122.31636
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975398",
+    "name": "Cedar East Apartments",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657158,
+      "lng": -122.315872
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975400",
+    "name": "Poplar Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656525,
+      "lng": -122.314064
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975401",
+    "name": "Alder Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655663,
+      "lng": -122.313858
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975403",
+    "name": "Lander Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655678,
+      "lng": -122.315018
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975404",
+    "name": "Maple Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655678,
+      "lng": -122.31617
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975405",
+    "name": "Terry Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655682,
+      "lng": -122.317039
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975406",
+    "name": "Mercer Court Building A",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654968,
+      "lng": -122.317665
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975408",
+    "name": "Mercer Court Building B",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654305,
+      "lng": -122.317123
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975409",
+    "name": "Mercer Court Building C",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654427,
+      "lng": -122.317612
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975410",
+    "name": "Mercer Court Building D",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654583,
+      "lng": -122.318031
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975411",
+    "name": "Mercer Court Building E",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654736,
+      "lng": -122.318474
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975419",
+    "name": "Spratlen Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660149,
+      "lng": -122.305214
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975421",
+    "name": "Oliver Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659828,
+      "lng": -122.304375
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975424",
+    "name": "Oak Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659325,
+      "lng": -122.305656
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-986246",
+    "name": "Stevens Court A",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654263,
+      "lng": -122.31543
+    },
+    "tags": [
+      "residence",
+      "dorm",
+      "housing"
+    ]
+  },
+  {
+    "id": "uw-975196",
+    "name": "Allen Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655537,
+      "lng": -122.307022
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-975210",
+    "name": "Odegaard Undergraduate Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656647,
+      "lng": -122.310089
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-975267",
+    "name": "Suzzallo Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655762,
+      "lng": -122.308144
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-975350",
+    "name": "Engineering Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654636,
+      "lng": -122.304497
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-1060900",
+    "name": "Art Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658298,
+      "lng": -122.306511
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-1060901",
+    "name": "Built Environments Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655224,
+      "lng": -122.312729
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-1060902",
+    "name": "Drama Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659485,
+      "lng": -122.306541
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-1060903",
+    "name": "Foster Business Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659206,
+      "lng": -122.308342
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-1060904",
+    "name": "Mathematics Research Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657112,
+      "lng": -122.304512
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-1060905",
+    "name": "Music Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657692,
+      "lng": -122.30571
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-1070856",
+    "name": "Health Sciences Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650707,
+      "lng": -122.30838
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-1071037",
+    "name": "Tateuchi East Asia Library",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656609,
+      "lng": -122.307892
+    },
+    "tags": [
+      "library",
+      "study",
+      "books"
+    ]
+  },
+  {
+    "id": "uw-974360",
+    "name": "UW Medical Center – Montlake, Wing EE",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649403,
+      "lng": -122.306999
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-974950",
+    "name": "UW Medical Center Montlake, Wing CC",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649448,
+      "lng": -122.307404
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975011",
+    "name": "UW Medical Center – Montlake, Surgery & Treatment Pavilion",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64854,
+      "lng": -122.305267
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975315",
+    "name": "UW Medical Center Montlake, Wing EA",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648972,
+      "lng": -122.306801
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975316",
+    "name": "UW Medical Center Montlake, Wing EB",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649017,
+      "lng": -122.306084
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975317",
+    "name": "UW Medical Center Montlake, Wing EC",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648994,
+      "lng": -122.306625
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975318",
+    "name": "UW Medical Center – Montlake, Wing NE",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649395,
+      "lng": -122.306633
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975319",
+    "name": "UW Medical Center – Montlake, Wing NN",
+    "type": "entrance",
+    "location": {
+      "lat": 47.6497,
+      "lng": -122.307114
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975320",
+    "name": "UW Medical Center – Montlake, Wing NW",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650002,
+      "lng": -122.307648
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975321",
+    "name": "UW Medical Center – Montlake, Wing SE",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64917,
+      "lng": -122.30748
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975322",
+    "name": "UW Medical Center – Montlake, Wing SS",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649258,
+      "lng": -122.307632
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975323",
+    "name": "UW Medical Center – Montlake, Wing SW",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64941,
+      "lng": -122.307899
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975375",
+    "name": "UW Medical Center – Montlake, Surgery & Treatment Pavilion",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64854,
+      "lng": -122.305267
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-975395",
+    "name": "UW Medical Center – Montlake, Wing SA, Montlake Tower",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648811,
+      "lng": -122.307472
+    },
+    "tags": [
+      "medical",
+      "hospital",
+      "clinic"
+    ]
+  },
+  {
+    "id": "uw-987662",
+    "name": "Tower Café",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660931,
+      "lng": -122.314919
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-987663",
+    "name": "The Rotunda",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651356,
+      "lng": -122.310738
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-987664",
+    "name": "Starbucks® Coffee, Suzzallo",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655743,
+      "lng": -122.30851
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-987665",
+    "name": "Starbucks® Coffee, Population Health",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654835,
+      "lng": -122.311775
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-987668",
+    "name": "Public Grounds",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657387,
+      "lng": -122.31015
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-987669",
+    "name": "Microsoft Café",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653152,
+      "lng": -122.305
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-987671",
+    "name": "Husky Grind Café, Mercer Court",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654881,
+      "lng": -122.31752
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-987672",
+    "name": "Husky Grind Café, District Market Alder",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655754,
+      "lng": -122.313698
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-987673",
+    "name": "Dawg Bites",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653641,
+      "lng": -122.301567
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-1060068",
+    "name": "Husky Grind Café, District Market Oak",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659351,
+      "lng": -122.305954
+    },
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ]
+  },
+  {
+    "id": "uw-987674",
+    "name": "District Market, Alder",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65567,
+      "lng": -122.313622
+    },
+    "tags": [
+      "market",
+      "grocery",
+      "store"
+    ]
+  },
+  {
+    "id": "uw-987675",
+    "name": "District Market, Oak",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659214,
+      "lng": -122.306061
+    },
+    "tags": [
+      "market",
+      "grocery",
+      "store"
+    ]
+  },
+  {
+    "id": "uw-987676",
+    "name": "Etc., The HUB",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655491,
+      "lng": -122.305275
+    },
+    "tags": [
+      "market",
+      "grocery",
+      "store"
+    ]
+  },
+  {
+    "id": "uw-987628",
+    "name": "By George",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656345,
+      "lng": -122.310463
+    },
+    "tags": [
+      "restaurant",
+      "food",
+      "dining"
+    ]
+  },
+  {
+    "id": "uw-987629",
+    "name": "Center Table",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660202,
+      "lng": -122.304176
+    },
+    "tags": [
+      "restaurant",
+      "food",
+      "dining"
+    ]
+  },
+  {
+    "id": "uw-987630",
+    "name": "Cultivate",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656651,
+      "lng": -122.315071
+    },
+    "tags": [
+      "restaurant",
+      "food",
+      "dining"
+    ]
+  },
+  {
+    "id": "uw-987631",
+    "name": "Husky Den Food Court",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655361,
+      "lng": -122.305275
+    },
+    "tags": [
+      "restaurant",
+      "food",
+      "dining"
+    ]
+  },
+  {
+    "id": "uw-987632",
+    "name": "Local Point",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655663,
+      "lng": -122.314781
+    },
+    "tags": [
+      "restaurant",
+      "food",
+      "dining"
+    ]
+  },
+  {
+    "id": "uw-987648",
+    "name": "Orin's Place",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659016,
+      "lng": -122.308495
+    },
+    "tags": [
+      "restaurant",
+      "food",
+      "dining"
+    ]
+  },
+  {
+    "id": "uw-1117167",
+    "name": "UWMC Plaza Cafe",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649475,
+      "lng": -122.308029
+    },
+    "tags": [
+      "restaurant",
+      "food",
+      "dining"
+    ]
+  },
+  {
+    "id": "uw-975873",
+    "name": "Emergency Phone (near Burke Museum)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.661129,
+      "lng": -122.311691
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975876",
+    "name": "Emergency Phone (near William H. Gates Hall)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659691,
+      "lng": -122.310112
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975877",
+    "name": "Emergency Phone (near Parking Lot N05)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660267,
+      "lng": -122.308525
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975878",
+    "name": "Emergency Phone (near Madrona Hall)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.66032,
+      "lng": -122.305939
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975879",
+    "name": "Emergency Phone (near Parrington Hall)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657581,
+      "lng": -122.309868
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975880",
+    "name": "Emergency Phone (near Gowen Hall)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656525,
+      "lng": -122.308258
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975882",
+    "name": "Emergency Phone (near Hans Rosling Center for Population Health) )",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655018,
+      "lng": -122.311424
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975883",
+    "name": "Emergency Phone (near Guthrie Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654236,
+      "lng": -122.31057
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975884",
+    "name": "Emergency Phone (near Kincaid Hall)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652374,
+      "lng": -122.310699
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975885",
+    "name": "Emergency Phone (near William H. Foege)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651943,
+      "lng": -122.312576
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975886",
+    "name": "Emergency Phone (near Fisheries Teaching and Research Building)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652786,
+      "lng": -122.315643
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975887",
+    "name": "Emergency Phone (near Mercer Court - Building B",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65382,
+      "lng": -122.316978
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975888",
+    "name": "Emergency Phone (near Mercer Court - Building D)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654701,
+      "lng": -122.3181
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975889",
+    "name": "Emergency Phone (at the Corner of Cowlitz Rd. NE and Cowlitz Rd.)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654774,
+      "lng": -122.315742
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975890",
+    "name": "Emergency Phone (along the Burke-Gilman)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655602,
+      "lng": -122.320885
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975892",
+    "name": "Emergency Phone (near Ocean Science Building)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650867,
+      "lng": -122.312347
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975893",
+    "name": "Emergency Phone (near the S01 Garage)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649895,
+      "lng": -122.31012
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975900",
+    "name": "Emergency Phone (along the Burke-Gilman Trail)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651512,
+      "lng": -122.30896
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975901",
+    "name": "Emergency Phone (along the Burke-Gilman Trail)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650982,
+      "lng": -122.307938
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975902",
+    "name": "Emergency Phone (on Rainier Vista)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651134,
+      "lng": -122.305649
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975903",
+    "name": "Emergency Phone (UW Link Station)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64957,
+      "lng": -122.303772
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975904",
+    "name": "Emergency Phone (at the E19 parking lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64912,
+      "lng": -122.30217
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975905",
+    "name": "Emergency Phone (at the E12 parking lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648235,
+      "lng": -122.302841
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975906",
+    "name": "Emergency Phone (near Hec Edmundson Pavillion)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651665,
+      "lng": -122.302849
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975907",
+    "name": "Emergency Phone (near the Conibear Shellhouse)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652611,
+      "lng": -122.300201
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975908",
+    "name": "Emergency Phone (near the HUB)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65601,
+      "lng": -122.305161
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975909",
+    "name": "Emergency Phone (in the E18 parking lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656532,
+      "lng": -122.300629
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-975910",
+    "name": "Emergency Phone (in the E01 parking lot)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658306,
+      "lng": -122.300087
+    },
+    "tags": [
+      "safety",
+      "phone",
+      "emergency"
+    ]
+  },
+  {
+    "id": "uw-974571",
+    "name": "Gatehouse 2 – North",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660156,
+      "lng": -122.309639
+    },
+    "tags": [
+      "gatehouse",
+      "security"
+    ]
+  },
+  {
+    "id": "uw-975373",
+    "name": "Gatehouse 6 – South",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650707,
+      "lng": -122.311615
+    },
+    "tags": [
+      "gatehouse",
+      "security"
+    ]
+  },
+  {
+    "id": "uw-1079456",
+    "name": "Gatehouse 1 – Central",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656818,
+      "lng": -122.311661
+    },
+    "tags": [
+      "gatehouse",
+      "security"
+    ]
+  },
+  {
+    "id": "uw-1079473",
+    "name": "Parking Lot (C07)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653519,
+      "lng": -122.310013
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079474",
+    "name": "Parking Lot (C09)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655132,
+      "lng": -122.309677
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079475",
+    "name": "Parking Lot (C10)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650993,
+      "lng": -122.306961
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079476",
+    "name": "Parking Lot (C12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651863,
+      "lng": -122.304634
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079477",
+    "name": "Parking Lot (C14)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653263,
+      "lng": -122.304001
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079478",
+    "name": "Parking Lot (C15)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653519,
+      "lng": -122.304367
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079479",
+    "name": "Parking Lot (C17)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654438,
+      "lng": -122.30555
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079480",
+    "name": "Parking Lot (C19)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655579,
+      "lng": -122.303848
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079481",
+    "name": "Parking Lot (C23)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654461,
+      "lng": -122.303581
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079482",
+    "name": "Parking Lot (Central Plaza Garage – C01, C02, C03, C04, C05, C06)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655994,
+      "lng": -122.309929
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079483",
+    "name": "Parking Lot (E01)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658726,
+      "lng": -122.299812
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079484",
+    "name": "Parking Lot (E02)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660793,
+      "lng": -122.300194
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079485",
+    "name": "Parking Lot (E03)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659657,
+      "lng": -122.292686
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079486",
+    "name": "Parking Lot (E04)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65897,
+      "lng": -122.294655
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079487",
+    "name": "Parking Lot (E06)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653996,
+      "lng": -122.300949
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079488",
+    "name": "Parking Lot (E07)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653473,
+      "lng": -122.300255
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079489",
+    "name": "Parking Lot (E08)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65353,
+      "lng": -122.299812
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079490",
+    "name": "Parking Lot (E09)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652081,
+      "lng": -122.300636
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079491",
+    "name": "Parking Lot (E12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648514,
+      "lng": -122.302376
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079492",
+    "name": "Parking Lot (E14)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65836,
+      "lng": -122.29744
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079493",
+    "name": "Parking Lot (E16)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65818,
+      "lng": -122.289024
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079494",
+    "name": "Parking Lot (E17)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651348,
+      "lng": -122.303352
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079495",
+    "name": "Parking Lot (E18)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656773,
+      "lng": -122.300438
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079496",
+    "name": "Parking Lot (E19)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648983,
+      "lng": -122.301537
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079497",
+    "name": "Parking Lot (E20)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649338,
+      "lng": -122.303566
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079498",
+    "name": "Parking Lot (E21)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649086,
+      "lng": -122.299591
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079499",
+    "name": "Parking Lot (E29)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658737,
+      "lng": -122.293777
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079500",
+    "name": "Parking Lot (E97)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653385,
+      "lng": -122.302605
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079501",
+    "name": "Parking Lot (H12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660107,
+      "lng": -122.291214
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079502",
+    "name": "Parking Lot (Link Passenger Load/Unload Zone)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650215,
+      "lng": -122.303635
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079503",
+    "name": "Parking Lot (N01)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.66045,
+      "lng": -122.310654
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079504",
+    "name": "Parking Lot (N02)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658772,
+      "lng": -122.308929
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079506",
+    "name": "Parking Lot (N03)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659054,
+      "lng": -122.306725
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079507",
+    "name": "Parking Lot (N05)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660381,
+      "lng": -122.308861
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079508",
+    "name": "Parking Lot (N12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659088,
+      "lng": -122.302757
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079509",
+    "name": "Parking Lot (N13, N14, N15)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65786,
+      "lng": -122.303627
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079510",
+    "name": "Parking Lot (N22)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656197,
+      "lng": -122.305023
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079511",
+    "name": "Parking Lot (N24)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655823,
+      "lng": -122.302994
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079512",
+    "name": "Parking Lot (N25)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659599,
+      "lng": -122.301399
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079513",
+    "name": "Parking Lot (N26)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.662369,
+      "lng": -122.302017
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079514",
+    "name": "Parking Lot (N27)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.661701,
+      "lng": -122.312309
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079515",
+    "name": "Parking Lot (N6)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658772,
+      "lng": -122.30471
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079516",
+    "name": "Parking Lot (Padelford Garage – N16, N18, N20, N21)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657032,
+      "lng": -122.303886
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079517",
+    "name": "Parking Lot (Portage Bay Garage)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653,
+      "lng": -122.313644
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079518",
+    "name": "Parking Lot (S01)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649761,
+      "lng": -122.310272
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079519",
+    "name": "Parking Lot (S05)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650543,
+      "lng": -122.311722
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079520",
+    "name": "Parking Lot (S06)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650311,
+      "lng": -122.31263
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079521",
+    "name": "Parking Lot (S07)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649834,
+      "lng": -122.311432
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079522",
+    "name": "Parking Lot (S08)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648827,
+      "lng": -122.310036
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079523",
+    "name": "Parking Lot (S09)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648563,
+      "lng": -122.308624
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079524",
+    "name": "Parking Lot (S12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650108,
+      "lng": -122.311836
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079525",
+    "name": "Parking Lot (S99)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649773,
+      "lng": -122.306717
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079526",
+    "name": "Parking Lot (Stadium Garage)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649612,
+      "lng": -122.302406
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079527",
+    "name": "Parking Lot (Triangle Garage – C20, C21)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650024,
+      "lng": -122.305145
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079528",
+    "name": "Parking Lot (UWMC Surgery Pavilion)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648743,
+      "lng": -122.305153
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079529",
+    "name": "Parking Lot (W04V)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657738,
+      "lng": -122.312592
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079530",
+    "name": "Parking Lot (W08)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655609,
+      "lng": -122.315407
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079531",
+    "name": "Parking Lot (W10)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655056,
+      "lng": -122.31601
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079532",
+    "name": "Parking Lot (W11)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654743,
+      "lng": -122.315002
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079533",
+    "name": "Parking Lot (W20, W21, W22, W23)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657131,
+      "lng": -122.316078
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079534",
+    "name": "Parking Lot (W24)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651958,
+      "lng": -122.314133
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079535",
+    "name": "Parking Lot (W27)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652821,
+      "lng": -122.312958
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079536",
+    "name": "Parking Lot (W28)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652378,
+      "lng": -122.313744
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079537",
+    "name": "Parking Lot (W29)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653835,
+      "lng": -122.314796
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079538",
+    "name": "Parking Lot (W32)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653835,
+      "lng": -122.316322
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079539",
+    "name": "Parking Lot (W33)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65432,
+      "lng": -122.31662
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079540",
+    "name": "Parking Lot (W36)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65403,
+      "lng": -122.318893
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079541",
+    "name": "Parking Lot (W39)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654678,
+      "lng": -122.318192
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079542",
+    "name": "Parking Lot (W40)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654991,
+      "lng": -122.319542
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079543",
+    "name": "Parking Lot (W41)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656574,
+      "lng": -122.317032
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079544",
+    "name": "Parking Lot (W42)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655231,
+      "lng": -122.317497
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079545",
+    "name": "Parking Lot (W44)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655231,
+      "lng": -122.321373
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079546",
+    "name": "Parking Lot (W45)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660229,
+      "lng": -122.316261
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079547",
+    "name": "Parking Lot (W46)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660492,
+      "lng": -122.315765
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079548",
+    "name": "Parking Lot (W52)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660416,
+      "lng": -122.317413
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1079549",
+    "name": "Stevens Court Parking Garage W-32 & W-33",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654198,
+      "lng": -122.316284
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1118673",
+    "name": "Parking Lot (W12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654556,
+      "lng": -122.31414
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1119164",
+    "name": "Parking Lot (S02)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649799,
+      "lng": -122.310318
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1119165",
+    "name": "Parking Lot (S03)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649841,
+      "lng": -122.310379
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1149528",
+    "name": "Parking Lot (N28/N29)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.662201,
+      "lng": -122.312325
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-1179650",
+    "name": "Parking Lot (W05)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655735,
+      "lng": -122.312981
+    },
+    "tags": [
+      "lot",
+      "parking",
+      "car"
+    ]
+  },
+  {
+    "id": "uw-974746",
+    "name": "Pay by Phone (W28)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652378,
+      "lng": -122.313744
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-974772",
+    "name": "Pay by Phone (N25)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659599,
+      "lng": -122.301399
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-974774",
+    "name": "Pay by Phone/Kiosk (E14)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65836,
+      "lng": -122.29744
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-974775",
+    "name": "Pay by Phone (E04)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65897,
+      "lng": -122.294655
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-974776",
+    "name": "Pay by Phone (E03)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659657,
+      "lng": -122.292686
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-974777",
+    "name": "Pay by Phone/Kiosk (Padelford Garage – N16, N18, N20, N21)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657013,
+      "lng": -122.303291
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-974808",
+    "name": "Pay by phone/Kiosk (W28)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652378,
+      "lng": -122.313744
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975554",
+    "name": "Pay by Phone/Kiosk (S01)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.64978,
+      "lng": -122.310242
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975557",
+    "name": "Pay by Phone/Kiosk (W28)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652378,
+      "lng": -122.313744
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975564",
+    "name": "Pay by Phone (W41)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656574,
+      "lng": -122.317032
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975567",
+    "name": "Pay by Phone/Kiosk (W10)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655056,
+      "lng": -122.31601
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975575",
+    "name": "Pay by Phone/Kiosk (W46)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660492,
+      "lng": -122.315765
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975674",
+    "name": "Pay by Phone/Kiosk (N01)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.66045,
+      "lng": -122.310654
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975681",
+    "name": "Pay by Phone (N05)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660381,
+      "lng": -122.308861
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975729",
+    "name": "Pay by Phone/Kiosk (Central Plaza Garage – C02, C03, C04)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655994,
+      "lng": -122.309929
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975733",
+    "name": "Pay by Phone (C10)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651218,
+      "lng": -122.307365
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975740",
+    "name": "Parking Kiosk (Triangle Garage – C20, C21)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650246,
+      "lng": -122.305222
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975747",
+    "name": "Pay by Phone/Kiosk (E19)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.648994,
+      "lng": -122.301743
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975749",
+    "name": "Parking Kiosk (Stadium Garage)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649612,
+      "lng": -122.302406
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975753",
+    "name": "Pay by Phone/Kiosk (E21)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649086,
+      "lng": -122.299591
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975755",
+    "name": "Pay by Phone/Kiosk (E20)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649338,
+      "lng": -122.303566
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975761",
+    "name": "Pay by Phone (E17)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651348,
+      "lng": -122.303352
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975764",
+    "name": "Pay by Phone (C12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651814,
+      "lng": -122.304771
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975767",
+    "name": "Pay by Phone/Kiosk (E97)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653385,
+      "lng": -122.302605
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975771",
+    "name": "Pay by Phone (E07)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653473,
+      "lng": -122.300255
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975773",
+    "name": "Pay by Phone (N22)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656334,
+      "lng": -122.305008
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975778",
+    "name": "Pay by Phone/Kiosk(E18)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656773,
+      "lng": -122.300438
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975782",
+    "name": "Pay by Phone (N6)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658848,
+      "lng": -122.304558
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-975785",
+    "name": "Parking Kiosk (E01)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658726,
+      "lng": -122.299812
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-1118680",
+    "name": "Pay by Phone/Kiosk (W12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654617,
+      "lng": -122.314095
+    },
+    "tags": [
+      "parking",
+      "visitor",
+      "pay-by-phone"
+    ]
+  },
+  {
+    "id": "uw-974747",
+    "name": "Motorcycle Parking (W32)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653835,
+      "lng": -122.316322
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-974757",
+    "name": "Motorcycle Parking (W33)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654034,
+      "lng": -122.316612
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-974760",
+    "name": "Motorcycle Parking (W20, W21, W22, W23)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657131,
+      "lng": -122.316078
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-974763",
+    "name": "Motorcycle Parking (N28/N29)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.662048,
+      "lng": -122.312279
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-974769",
+    "name": "Motorcycle Parking (N03)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.659054,
+      "lng": -122.306725
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-974771",
+    "name": "Motorcycle Parking (N13, N14, N15)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.658588,
+      "lng": -122.303398
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-974810",
+    "name": "Motorcycle Parking (W29)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653835,
+      "lng": -122.314796
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-975553",
+    "name": "Motorcycle Parking (S02)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649815,
+      "lng": -122.310303
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-975558",
+    "name": "Motorcycle Parking (S12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650108,
+      "lng": -122.311836
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-975560",
+    "name": "Motorcycle Parking (S05)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650543,
+      "lng": -122.311722
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-975562",
+    "name": "Motorcycle Parking (W10)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655056,
+      "lng": -122.31601
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-975568",
+    "name": "Motorcycle Parking(W46)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660492,
+      "lng": -122.315765
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-975680",
+    "name": "Motorcycle Parking (N05)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660381,
+      "lng": -122.308861
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-975721",
+    "name": "Motorcycle Parking (Central Plaza Garage – C01, C02, C03, C04, C05, C06)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655994,
+      "lng": -122.309929
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-975732",
+    "name": "Motorcycle Parking (C10)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651218,
+      "lng": -122.307365
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-975763",
+    "name": "Motorcycle Parking (C12)",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651814,
+      "lng": -122.304771
+    },
+    "tags": [
+      "motorcycle",
+      "parking"
+    ]
+  },
+  {
+    "id": "uw-968426",
+    "name": "U District Station",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660049,
+      "lng": -122.314003
+    },
+    "tags": [
+      "train",
+      "transit",
+      "light-rail"
+    ]
+  },
+  {
+    "id": "uw-968427",
+    "name": "University of Washington Station",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649921,
+      "lng": -122.303894
+    },
+    "tags": [
+      "train",
+      "transit",
+      "light-rail"
+    ]
+  },
+  {
+    "id": "uw-968505",
+    "name": "BUS STOP #75414",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653973,
+      "lng": -122.305038
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968507",
+    "name": "BUS STOP #75403",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654648,
+      "lng": -122.305077
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968508",
+    "name": "BUS STOP #75406",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656792,
+      "lng": -122.304871
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968510",
+    "name": "BUS STOP #75410",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657173,
+      "lng": -122.304626
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968511",
+    "name": "BUS STOP #75415",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652386,
+      "lng": -122.306053
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968512",
+    "name": "BUS STOP #75402",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65242,
+      "lng": -122.306198
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968513",
+    "name": "BUS STOP #75417",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652004,
+      "lng": -122.308327
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968514",
+    "name": "BUS STOP #75404",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652206,
+      "lng": -122.308739
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968515",
+    "name": "BUS STOP #75418",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654327,
+      "lng": -122.310486
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968516",
+    "name": "BUS STOP #75405",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655151,
+      "lng": -122.310928
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968517",
+    "name": "BUS STOP #29440",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655849,
+      "lng": -122.311943
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968518",
+    "name": "BUS STOP #10914",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656391,
+      "lng": -122.31221
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968519",
+    "name": "BUS STOP #11352",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65852,
+      "lng": -122.311859
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968520",
+    "name": "BUS STOP #29242",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650482,
+      "lng": -122.306793
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968521",
+    "name": "BUS STOP #29243",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650494,
+      "lng": -122.305992
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968522",
+    "name": "BUS STOP #29405",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649715,
+      "lng": -122.305717
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968523",
+    "name": "BUS STOP #29247",
+    "type": "entrance",
+    "location": {
+      "lat": 47.649128,
+      "lng": -122.305092
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968524",
+    "name": "BUS STOP #25240",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650204,
+      "lng": -122.304535
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968525",
+    "name": "BUS STOP #25755",
+    "type": "entrance",
+    "location": {
+      "lat": 47.650612,
+      "lng": -122.30397
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968526",
+    "name": "BUS STOP #25765",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651691,
+      "lng": -122.303398
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968527",
+    "name": "BUS STOP #29240",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651794,
+      "lng": -122.310341
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968528",
+    "name": "BUS STOP #29240",
+    "type": "entrance",
+    "location": {
+      "lat": 47.652046,
+      "lng": -122.310463
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968529",
+    "name": "BUS STOP #29431",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65274,
+      "lng": -122.312889
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-968531",
+    "name": "BUS STOP #29423",
+    "type": "entrance",
+    "location": {
+      "lat": 47.653404,
+      "lng": -122.314323
+    },
+    "tags": [
+      "bus",
+      "transit",
+      "stop"
+    ]
+  },
+  {
+    "id": "uw-1126383",
+    "name": "UW Tower",
+    "type": "entrance",
+    "location": {
+      "lat": 47.660744,
+      "lng": -122.315514
+    },
+    "tags": [
+      "night",
+      "shuttle",
+      "transit"
+    ]
+  },
+  {
+    "id": "uw-1126384",
+    "name": "Alder Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.656151,
+      "lng": -122.313606
+    },
+    "tags": [
+      "night",
+      "shuttle",
+      "transit"
+    ]
+  },
+  {
+    "id": "uw-1126385",
+    "name": "Flag Pole",
+    "type": "entrance",
+    "location": {
+      "lat": 47.65741,
+      "lng": -122.30957
+    },
+    "tags": [
+      "night",
+      "shuttle",
+      "transit"
+    ]
+  },
+  {
+    "id": "uw-1126386",
+    "name": "IMA",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654213,
+      "lng": -122.302444
+    },
+    "tags": [
+      "night",
+      "shuttle",
+      "transit"
+    ]
+  },
+  {
+    "id": "uw-1126387",
+    "name": "Communications Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.657227,
+      "lng": -122.304596
+    },
+    "tags": [
+      "night",
+      "shuttle",
+      "transit"
+    ]
+  },
+  {
+    "id": "uw-1126388",
+    "name": "Husky Union Building",
+    "type": "entrance",
+    "location": {
+      "lat": 47.654903,
+      "lng": -122.304619
+    },
+    "tags": [
+      "night",
+      "shuttle",
+      "transit"
+    ]
+  },
+  {
+    "id": "uw-1126389",
+    "name": "Okanogan Lane",
+    "type": "entrance",
+    "location": {
+      "lat": 47.651966,
+      "lng": -122.308228
+    },
+    "tags": [
+      "night",
+      "shuttle",
+      "transit"
+    ]
+  },
+  {
+    "id": "uw-1126391",
+    "name": "Meany Hall",
+    "type": "entrance",
+    "location": {
+      "lat": 47.655155,
+      "lng": -122.310944
+    },
+    "tags": [
+      "night",
+      "shuttle",
+      "transit"
+    ]
   }
 ]

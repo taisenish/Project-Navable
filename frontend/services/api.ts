@@ -1,4 +1,5 @@
 import { config } from './config';
+import { MOCK_GREEK_ROW_ALERTS } from './mockAlerts';
 import type {
   Alert,
   DirectionsResponse,
@@ -11,6 +12,8 @@ import type {
   RouteResponse,
   UserPreferenceRecord,
 } from '../types/api';
+
+const MOCK_ALERTS_ENABLED = process.env.EXPO_PUBLIC_MOCK_ALERTS === 'true';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${config.apiBaseUrl}${path}`, {
@@ -29,7 +32,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 export const api = {
   health: () => request<{ status: string }>('/health'),
   getPois: () => request<Poi[]>('/poi'),
-  getAlerts: () => request<Alert[]>('/alerts'),
+  getAlerts: (): Promise<Alert[]> =>
+    MOCK_ALERTS_ENABLED
+      ? Promise.resolve(MOCK_GREEK_ROW_ALERTS)
+      : request<Alert[]>('/alerts'),
   createRoute: (payload: RouteRequest) =>
     request<RouteResponse>('/route', {
       method: 'POST',

@@ -1,5 +1,6 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import * as Location from 'expo-location';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -11,6 +12,7 @@ import {
   Keyboard,
   Linking,
   Pressable,
+  ScrollView,
   Text,
   View,
 } from 'react-native';
@@ -23,8 +25,10 @@ import { useRouteCache } from '../../hooks/use-route-cache';
 import { api } from '../../services/api';
 import { config } from '../../services/config';
 import { homeStyles as styles } from '../../styles/home.styles';
-import type { Alert as CampusAlert, DirectionsResponse, PlaceSuggestion, Poi, RouteResponse } from '../../types/api';
+import type { AccessibilityPreferences, Alert as CampusAlert, DirectionsResponse, PlaceSuggestion, Poi, RouteResponse } from '../../types/api';
 import { decodeGooglePolyline } from '../../utils/polyline';
+import { mapRouteToDirections } from '../../utils/route-mapper';
+import { storage } from '../../utils/storage';
 
 const UW_CENTER = { lat: 47.6553, lng: -122.3035 };
 const UW_FOUNTAIN_CENTER = { lat: 47.6539, lng: -122.3078 };
@@ -144,6 +148,8 @@ export function MainMapScreen() {
   const [route, setRoute] = useState<RouteResponse | null>(null);
   const [pois, setPois] = useState<Poi[]>([]);
   const [alerts, setAlerts] = useState<CampusAlert[]>([]);
+  const [selectedAlert, setSelectedAlert] = useState<CampusAlert | null>(null);
+  const [isAlertsDrawerOpen, setIsAlertsDrawerOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -157,17 +163,42 @@ export function MainMapScreen() {
   const [isNavigating, setIsNavigating] = useState(false);
   const [navigationCameraMode, setNavigationCameraMode] = useState<NavigationCameraMode>('follow');
   const [activeStepIndex, setActiveStepIndex] = useState(0);
-  const [mapState, setMapState] = useState<MapState>(
-    buildMapState({
+  const [mapState, setMapState] = useState<MapState>(() => {
+    if (config.spoofLocation) {
+      const [latStr, lngStr] = config.spoofLocation.split(',');
+      const lat = parseFloat(latStr);
+      const lng = parseFloat(lngStr);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        return buildMapState({ centerLat: lat, centerLng: lng });
+      }
+    }
+    return buildMapState({
       centerLat: UW_FOUNTAIN_CENTER.lat,
       centerLng: UW_FOUNTAIN_CENTER.lng,
-    }),
-  );
+    });
+  });
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number; heading?: number } | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
   const suppressMapGestureUntilRef = useRef(0);
 
+  const spoofedCoords = useMemo(() => {
+    if (!config.spoofLocation) {
+      return null;
+    }
+    const [latStr, lngStr] = config.spoofLocation.split(',');
+    const lat = parseFloat(latStr);
+    const lng = parseFloat(lngStr);
+    if (isNaN(lat) || isNaN(lng)) {
+      return null;
+    }
+    return { lat, lng };
+  }, []);
+
   const handlePermissionDenied = (canAskAgain: boolean) => {
+    if (spoofedCoords) {
+      setUserLocation({ ...spoofedCoords, heading: 0 });
+      return;
+    }
     setLocationError('Location permission is required to show your live position.');
     setUserLocation({ lat: UW_CENTER.lat, lng: UW_CENTER.lng, heading: 0 });
     if (!canAskAgain) {
@@ -195,6 +226,11 @@ export function MainMapScreen() {
         headingSub?.remove();
         positionSub = null;
         headingSub = null;
+
+        if (spoofedCoords) {
+          setUserLocation({ ...spoofedCoords, heading: 0 });
+          return;
+        }
 
         const existing = await Location.getForegroundPermissionsAsync();
         const permission = existing.status === 'granted' ? existing : await Location.requestForegroundPermissionsAsync();
@@ -359,12 +395,54 @@ export function MainMapScreen() {
     try {
       setIsRouting(true);
       const origin = userLocation ?? UW_CENTER;
-      const nextDirections = await api.getDirections({
-        destinationLat: place.location.lat,
-        destinationLng: place.location.lng,
-        originLat: origin.lat,
-        originLng: origin.lng,
+
+      // Robust fallback default accessibility preferences
+      let prefs: AccessibilityPreferences = {
+        avoid_stairs: true,
+        max_slope_percent: 8.0,
+        allowed_surfaces: ['paved', 'brick', 'mixed'],
+        avoid_closures: true,
+      };
+
+      // Retrieve saved user preferences from storage
+      try {
+        const saved = await storage.get<Record<string, boolean>>('navable:settings');
+        if (saved) {
+          prefs = {
+            avoid_stairs: saved.avoidStairs !== false,
+            max_slope_percent: saved.avoidSteepSlopes === false ? 15.0 : 8.0,
+            allowed_surfaces: saved.surfacePreferences === false
+              ? ['paved', 'brick', 'gravel', 'mixed']
+              : ['paved', 'brick', 'mixed'],
+            avoid_closures: saved.routeAlerts !== false,
+          };
+        }
+      } catch (prefErr) {
+        console.warn('Failed to load user preferences; falling back to default access controls.', prefErr);
+      }
+
+      // Query custom backend Dijkstra routing engine
+      const routeResponse = await api.createRoute({
+        origin: { lat: origin.lat, lng: origin.lng },
+        destination: { lat: place.location.lat, lng: place.location.lng },
+        preferences: prefs,
       });
+
+      // Show a standard premium warning dialog if the route is not fully compliant with the user's settings
+      if (routeResponse.warnings && routeResponse.warnings.length > 0) {
+        const filteredWarnings = routeResponse.warnings.map((w) =>
+          w.replace(/Segment \d+\.\d+,\s*-\d+\.\d+ -> \d+\.\d+,\s*-\d+\.\d+/, 'Walkway segment'),
+        );
+        Alert.alert(
+          'Accessibility Warnings Found',
+          `The calculated route violates some of your accessibility settings:\n\n• ${filteredWarnings.slice(0, 3).join('\n• ')}${filteredWarnings.length > 3 ? '\n• ...and other segments.' : ''}\n\nPlease proceed with caution.`,
+          [{ text: 'OK', style: 'default' }],
+        );
+      }
+
+      // Convert backend route segments into compatible front-end DirectionsResponse
+      const nextDirections = mapRouteToDirections(routeResponse);
+
       setDirections(nextDirections);
       setIsNavigating(false);
       setHasStartedNavigationForSelection(false);
@@ -560,6 +638,7 @@ export function MainMapScreen() {
           alertsCount={alerts.length}
           chipBarAnim={chipBarAnim}
           showBaseChips={showBaseChips}
+          onPressAlerts={() => setIsAlertsDrawerOpen(true)}
         />
 
         {routeSummary && !showSelectedPlaceIntroCard ? <Text style={styles.routeSummary}>{routeSummary}</Text> : null}
@@ -587,6 +666,8 @@ export function MainMapScreen() {
             overviewPolyline={directions?.overview_polyline}
             isNavigating={isNavigating && navigationCameraMode === 'follow'}
             cameraHeading={followCameraHeading}
+            alerts={alerts}
+            onAlertSelect={setSelectedAlert}
             onUserMapGesture={() => {
               if (Date.now() < suppressMapGestureUntilRef.current) {
                 return;
@@ -624,8 +705,171 @@ export function MainMapScreen() {
               durationText={activeStep.duration_text}
             />
           ) : null}
+
+          {/* 🔴 Active / Resolved Alert Details Popup Card */}
+          {selectedAlert ? (
+            <View style={styles.alertDetailsCard}>
+              <View style={styles.alertHeaderRow}>
+                <View style={styles.alertTitleBadgeRow}>
+                  {/* Severity badge */}
+                  <View
+                    style={[
+                      styles.severityBadge,
+                      selectedAlert.severity === 'critical'
+                        ? styles.severityCritical
+                        : selectedAlert.severity === 'warning'
+                        ? styles.severityWarning
+                        : styles.severityInfo,
+                    ]}>
+                    <Text style={styles.severityBadgeText}>{selectedAlert.severity.toUpperCase()}</Text>
+                  </View>
+
+                  {/* Status badge */}
+                  {selectedAlert.is_resolved || selectedAlert.status === 'resolved' ? (
+                    <View style={[styles.statusBadge, styles.statusResolved]}>
+                      <Text style={styles.statusBadgeText}>✅ Resolved</Text>
+                    </View>
+                  ) : (
+                    <View style={[styles.statusBadge, styles.statusActive]}>
+                      <View style={styles.pulsingDot} />
+                      <Text style={styles.statusBadgeText}>⚠️ Active</Text>
+                    </View>
+                  )}
+                </View>
+
+                {/* Close button */}
+                <Pressable
+                  style={styles.closeAlertButton}
+                  onPress={() => setSelectedAlert(null)}
+                  accessibilityRole="button"
+                  accessibilityLabel="Close alert details">
+                  <AntDesign name="close" size={16} color="#B2B8CE" />
+                </Pressable>
+              </View>
+
+              <Text style={styles.alertCardTitle}>{selectedAlert.title}</Text>
+              <Text style={styles.alertCardDesc}>{selectedAlert.description}</Text>
+
+              {/* Action buttons */}
+              <View style={styles.alertCardActions}>
+                {selectedAlert.location ? (
+                  <Pressable
+                    style={styles.alertActionZoomBtn}
+                    onPress={() => {
+                      if (selectedAlert.location) {
+                        setMapState(
+                          buildMapState({
+                            centerLat: selectedAlert.location.lat,
+                            centerLng: selectedAlert.location.lng,
+                            zoom: 16,
+                          })
+                        );
+                      }
+                    }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Zoom to alert location">
+                    <MaterialIcons name="zoom-in-map" size={16} color="#FFFFFF" />
+                    <Text style={styles.alertActionZoomText}>Zoom to Location</Text>
+                  </Pressable>
+                ) : null}
+                <Pressable
+                  style={styles.alertActionDismissBtn}
+                  onPress={() => setSelectedAlert(null)}
+                  accessibilityRole="button"
+                  accessibilityLabel="Dismiss alert">
+                  <Text style={styles.alertActionDismissText}>Dismiss</Text>
+                </Pressable>
+              </View>
+            </View>
+          ) : null}
         </View>
       </View>
+
+      {/* ⚠️ All Alerts Full Overlay List Drawer */}
+      {isAlertsDrawerOpen ? (
+        <View style={styles.alertsDrawerContainer}>
+          <View style={styles.alertsDrawerHeader}>
+            <Text style={styles.alertsDrawerTitle}>Campus Advisories & Live Alerts</Text>
+            <Pressable
+              style={styles.closeDrawerButton}
+              onPress={() => setIsAlertsDrawerOpen(false)}
+              accessibilityRole="button"
+              accessibilityLabel="Close alerts drawer">
+              <AntDesign name="close" size={20} color="#FFFFFF" />
+            </Pressable>
+          </View>
+
+          <ScrollView style={styles.alertsDrawerList} contentContainerStyle={{ paddingBottom: 40 }}>
+            {alerts.length === 0 ? (
+              <View style={styles.emptyAlertsContainer}>
+                <Ionicons name="shield-checkmark-outline" size={48} color="#A88AF2" />
+                <Text style={styles.emptyAlertsText}>All Clear!</Text>
+                <Text style={styles.emptyAlertsSubtext}>No active construction or safety alerts on campus.</Text>
+              </View>
+            ) : (
+              alerts.map((item) => {
+                const isResolved = item.is_resolved || item.status === 'resolved';
+                return (
+                  <Pressable
+                    key={item.id}
+                    onPress={() => {
+                      setIsAlertsDrawerOpen(false);
+                      setSelectedAlert(item);
+                      if (item.location) {
+                        setMapState(
+                          buildMapState({
+                            centerLat: item.location.lat,
+                            centerLng: item.location.lng,
+                            zoom: 16,
+                          })
+                        );
+                      }
+                    }}
+                    style={[styles.alertListItem, isResolved ? styles.alertListItemResolved : undefined]}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Advisory: ${item.title}`}>
+                    <View style={styles.alertListItemHeader}>
+                      <View style={styles.alertListItemBadgeRow}>
+                        <View
+                          style={[
+                            styles.severityBadge,
+                            item.severity === 'critical'
+                              ? styles.severityCritical
+                              : item.severity === 'warning'
+                              ? styles.severityWarning
+                              : styles.severityInfo,
+                          ]}>
+                          <Text style={styles.severityBadgeText}>{item.severity.toUpperCase()}</Text>
+                        </View>
+                        {isResolved ? (
+                          <View style={[styles.statusBadge, styles.statusResolved]}>
+                            <Text style={styles.statusBadgeText}>✅ Resolved</Text>
+                          </View>
+                        ) : (
+                          <View style={[styles.statusBadge, styles.statusActive]}>
+                            <View style={styles.pulsingDot} />
+                            <Text style={styles.statusBadgeText}>⚠️ Active</Text>
+                          </View>
+                        )}
+                      </View>
+                      {item.location ? (
+                        <View style={styles.alertGeoIndicator}>
+                          <Ionicons name="pin" size={12} color="#CDB7FF" />
+                          <Text style={styles.alertGeoText}>Map Pin</Text>
+                        </View>
+                      ) : null}
+                    </View>
+                    <Text style={styles.alertListItemTitle}>{item.title}</Text>
+                    <Text style={styles.alertListItemDesc} numberOfLines={3}>
+                      {item.description}
+                    </Text>
+                  </Pressable>
+                );
+              })
+            )}
+          </ScrollView>
+        </View>
+      ) : null}
     </View>
   );
 }

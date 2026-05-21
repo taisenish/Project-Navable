@@ -53,6 +53,8 @@ export default function LoginScreen() {
     void handleResponse();
   }, [response, signInWithGoogleNative]);
 
+
+
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../assets/images/login_bg_gradient.png')} style={styles.bg} resizeMode="cover">
@@ -70,6 +72,8 @@ export default function LoginScreen() {
             onPress={() => void promptAsync()}>
             {isLoading ? <ActivityIndicator color="#2E155F" /> : <Text style={styles.buttonText}>Continue with Google</Text>}
           </Pressable>
+
+
 
           {!hasClientId ? <Text style={styles.error}>Missing Google OAuth client ID env vars.</Text> : null}
           {error ? <Text style={styles.error}>{error}</Text> : null}

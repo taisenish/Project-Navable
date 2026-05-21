@@ -44,3 +44,35 @@ export function decodeGooglePolyline(encoded: string): Coordinate[] {
 
   return coordinates;
 }
+
+export function encodeGooglePolyline(coordinates: Coordinate[]): string {
+  let encoded = '';
+  let prevLat = 0;
+  let prevLng = 0;
+
+  for (const coord of coordinates) {
+    const lat = Math.round(coord.lat * 1e5);
+    const lng = Math.round(coord.lng * 1e5);
+
+    const dLat = lat - prevLat;
+    const dLng = lng - prevLng;
+
+    prevLat = lat;
+    prevLng = lng;
+
+    encoded += encodeValue(dLat) + encodeValue(dLng);
+  }
+
+  return encoded;
+}
+
+function encodeValue(value: number): string {
+  let val = value < 0 ? ~(value << 1) : value << 1;
+  let chunks = '';
+  while (val >= 0x20) {
+    chunks += String.fromCharCode(((val & 0x1f) | 0x20) + 63);
+    val >>= 5;
+  }
+  chunks += String.fromCharCode(val + 63);
+  return chunks;
+}

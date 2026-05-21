@@ -61,6 +61,7 @@ export function AuthSessionProvider({ children }: PropsWithChildren) {
     return { user: result.user, isNewUser: result.is_new_user };
   }, []);
 
+
   const signOut = useCallback(async () => {
     await AsyncStorage.removeItem(AUTH_USER_KEY);
     setUser(null);

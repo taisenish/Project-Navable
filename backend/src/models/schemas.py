@@ -78,6 +78,8 @@ class Alert(BaseModel):
     description: str
     severity: AlertSeverity
     location: Coordinate | None = None
+    status: str = "active"
+    is_resolved: bool = False
 
 
 class UserPreferenceRecord(BaseModel):

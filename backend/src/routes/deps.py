@@ -46,4 +46,4 @@ def get_google_auth_service(session: Session = Depends(get_session)) -> GoogleAu
 
 @lru_cache(maxsize=1)
 def get_routing_engine() -> RoutingEngine:
-    return RoutingEngine(get_uw_data_service(), get_google_maps_service())
+    return RoutingEngine(get_uw_data_service(), get_google_maps_service(), get_maps_service())

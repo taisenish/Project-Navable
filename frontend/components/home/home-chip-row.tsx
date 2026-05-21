@@ -1,4 +1,4 @@
-import { Animated, Text, View } from 'react-native';
+import { Animated, Pressable, Text, View } from 'react-native';
 
 import { homeStyles as styles } from '../../styles/home.styles';
 
@@ -8,9 +8,17 @@ type HomeChipRowProps = {
   alertsCount: number;
   chipBarAnim: Animated.Value;
   showBaseChips: boolean;
+  onPressAlerts?: () => void;
 };
 
-export function HomeChipRow({ rampsCount, entrancesCount, alertsCount, chipBarAnim, showBaseChips }: HomeChipRowProps) {
+export function HomeChipRow({
+  rampsCount,
+  entrancesCount,
+  alertsCount,
+  chipBarAnim,
+  showBaseChips,
+  onPressAlerts,
+}: HomeChipRowProps) {
   return (
     <Animated.View
       pointerEvents={showBaseChips ? 'auto' : 'none'}
@@ -43,10 +51,19 @@ export function HomeChipRow({ rampsCount, entrancesCount, alertsCount, chipBarAn
         <View style={[styles.chip, styles.redChip]}>
           <Text style={styles.chipLabel}>Entrances ({entrancesCount})</Text>
         </View>
-        <View style={[styles.chip, styles.blueChip]}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.chip,
+            styles.blueChip,
+            pressed && { opacity: 0.8 },
+          ]}
+          onPress={onPressAlerts}
+          accessibilityRole="button"
+          accessibilityLabel={`Alerts count is ${alertsCount}. Tap to view campus alerts drawer.`}>
           <Text style={styles.chipLabel}>Alerts ({alertsCount})</Text>
-        </View>
+        </Pressable>
       </View>
     </Animated.View>
   );
 }
+

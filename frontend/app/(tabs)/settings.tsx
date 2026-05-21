@@ -3,10 +3,11 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { TopBar } from '../../components/top-bar';
 import { useAuthSession } from '../../state/auth-session';
+import { storage } from '../../utils/storage';
 
 type SettingsRow = {
   key: string;
@@ -28,6 +29,22 @@ export default function SettingsScreen() {
     voiceGuidance: true,
     largeText: false,
   });
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      const saved = await storage.get<Record<string, boolean>>('navable:settings');
+      if (saved) {
+        setValues((prev) => ({ ...prev, ...saved }));
+      }
+    };
+    void loadSettings();
+  }, []);
+
+  const toggle = async (key: string) => {
+    const nextValues = { ...values, [key]: !values[key] };
+    setValues(nextValues);
+    await storage.set('navable:settings', nextValues);
+  };
 
   const sections = useMemo(
     () => [
@@ -64,10 +81,6 @@ export default function SettingsScreen() {
     ],
     [],
   );
-
-  const toggle = (key: string) => {
-    setValues((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
 
   return (
     <View style={styles.screen}>

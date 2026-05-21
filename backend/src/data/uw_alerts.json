@@ -4,13 +4,31 @@
     "title": "Construction Near Red Square",
     "description": "Temporary sidewalk narrowing and detour signs in place.",
     "severity": "warning",
-    "location": { "lat": 47.6560, "lng": -122.3081 }
+    "location": {
+      "lat": 47.656,
+      "lng": -122.3081
+    }
   },
   {
     "id": "alert-2",
     "title": "Power Outage Resolved",
     "description": "Elevator service has resumed at Kane Hall.",
     "severity": "info",
-    "location": { "lat": 47.6571, "lng": -122.3098 }
+    "location": {
+      "lat": 47.6571,
+      "lng": -122.3098
+    }
+  },
+  {
+    "id": "post-4581",
+    "title": "UW Advisory Seattle \u2013 Fluke Hall",
+    "description": "",
+    "severity": "info",
+    "location": {
+      "lat": 47.655827,
+      "lng": -122.303223
+    },
+    "status": "resolved",
+    "is_resolved": true
   }
 ]

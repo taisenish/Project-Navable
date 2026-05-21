@@ -2,7 +2,7 @@ import { useMemo, useRef } from 'react';
 import { Platform, View } from 'react-native';
 
 import { InteractiveMap } from './interactive-map';
-import type { Coordinate } from '../../types/api';
+import type { Coordinate, Alert as CampusAlert } from '../../types/api';
 import { decodeGooglePolyline } from '../../utils/polyline';
 
 type Props = {
@@ -15,6 +15,8 @@ type Props = {
   userLocation?: Coordinate | null;
   destination?: Coordinate | null;
   overviewPolyline?: string;
+  alerts?: CampusAlert[];
+  onAlertSelect?: (alert: CampusAlert) => void;
   onUserMapGesture?: () => void;
 };
 
@@ -42,6 +44,8 @@ export function CampusMap({
   userLocation,
   destination,
   overviewPolyline,
+  alerts = [],
+  onAlertSelect,
   onUserMapGesture,
 }: Props) {
   const expoMaps = loadExpoMaps();
@@ -53,6 +57,7 @@ export function CampusMap({
   if (Platform.OS === 'ios' && AppleMapsView) {
     const annotations = [] as Array<Record<string, unknown>>;
     const markers = [] as Array<Record<string, unknown>>;
+    const circles = [] as Array<Record<string, unknown>>;
 
     if (userLocation) {
       markers.push({
@@ -77,6 +82,54 @@ export function CampusMap({
         text: '🏁',
       });
     }
+
+    // Render alert pins and affected areas on native Apple Maps view
+    alerts.forEach((alert) => {
+      if (!alert.location) return;
+
+      const isResolved = alert.is_resolved || alert.status === 'resolved';
+      let tintColor = '#007AFF'; // default info color (blue)
+      let fillColor = 'rgba(0, 122, 255, 0.25)';
+      let systemImage = 'info.circle.fill';
+
+      if (isResolved) {
+        tintColor = '#20B300'; // resolved green
+        fillColor = 'rgba(32, 179, 0, 0.25)';
+        systemImage = 'checkmark.circle.fill';
+      } else {
+        if (alert.severity === 'critical') {
+          tintColor = '#FF3B30'; // critical red
+          fillColor = 'rgba(255, 59, 48, 0.25)';
+          systemImage = 'exclamationmark.octagon.fill';
+        } else if (alert.severity === 'warning') {
+          tintColor = '#FF9500'; // warning orange
+          fillColor = 'rgba(255, 149, 0, 0.25)';
+          systemImage = 'exclamationmark.triangle.fill';
+        }
+      }
+
+      markers.push({
+        id: alert.id,
+        coordinates: {
+          latitude: alert.location.lat,
+          longitude: alert.location.lng,
+        },
+        systemImage,
+        tintColor,
+        title: alert.title,
+        description: alert.description,
+      });
+
+      circles.push({
+        id: `area-${alert.id}`,
+        center: {
+          latitude: alert.location.lat,
+          longitude: alert.location.lng,
+        },
+        radius: 60, // 60 meters radius covers about a block and a half
+        color: fillColor,
+      });
+    });
 
     const polylines = polylineCoordinates.length
       ? [
@@ -111,6 +164,7 @@ export function CampusMap({
           markers={markers}
           annotations={annotations}
           polylines={polylines}
+          circles={circles}
           properties={{
             isTrafficEnabled: false,
             selectionEnabled: true,
@@ -143,7 +197,10 @@ export function CampusMap({
       isNavigating={isNavigating}
       cameraHeading={cameraHeading}
       userLocation={userLocation ?? null}
+      alerts={alerts}
+      onAlertSelect={onAlertSelect}
       onUserMapGesture={onUserMapGesture}
     />
   );
 }
+

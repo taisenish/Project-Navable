@@ -1,10 +1,11 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { Image, type LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+import { Image, type LayoutChangeEvent, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { config } from '../../services/config';
+import type { Alert as CampusAlert } from '../../types/api';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const MIN_SCALE = 1.25;
@@ -26,6 +27,8 @@ type InteractiveMapProps = {
     lng: number;
     heading?: number;
   } | null;
+  alerts?: CampusAlert[];
+  onAlertSelect?: (alert: CampusAlert) => void;
   onUserMapGesture?: () => void;
 };
 
@@ -37,6 +40,45 @@ function latLngToWorldPixels(lat: number, lng: number, zoom: number) {
   return { x, y };
 }
 
+function PulsingAlertRing({ color }: { color: string }) {
+  const scale = useSharedValue(1);
+  const opacity = useSharedValue(0.8);
+
+  useEffect(() => {
+    scale.value = withRepeat(
+      withTiming(2.2, { duration: 1500 }),
+      -1,
+      false
+    );
+    opacity.value = withRepeat(
+      withTiming(0, { duration: 1500 }),
+      -1,
+      false
+    );
+  }, [scale, opacity]);
+
+  const ringStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+    opacity: opacity.value,
+  }));
+
+  return (
+    <Animated.View
+      style={[
+        {
+          position: 'absolute',
+          width: 24,
+          height: 24,
+          borderRadius: 12,
+          backgroundColor: color,
+          zIndex: -1,
+        },
+        ringStyle,
+      ]}
+    />
+  );
+}
+
 export function InteractiveMap({
   mapUrl,
   centerLat = 47.6553,
@@ -45,6 +87,8 @@ export function InteractiveMap({
   isNavigating = false,
   cameraHeading = 0,
   userLocation,
+  alerts = [],
+  onAlertSelect,
   onUserMapGesture,
 }: InteractiveMapProps) {
   const viewportW = useSharedValue(1);
@@ -134,6 +178,46 @@ export function InteractiveMap({
     return `${-(userLocation.heading ?? 0)}deg`;
   }, [isNavigating, userLocation]);
 
+  // Project geocoded campus alerts onto custom local map coordinate system
+  const alertMarkers = useMemo(() => {
+    const mapCenterPx = latLngToWorldPixels(centerLat, centerLng, zoom);
+
+    return alerts
+      .filter((alert) => alert.location != null)
+      .map((alert) => {
+        const loc = alert.location!;
+        const alertPx = latLngToWorldPixels(loc.lat, loc.lng, zoom);
+        const dx = alertPx.x - mapCenterPx.x;
+        const dy = alertPx.y - mapCenterPx.y;
+
+        // Subtract 12 (half of marker width/height) to perfectly center it
+        const left = viewport.width / 2 + dx - 12;
+        const top = viewport.height / 2 + dy - 12;
+
+        const isResolved = alert.is_resolved || alert.status === 'resolved';
+
+        let markerColor = '#007AFF'; // info (blue)
+        let iconName: 'info' | 'warning' | 'error' = 'info';
+
+        if (alert.severity === 'critical') {
+          markerColor = '#FF3B30'; // critical (red)
+          iconName = 'error';
+        } else if (alert.severity === 'warning') {
+          markerColor = '#FF9500'; // warning (orange)
+          iconName = 'warning';
+        }
+
+        return {
+          alert,
+          left,
+          top,
+          markerColor,
+          iconName,
+          isResolved,
+        };
+      });
+  }, [alerts, centerLat, centerLng, zoom, viewport.width, viewport.height]);
+
   return (
     <View style={styles.wrapper} onLayout={onLayout}>
       <GestureDetector gesture={Gesture.Simultaneous(pan, pinch)}>
@@ -151,6 +235,44 @@ export function InteractiveMap({
                 <MaterialIcons name="assistant-navigation" size={20} color="#FFFFFF" />
               </View>
             ) : null}
+
+            {/* Custom styled absolute positioned alert overlays */}
+            {alertMarkers.map(({ alert, left, top, markerColor, iconName, isResolved }) => (
+              <View key={`container-${alert.id}`} style={{ position: 'absolute' }}>
+                <View
+                  style={[
+                    styles.affectedArea,
+                    {
+                      left: left - 28, // Offset by half of affectedArea size (80) minus half of pin size (24) -> 40 - 12 = 28
+                      top: top - 28,
+                      backgroundColor: markerColor,
+                    },
+                  ]}
+                />
+                <Pressable
+                  key={alert.id}
+                  onPress={() => onAlertSelect?.(alert)}
+                  style={[
+                    styles.alertMarker,
+                    {
+                      left,
+                      top,
+                      backgroundColor: markerColor,
+                      opacity: isResolved ? 0.6 : 1.0,
+                    },
+                  ]}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Alert: ${alert.title}`}>
+                  {!isResolved && <PulsingAlertRing color={markerColor} />}
+                  <MaterialIcons name={iconName} size={14} color="#FFFFFF" />
+                  {isResolved && (
+                    <View style={styles.resolvedSubBadge}>
+                      <MaterialIcons name="check" size={8} color="#FFFFFF" />
+                    </View>
+                  )}
+                </Pressable>
+              </View>
+            ))}
           </View>
         </Animated.View>
       </GestureDetector>
@@ -196,6 +318,43 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 3,
   },
+  affectedArea: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    opacity: 0.25,
+    zIndex: 10,
+  },
+  alertMarker: {
+    position: 'absolute',
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: '#FFFFFF',
+    shadowColor: '#000000',
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 1.5 },
+    elevation: 3,
+    zIndex: 15,
+  },
+  resolvedSubBadge: {
+    position: 'absolute',
+    bottom: -3,
+    right: -3,
+    width: 11,
+    height: 11,
+    borderRadius: 5.5,
+    backgroundColor: '#20B300',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#FFFFFF',
+  },
   hintBadge: {
     position: 'absolute',
     bottom: 12,
@@ -210,3 +369,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
 });
+

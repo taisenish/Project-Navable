@@ -154,6 +154,7 @@ class MapsService:
                 {
                     'instruction': cleaned_instruction,
                     'distance_text': str(step.get('distance', {}).get('text', '')),
+                    'distance_meters': int(step.get('distance', {}).get('value', 0)),
                     'duration_text': str(step.get('duration', {}).get('text', '')),
                     'end_location': {
                         'lat': float(step.get('end_location', {}).get('lat', destination_lat)),
