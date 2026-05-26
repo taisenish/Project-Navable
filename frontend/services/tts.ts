@@ -1,31 +1,51 @@
-import { createAudioPlayer } from 'expo-audio';
+import { Audio } from 'expo-av';
 
 import { config } from './config';
 
 class TtsService {
-  private player: any = null;
+  private sound: Audio.Sound | null = null;
 
   async speak(text: string) {
     try {
       await this.stop();
 
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        playsInSilentModeIOS: true,
+        playThroughEarpieceAndroid: false,
+        staysActiveInBackground: false,
+      });
+
       const ttsUrl = `${config.apiBaseUrl}/tts?text=${encodeURIComponent(text)}`;
-      this.player = createAudioPlayer(ttsUrl);
-      this.player.play();
+
+      const { sound } = await Audio.Sound.createAsync(
+        { uri: ttsUrl },
+        { shouldPlay: true }
+      );
+      this.sound = sound;
+
+      sound.setOnPlaybackStatusUpdate((status) => {
+        if (status.isLoaded && status.didJustFinish) {
+          void sound.unloadAsync();
+          if (this.sound === sound) {
+            this.sound = null;
+          }
+        }
+      });
     } catch (error) {
       console.error('TTS execution failed:', error);
     }
   }
 
   async stop() {
-    if (this.player) {
+    if (this.sound) {
       try {
-        this.player.pause();
-        this.player.release();
+        await this.sound.stopAsync();
+        await this.sound.unloadAsync();
       } catch (e) {
-        // Ignore already stopped or released states
+        // Suppress already stopped/unloaded errors
       }
-      this.player = null;
+      this.sound = null;
     }
   }
 }
