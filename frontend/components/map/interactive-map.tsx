@@ -1,11 +1,11 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useEffect, useMemo, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming, ZoomIn } from 'react-native-reanimated';
 import { Image, type LayoutChangeEvent, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { config } from '../../services/config';
-import type { Alert as CampusAlert } from '../../types/api';
+import type { Alert as CampusAlert, Poi } from '../../types/api';
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
 const MIN_SCALE = 1.25;
@@ -29,6 +29,8 @@ type InteractiveMapProps = {
   } | null;
   alerts?: CampusAlert[];
   onAlertSelect?: (alert: CampusAlert) => void;
+  pois?: Poi[];
+  onPoiSelect?: (poi: Poi) => void;
   onUserMapGesture?: () => void;
 };
 
@@ -89,6 +91,8 @@ export function InteractiveMap({
   userLocation,
   alerts = [],
   onAlertSelect,
+  pois = [],
+  onPoiSelect,
   onUserMapGesture,
 }: InteractiveMapProps) {
   const viewportW = useSharedValue(1);
@@ -218,6 +222,45 @@ export function InteractiveMap({
       });
   }, [alerts, centerLat, centerLng, zoom, viewport.width, viewport.height]);
 
+  const poiMarkers = useMemo(() => {
+    const mapCenterPx = latLngToWorldPixels(centerLat, centerLng, zoom);
+
+    return pois.map((poi) => {
+      const loc = poi.location;
+      const px = latLngToWorldPixels(loc.lat, loc.lng, zoom);
+      const dx = px.x - mapCenterPx.x;
+      const dy = px.y - mapCenterPx.y;
+
+      const left = viewport.width / 2 + dx - 10;
+      const top = viewport.height / 2 + dy - 10;
+
+      let markerColor = '#7B3FF3';
+      let iconName = 'accessible' as any;
+
+      if (poi.type === 'elevator') {
+        markerColor = '#00C7DE';
+        iconName = 'elevator';
+      } else if (poi.type === 'restroom') {
+        markerColor = '#FF2D55';
+        iconName = 'wc';
+      } else if (poi.type === 'ramp') {
+        markerColor = '#34C759';
+        iconName = 'accessible';
+      } else if (poi.type === 'entrance') {
+        markerColor = '#5856D6';
+        iconName = 'place';
+      }
+
+      return {
+        poi,
+        left,
+        top,
+        markerColor,
+        iconName,
+      };
+    });
+  }, [pois, centerLat, centerLng, zoom, viewport.width, viewport.height]);
+
   return (
     <View style={styles.wrapper} onLayout={onLayout}>
       <GestureDetector gesture={Gesture.Simultaneous(pan, pinch)}>
@@ -272,6 +315,38 @@ export function InteractiveMap({
                   )}
                 </Pressable>
               </View>
+            ))}
+
+            {/* Clickable POI overlays */}
+            {poiMarkers.map(({ poi, left, top, markerColor, iconName }) => (
+              <Animated.View
+                key={`poi-wrap-${poi.id}`}
+                entering={ZoomIn.springify().duration(500)}
+                style={{
+                  position: 'absolute',
+                  left: left - 30,
+                  top: top - 10,
+                  width: 80,
+                  alignItems: 'center',
+                  zIndex: 14,
+                }}>
+                <Pressable
+                  onPress={() => onPoiSelect?.(poi)}
+                  style={[
+                    styles.poiMarker,
+                    {
+                      position: 'relative',
+                      left: 0,
+                      top: 0,
+                      backgroundColor: markerColor,
+                    },
+                  ]}
+                  accessibilityRole="button"
+                  accessibilityLabel={`POI: ${poi.name}`}>
+                  <MaterialIcons name={iconName} size={10} color="#FFFFFF" />
+                </Pressable>
+                <Text style={styles.poiLabel} numberOfLines={1}>{poi.name}</Text>
+              </Animated.View>
             ))}
           </View>
         </Animated.View>
@@ -367,6 +442,33 @@ const styles = StyleSheet.create({
   hintText: {
     color: '#E6EAF5',
     fontSize: 12,
+  },
+  poiMarker: {
+    position: 'absolute',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.2,
+    borderColor: '#FFFFFF',
+    shadowColor: '#000000',
+    shadowOpacity: 0.2,
+    shadowRadius: 2.5,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 3,
+    zIndex: 14,
+  },
+  poiLabel: {
+    color: '#E6EAF5',
+    fontSize: 8,
+    fontWeight: '700',
+    marginTop: 2,
+    textAlign: 'center',
+    textShadowColor: 'rgba(0, 0, 0, 0.85)',
+    textShadowOffset: { width: 0.5, height: 0.5 },
+    textShadowRadius: 1.5,
+    maxWidth: 76,
   },
 });
 

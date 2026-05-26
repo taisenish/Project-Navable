@@ -144,6 +144,7 @@ function computeOverviewCamera(directions: DirectionsResponse): { centerLat: num
   };
 }
 
+
 export function MainMapScreen() {
   const { getRoute, getPois, savePois } = useRouteCache();
   const [route, setRoute] = useState<RouteResponse | null>(null);
@@ -178,6 +179,9 @@ export function MainMapScreen() {
       centerLng: UW_FOUNTAIN_CENTER.lng,
     });
   });
+
+
+
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number; heading?: number } | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
   const suppressMapGestureUntilRef = useRef(0);
@@ -687,6 +691,15 @@ export function MainMapScreen() {
             cameraHeading={followCameraHeading}
             alerts={alerts}
             onAlertSelect={setSelectedAlert}
+            pois={pois}
+            onPoiSelect={(poi) => {
+              void onSelectPlace({
+                place_id: poi.id,
+                name: poi.name,
+                address: `Campus POI: ${poi.type}`,
+                location: poi.location,
+              });
+            }}
             onUserMapGesture={() => {
               if (Date.now() < suppressMapGestureUntilRef.current) {
                 return;

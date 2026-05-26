@@ -1,8 +1,8 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
 
 import { InteractiveMap } from './interactive-map';
-import type { Coordinate, Alert as CampusAlert } from '../../types/api';
+import type { Coordinate, Alert as CampusAlert, Poi } from '../../types/api';
 import { decodeGooglePolyline } from '../../utils/polyline';
 
 type Props = {
@@ -17,8 +17,24 @@ type Props = {
   overviewPolyline?: string;
   alerts?: CampusAlert[];
   onAlertSelect?: (alert: CampusAlert) => void;
+  pois?: Poi[];
+  onPoiSelect?: (poi: Poi) => void;
   onUserMapGesture?: () => void;
 };
+
+function getDistanceMeters(lat1: number, lng1: number, lat2: number, lng2: number) {
+  const R = 6371000; // Radius of Earth in meters
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
 
 type ExpoMapsModule = {
   AppleMaps?: {
@@ -46,11 +62,50 @@ export function CampusMap({
   overviewPolyline,
   alerts = [],
   onAlertSelect,
+  pois = [],
+  onPoiSelect,
   onUserMapGesture,
 }: Props) {
   const expoMaps = loadExpoMaps();
   const AppleMapsView = expoMaps?.AppleMaps?.View;
   const lastTouchAtRef = useRef(0);
+  const lastCameraUpdateRef = useRef(0);
+
+  const [localCamera, setLocalCamera] = useState({ lat: centerLat, lng: centerLng, zoom });
+
+  useEffect(() => {
+    setLocalCamera({ lat: centerLat, lng: centerLng, zoom });
+  }, [centerLat, centerLng, zoom]);
+
+  const visiblePois = useMemo(() => {
+    if (localCamera.zoom < 15.8) {
+      return [];
+    }
+
+    const seen = new Set<string>();
+    const uniqueBuildings: Poi[] = [];
+
+    pois.forEach((poi) => {
+      if (poi.type !== 'entrance') return;
+
+      const bName = poi.name
+        .replace(
+          /\s*(Southwest|Southeast|Northwest|Northeast|South|North|East|West|Main|Side|Clinic|School|Assisted)?\s*(Entrance|Entry|Gate|Door|Loading Dock|Dock)\s*$/gi,
+          ''
+        )
+        .trim();
+
+      if (!bName || seen.has(bName)) return;
+
+      const dist = getDistanceMeters(poi.location.lat, poi.location.lng, localCamera.lat, localCamera.lng);
+      if (dist >= 120) return;
+
+      seen.add(bName);
+      uniqueBuildings.push({ ...poi, name: bName });
+    });
+
+    return uniqueBuildings;
+  }, [pois, localCamera.lat, localCamera.lng, localCamera.zoom]);
 
   const polylineCoordinates = useMemo(() => decodeGooglePolyline(overviewPolyline ?? ''), [overviewPolyline]);
 
@@ -68,7 +123,6 @@ export function CampusMap({
         },
         systemImage: 'location.north.fill',
         tintColor: '#1A73E8',
-        title: 'You',
       });
     }
 
@@ -78,7 +132,6 @@ export function CampusMap({
           latitude: destination.lat,
           longitude: destination.lng,
         },
-        title: 'Destination',
         text: '🏁',
       });
     }
@@ -116,8 +169,6 @@ export function CampusMap({
         },
         systemImage,
         tintColor,
-        title: alert.title,
-        description: alert.description,
       });
 
       circles.push({
@@ -128,6 +179,22 @@ export function CampusMap({
         },
         radius: 60, // 60 meters radius covers about a block and a half
         color: fillColor,
+      });
+    });
+
+    // Map custom POIs (building landmarks) to native Apple Maps markers
+    visiblePois.forEach((poi) => {
+      if (poi.type !== 'entrance') return;
+
+      markers.push({
+        id: `poi-${poi.id}`,
+        coordinates: {
+          latitude: poi.location.lat,
+          longitude: poi.location.lng,
+        },
+        systemImage: 'building.2.fill',
+        tintColor: '#5856D6',
+        title: poi.name, // Renders the building name directly underneath the pin icon on native map tiles!
       });
     });
 
@@ -175,12 +242,34 @@ export function CampusMap({
             scaleBarEnabled: true,
             togglePitchEnabled: false,
           }}
-          onCameraMove={() => {
-            if (!onUserMapGesture) {
-              return;
+          onMarkerClick={(markerEvent: any) => {
+            if (markerEvent.id && markerEvent.id.startsWith('poi-')) {
+              const poiId = markerEvent.id.replace('poi-', '');
+              const selectedPoi = pois.find((p) => p.id === poiId);
+              if (selectedPoi && onPoiSelect) {
+                onPoiSelect(selectedPoi);
+              }
+            } else if (markerEvent.id && !markerEvent.id.startsWith('area-') && !markerEvent.id.startsWith('user-')) {
+              const selectedAlertObj = alerts.find((a) => a.id === markerEvent.id);
+              if (selectedAlertObj && onAlertSelect) {
+                onAlertSelect(selectedAlertObj);
+              }
             }
-            if (Date.now() - lastTouchAtRef.current < 900) {
-              onUserMapGesture();
+          }}
+          onCameraMove={(event: any) => {
+            if (onUserMapGesture) {
+              if (Date.now() - lastTouchAtRef.current < 900) {
+                onUserMapGesture();
+              }
+            }
+            const now = Date.now();
+            if (now - lastCameraUpdateRef.current > 400) {
+              lastCameraUpdateRef.current = now;
+              setLocalCamera({
+                lat: event.coordinates.latitude,
+                lng: event.coordinates.longitude,
+                zoom: event.zoom,
+              });
             }
           }}
         />
@@ -199,6 +288,8 @@ export function CampusMap({
       userLocation={userLocation ?? null}
       alerts={alerts}
       onAlertSelect={onAlertSelect}
+      pois={pois}
+      onPoiSelect={onPoiSelect}
       onUserMapGesture={onUserMapGesture}
     />
   );
