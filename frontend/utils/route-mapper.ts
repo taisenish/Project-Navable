@@ -14,16 +14,10 @@ export function mapRouteToDirections(route: RouteResponse): DirectionsResponse {
     // Use step.end_location if provided by backend, else fallback to polyline index
     const stepEndLoc = step.end_location || route.polyline[idx + 1] || endLoc;
 
-    let fullInstruction = step.instruction;
-    if (step.accessibility_note) {
-      // Append accessibility note to instructions for high user visibility
-      fullInstruction += `\n(${step.accessibility_note})`;
-    }
-
     const stepDistanceFeet = Math.round(step.distance_meters * 3.28084);
 
     return {
-      instruction: fullInstruction,
+      instruction: step.instruction,
       distance_text: `${stepDistanceFeet} ft`,
       duration_text: `${Math.round(step.distance_meters / 1.4 / 60)} min`, // walk speed ~1.4 m/s
       end_location: stepEndLoc,
@@ -74,14 +68,7 @@ export function mapTransitRouteToDirections(route: TransitRouteResponse): Direct
     }
 
     leg.steps.forEach((step) => {
-      let instruction = step.instruction;
-      if (step.accessibility_note) {
-        instruction += `\n(${step.accessibility_note})`;
-      }
-      steps.push({
-        ...step,
-        instruction,
-      });
+      steps.push(step);
     });
   });
 

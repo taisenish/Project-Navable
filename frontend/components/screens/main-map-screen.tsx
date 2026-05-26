@@ -843,11 +843,7 @@ export function MainMapScreen() {
   useEffect(() => {
     if (isNavigating && directions && directions.steps[activeStepIndex]) {
       const step = directions.steps[activeStepIndex];
-      let speechText = step.instruction;
-      if (step.accessibility_note) {
-        const cleanNote = step.accessibility_note.replace(/Warning:\s*/i, '');
-        speechText += `. Note: ${cleanNote}`;
-      }
+      const speechText = step.instruction.replace(/\s*\([^)]*\)\s*$/, '');
       void ttsService.speak(speechText);
     } else {
       void ttsService.stop();
@@ -1037,11 +1033,7 @@ export function MainMapScreen() {
               distanceText={activeStep.distance_text}
               durationText={activeStep.duration_text}
               onSpeakPress={() => {
-                let speechText = activeStep.instruction;
-                if (activeStep.accessibility_note) {
-                  const cleanNote = activeStep.accessibility_note.replace(/Warning:\s*/i, '');
-                  speechText += `. Note: ${cleanNote}`;
-                }
+                const speechText = activeStep.instruction.replace(/\s*\([^)]*\)\s*$/, '');
                 void ttsService.speak(speechText);
               }}
             />
