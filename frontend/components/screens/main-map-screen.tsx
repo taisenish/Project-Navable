@@ -190,6 +190,7 @@ export function MainMapScreen() {
   const [isNavigating, setIsNavigating] = useState(false);
   const [navigationCameraMode, setNavigationCameraMode] = useState<NavigationCameraMode>('follow');
   const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const [isStepsExpanded, setIsStepsExpanded] = useState(false);
   const [mapState, setMapState] = useState<MapState>(() => {
     if (config.spoofLocation) {
       const [latStr, lngStr] = config.spoofLocation.split(',');
@@ -486,6 +487,7 @@ export function MainMapScreen() {
           busName,
           timeline,
           durationText: option.total_duration_text,
+          departTime: firstTransit?.departure_time || '',
           leaveText: firstTransit?.departure_time ? `Leave by ${firstTransit.departure_time}` : null,
           arrivalText: lastTransit?.arrival_time ? `Arrive ${lastTransit.arrival_time}` : null,
           details,
@@ -552,6 +554,7 @@ export function MainMapScreen() {
     setHasStartedNavigationForSelection(false);
     setNavigationCameraMode('follow');
     setActiveStepIndex(0);
+    setIsStepsExpanded(false);
     setMapState(
       buildMapState({
         centerLat: nextDirections.end_location.lat,
@@ -629,6 +632,7 @@ export function MainMapScreen() {
     setHasStartedNavigationForSelection(false);
     setNavigationCameraMode('follow');
     setActiveStepIndex(0);
+    setIsStepsExpanded(false);
   };
 
   const onSelectPlace = (place: PlaceSuggestion, options: { focusMap?: boolean } = { focusMap: true }) => {
@@ -795,6 +799,7 @@ export function MainMapScreen() {
     }
     setIsTransitSheetOpen(false);
     setIsTransitDetailsOpen(false);
+    setIsStepsExpanded(false);
     setIsNavigating(true);
     setHasStartedNavigationForSelection(true);
     setNavigationCameraMode('follow');
@@ -1032,10 +1037,9 @@ export function MainMapScreen() {
               instruction={activeStep.instruction}
               distanceText={activeStep.distance_text}
               durationText={activeStep.duration_text}
-              onSpeakPress={() => {
-                const speechText = activeStep.instruction.replace(/\s*\([^)]*\)\s*$/, '');
-                void ttsService.speak(speechText);
-              }}
+              steps={directions?.steps ?? []}
+              expanded={isStepsExpanded}
+              onToggleExpanded={() => setIsStepsExpanded((v) => !v)}
             />
           ) : null}
 
@@ -1079,11 +1083,19 @@ export function MainMapScreen() {
                       accessibilityRole="button"
                       accessibilityLabel={`Select ${option.busName} public transport option`}>
                       <View style={styles.transitOptionHeader}>
-                        <Text style={styles.transitOptionName}>{option.busName}</Text>
+                        <View style={styles.transitOptionNameRow}>
+                          <MaterialIcons name="directions-bus" size={18} color="#F4C430" />
+                          <Text style={styles.transitOptionName}>{option.busName}</Text>
+                          <Text style={styles.transitDepartTime}>departs @ {option.departTime}</Text>
+                        </View>
                         <Text style={styles.transitOptionDuration}>{option.durationText}</Text>
                       </View>
                       <Text style={styles.transitTimeline}>{option.timeline}</Text>
-                      <Text style={styles.transitMeta}>{option.leaveText ?? option.arrivalText ?? 'Next available departure'}</Text>
+                      <View style={styles.transitTimesRow}>
+                        {option.leaveText ? <Text style={styles.transitMeta}>{option.leaveText}</Text> : null}
+                        {option.arrivalText ? <Text style={styles.transitMeta}>{option.arrivalText}</Text> : null}
+                        {!option.leaveText && !option.arrivalText ? <Text style={styles.transitMeta}>Next available departure</Text> : null}
+                      </View>
                       {option.isSelected ? (
                         <Pressable style={styles.transitDetailsInlineButton} onPress={() => setIsTransitDetailsOpen(true)}>
                           <Text style={styles.transitDetailsButtonText}>Details</Text>

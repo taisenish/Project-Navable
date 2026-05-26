@@ -43,7 +43,7 @@ export const homeStyles = StyleSheet.create({
   },
   brandSubtitle: {
     color: '#F0E8FF',
-    fontSize: 14,
+    fontSize: 16,
   },
   searchWrap: {
     position: 'relative',
@@ -89,13 +89,13 @@ export const homeStyles = StyleSheet.create({
     borderBottomColor: '#E7DCFA',
   },
   searchResultName: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '700',
     color: '#2B1858',
   },
   searchResultAddress: {
     marginTop: 2,
-    fontSize: 12,
+    fontSize: 14,
     color: '#5A4A7C',
   },
   selectedPlaceCard: {
@@ -115,16 +115,16 @@ export const homeStyles = StyleSheet.create({
   },
   selectedPlaceName: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '700',
   },
   selectedPlaceAddress: {
     color: '#F4E9FF',
-    fontSize: 12,
+    fontSize: 14,
   },
   selectedPlaceMeta: {
     color: '#E4D3FF',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
   },
   routeModeRow: {
@@ -154,7 +154,7 @@ export const homeStyles = StyleSheet.create({
   },
   routeModeButtonText: {
     color: '#EFE8FF',
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: '800',
   },
   routeModeButtonTextActive: {
@@ -211,12 +211,12 @@ export const homeStyles = StyleSheet.create({
   },
   transitSheetTitle: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '800',
   },
   transitSheetMeta: {
     color: '#E4D3FF',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '700',
   },
   transitSheetScroll: {
@@ -244,28 +244,44 @@ export const homeStyles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 8,
   },
+  transitOptionNameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    flex: 1,
+  },
   transitOptionName: {
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: '800',
-    flex: 1,
+  },
+  transitDepartTime: {
+    color: '#F4C430',
+    fontSize: 13,
+    fontWeight: '700',
   },
   transitOptionDuration: {
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '800',
   },
   transitTimeline: {
     marginTop: 3,
     color: '#EFE8FF',
-    fontSize: 11,
-    lineHeight: 14,
+    fontSize: 13,
+    lineHeight: 16,
   },
   transitMeta: {
     marginTop: 2,
     color: '#E4D3FF',
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: '700',
+  },
+  transitTimesRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 2,
   },
   transitDetailsButton: {
     alignSelf: 'flex-start',
@@ -284,7 +300,7 @@ export const homeStyles = StyleSheet.create({
   },
   transitDetailsButtonText: {
     color: '#2A1652',
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: '800',
   },
   transitDetailsList: {
@@ -292,8 +308,8 @@ export const homeStyles = StyleSheet.create({
   },
   transitDetailText: {
     color: '#F4E9FF',
-    fontSize: 16,
-    lineHeight: 23,
+    fontSize: 17,
+    lineHeight: 24,
   },
   transitDetailsOverlay: {
     position: 'absolute',
@@ -338,12 +354,12 @@ export const homeStyles = StyleSheet.create({
   },
   transitDetailsPopupTitle: {
     color: '#FFFFFF',
-    fontSize: 20,
+    fontSize: 21,
     fontWeight: '800',
   },
   transitDetailsPopupMeta: {
     color: '#E4D3FF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '700',
     marginTop: 3,
   },
@@ -376,7 +392,7 @@ export const homeStyles = StyleSheet.create({
   },
   selectedPlaceCancelButtonText: {
     color: '#EFE8FF',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '700',
   },
   selectedPlaceButton: {
@@ -396,7 +412,7 @@ export const homeStyles = StyleSheet.create({
   },
   selectedPlaceButtonText: {
     color: '#2A1652',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '700',
   },
   mapArea: {
@@ -442,8 +458,8 @@ export const homeStyles = StyleSheet.create({
   },
   chipLabel: {
     color: '#fff',
-    fontSize: 11,
-    lineHeight: 13,
+    fontSize: 13,
+    lineHeight: 15,
     fontWeight: '700',
     textAlign: 'center',
   },
@@ -451,7 +467,7 @@ export const homeStyles = StyleSheet.create({
     color: '#E6EAF5',
     textAlign: 'center',
     marginBottom: 8,
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
   },
   navigateButton: {
@@ -467,7 +483,7 @@ export const homeStyles = StyleSheet.create({
   },
   navigateButtonText: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '700',
   },
   routeActionsRow: {
@@ -525,40 +541,99 @@ export const homeStyles = StyleSheet.create({
     gap: 4,
     zIndex: 40,
   },
+  navCardDragArea: {
+    paddingTop: 4,
+  },
+  navCardHandle: {
+    width: 38,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255, 255, 255, 0.55)',
+    alignSelf: 'center',
+    marginBottom: 8,
+  },
+  navCardHeader: {
+    gap: 4,
+  },
+  navCardHeaderContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   navCardTitle: {
     color: '#CDB7FF',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '700',
   },
   navInstruction: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '700',
-    lineHeight: 18,
+    lineHeight: 20,
   },
   navMeta: {
     color: '#D8DBE7',
-    fontSize: 12,
+    fontSize: 14,
   },
-  navCardSpeakButton: {
-    position: 'absolute',
-    top: 14,
-    right: 14,
+  navStepsScroll: {
+    maxHeight: 400,
+    marginTop: 8,
+  },
+  navStepsContent: {
+    gap: 2,
+  },
+  navStepRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+  },
+  navStepRowActive: {
+    backgroundColor: 'rgba(123, 63, 243, 0.18)',
+    borderWidth: 1,
+    borderColor: 'rgba(168, 138, 242, 0.5)',
+  },
+  navStepIcon: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: 'rgba(168, 138, 242, 0.15)',
-    justifyContent: 'center',
+    backgroundColor: 'rgba(168, 138, 242, 0.12)',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(168, 138, 242, 0.35)',
+    justifyContent: 'center',
+  },
+  navStepInfo: {
+    flex: 1,
+    gap: 2,
+  },
+  navStepInstruction: {
+    color: '#D8DBE7',
+    fontSize: 14,
+    fontWeight: '600',
+    lineHeight: 18,
+  },
+  navStepInstructionActive: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+  },
+  navStepDistance: {
+    color: '#A2A7B9',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  navStepIndex: {
+    color: '#5A5E70',
+    fontSize: 13,
+    fontWeight: '700',
+    minWidth: 18,
+    textAlign: 'right',
   },
   error: {
     color: '#FF857A',
     textAlign: 'center',
     marginBottom: 8,
   },
-  // 🎨 UW Campus Alerts Integration Styles
   alertDetailsCard: {
     position: 'absolute',
     left: 14,
@@ -596,7 +671,7 @@ export const homeStyles = StyleSheet.create({
   },
   severityBadgeText: {
     color: '#FFFFFF',
-    fontSize: 9,
+    fontSize: 11,
     fontWeight: '900',
     letterSpacing: 0.5,
   },
@@ -620,7 +695,7 @@ export const homeStyles = StyleSheet.create({
   },
   statusBadgeText: {
     color: '#E6EAF5',
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: '700',
   },
   statusResolved: {
@@ -649,15 +724,15 @@ export const homeStyles = StyleSheet.create({
   },
   alertCardTitle: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '800',
     marginBottom: 6,
-    lineHeight: 20,
+    lineHeight: 22,
   },
   alertCardDesc: {
     color: '#D8DBE7',
-    fontSize: 13,
-    lineHeight: 18,
+    fontSize: 15,
+    lineHeight: 20,
     marginBottom: 14,
   },
   alertCardActions: {
@@ -676,7 +751,7 @@ export const homeStyles = StyleSheet.create({
   },
   alertActionZoomText: {
     color: '#FFFFFF',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '700',
   },
   alertActionDismissBtn: {
@@ -689,7 +764,7 @@ export const homeStyles = StyleSheet.create({
   },
   alertActionDismissText: {
     color: '#E6EAF5',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '700',
   },
   alertsDrawerContainer: {
@@ -714,7 +789,7 @@ export const homeStyles = StyleSheet.create({
   },
   alertsDrawerTitle: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '800',
   },
   closeDrawerButton: {
@@ -736,15 +811,15 @@ export const homeStyles = StyleSheet.create({
   },
   emptyAlertsText: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '800',
   },
   emptyAlertsSubtext: {
     color: '#A2A7B9',
-    fontSize: 13,
+    fontSize: 15,
     textAlign: 'center',
     paddingHorizontal: 30,
-    lineHeight: 18,
+    lineHeight: 20,
   },
   alertListItem: {
     backgroundColor: 'rgba(255, 255, 255, 0.04)',
@@ -782,18 +857,18 @@ export const homeStyles = StyleSheet.create({
   },
   alertGeoText: {
     color: '#CDB7FF',
-    fontSize: 9,
+    fontSize: 11,
     fontWeight: '700',
   },
   alertListItemTitle: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '700',
     marginBottom: 4,
   },
   alertListItemDesc: {
     color: '#A2A7B9',
-    fontSize: 12,
-    lineHeight: 16,
+    fontSize: 14,
+    lineHeight: 18,
   },
 });
