@@ -426,10 +426,30 @@ export function MainMapScreen() {
         console.warn('Failed to load user preferences; falling back to default access controls.', prefErr);
       }
 
+      // Snap destination to nearest entrance POI within 150m.
+      // This ensures routing ends at an actual door, not a building centroid.
+      const ENTRANCE_SNAP_RADIUS_M = 150;
+      let routingDestination = place.location;
+
+      const nearbyEntrances = pois
+        .filter((poi) => poi.type === 'entrance' || poi.type === 'elevator')
+        .map((poi) => ({ poi, dist: distanceMeters(place.location, poi.location) }))
+        .filter(({ dist }) => dist <= ENTRANCE_SNAP_RADIUS_M)
+        .sort((a, b) => {
+          // Prefer accessible entrances, then closest
+          const aScore = (a.poi.is_accessible ? 0 : 1000) + a.dist;
+          const bScore = (b.poi.is_accessible ? 0 : 1000) + b.dist;
+          return aScore - bScore;
+        });
+
+      if (nearbyEntrances.length > 0) {
+        routingDestination = nearbyEntrances[0].poi.location;
+      }
+
       // Query custom backend Dijkstra routing engine
       const routeResponse = await api.createRoute({
         origin: { lat: origin.lat, lng: origin.lng },
-        destination: { lat: place.location.lat, lng: place.location.lng },
+        destination: { lat: routingDestination.lat, lng: routingDestination.lng },
         preferences: prefs,
       });
 

@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: run run-backend run-frontend run-frontend-dev-client run-ios-dev run-ios-dev-client ios-check-install ios-launch-app setup setup-backend setup-frontend setup-scraper run-scraper scrape test lint
+.PHONY: run run-backend run-frontend run-frontend-dev-client run-ios-dev run-ios-dev-client ios-check-install ios-launch-app setup setup-backend setup-frontend setup-scraper run-scraper scrape test lint map-extraction
 
 run:
 	@set -euo pipefail; \
@@ -15,6 +15,9 @@ run-backend:
 
 run-scraper:
 	$(MAKE) -C scraper-agent-service run
+
+map-extraction:
+	cd map-extraction && make run
 
 scrape:
 	@echo "🔍 Triggering manual UW Emergency blog scrape..."

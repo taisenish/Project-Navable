@@ -45,6 +45,7 @@ export type Poi = {
   id: string;
   name: string;
   type: PoiType;
+  is_accessible: boolean;
   location: Coordinate;
   tags: string[];
 };

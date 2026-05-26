@@ -225,40 +225,42 @@ export function InteractiveMap({
   const poiMarkers = useMemo(() => {
     const mapCenterPx = latLngToWorldPixels(centerLat, centerLng, zoom);
 
-    return pois.map((poi) => {
-      const loc = poi.location;
-      const px = latLngToWorldPixels(loc.lat, loc.lng, zoom);
-      const dx = px.x - mapCenterPx.x;
-      const dy = px.y - mapCenterPx.y;
+    return pois
+      .map((poi) => {
+        const loc = poi.location;
+        const px = latLngToWorldPixels(loc.lat, loc.lng, zoom);
+        const dx = px.x - mapCenterPx.x;
+        const dy = px.y - mapCenterPx.y;
 
-      const left = viewport.width / 2 + dx - 10;
-      const top = viewport.height / 2 + dy - 10;
+        const left = viewport.width / 2 + dx - 10;
+        const top = viewport.height / 2 + dy - 10;
 
-      let markerColor = '#7B3FF3';
-      let iconName = 'accessible' as any;
+        let markerColor = '#7B3FF3';
+        let iconName = 'accessible' as any;
 
-      if (poi.type === 'elevator') {
-        markerColor = '#00C7DE';
-        iconName = 'elevator';
-      } else if (poi.type === 'restroom') {
-        markerColor = '#FF2D55';
-        iconName = 'wc';
-      } else if (poi.type === 'ramp') {
-        markerColor = '#34C759';
-        iconName = 'accessible';
-      } else if (poi.type === 'entrance') {
-        markerColor = '#5856D6';
-        iconName = 'place';
-      }
+        if (poi.type === 'elevator') {
+          markerColor = '#00C7DE';
+          iconName = 'elevator';
+        } else if (poi.type === 'restroom') {
+          markerColor = '#FF2D55';
+          iconName = 'wc';
+        } else if (poi.type === 'ramp') {
+          markerColor = '#34C759';
+          iconName = 'accessible';
+        } else if (poi.type === 'entrance') {
+          // Accessible entrance — wheelchair icon in blue; regular entrance — place pin in purple
+          markerColor = poi.is_accessible ? '#1A73E8' : '#5856D6';
+          iconName = poi.is_accessible ? 'accessible' : 'place';
+        }
 
-      return {
-        poi,
-        left,
-        top,
-        markerColor,
-        iconName,
-      };
-    });
+        return {
+          poi,
+          left,
+          top,
+          markerColor,
+          iconName,
+        };
+      });
   }, [pois, centerLat, centerLng, zoom, viewport.width, viewport.height]);
 
   return (

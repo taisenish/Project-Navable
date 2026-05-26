@@ -175,11 +175,21 @@ def main():
                     tags.append("restroom")
                 else:
                     final_poi_type = poi_type
+
+                # Mark as accessible if this is a dedicated assisted-entry category,
+                # or if the POI type/name indicates an accessible feature.
+                is_accessible = (
+                    cat_id == 76908  # Assisted Entry category
+                    or final_poi_type in ("elevator", "ramp")
+                    or "accessible" in name_lower
+                    or "assisted" in name_lower
+                )
                     
                 pois.append({
                     "id": poi_id,
                     "name": name,
                     "type": final_poi_type,
+                    "is_accessible": is_accessible,
                     "location": {
                         "lat": float(lat),
                         "lng": float(lng)

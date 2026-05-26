@@ -69,6 +69,7 @@ class Poi(BaseModel):
     id: str
     name: str
     type: PoiType
+    is_accessible: bool = False
     location: Coordinate
     tags: list[str] = Field(default_factory=list)
 

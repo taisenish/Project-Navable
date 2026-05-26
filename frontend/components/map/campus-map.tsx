@@ -83,11 +83,10 @@ export function CampusMap({
     }
 
     const seen = new Set<string>();
-    const uniqueBuildings: Poi[] = [];
+    const visibleItems: Poi[] = [];
 
     pois.forEach((poi) => {
-      if (poi.type !== 'entrance') return;
-
+      // Deduplicate by type + stripped name so elevator/entrance with same building show separately
       const bName = poi.name
         .replace(
           /\s*(Southwest|Southeast|Northwest|Northeast|South|North|East|West|Main|Side|Clinic|School|Assisted)?\s*(Entrance|Entry|Gate|Door|Loading Dock|Dock)\s*$/gi,
@@ -95,16 +94,17 @@ export function CampusMap({
         )
         .trim();
 
-      if (!bName || seen.has(bName)) return;
+      const key = `${poi.type}:${bName}`;
+      if (!bName || seen.has(key)) return;
 
       const dist = getDistanceMeters(poi.location.lat, poi.location.lng, localCamera.lat, localCamera.lng);
       if (dist >= 120) return;
 
-      seen.add(bName);
-      uniqueBuildings.push({ ...poi, name: bName });
+      seen.add(key);
+      visibleItems.push({ ...poi, name: bName });
     });
 
-    return uniqueBuildings;
+    return visibleItems;
   }, [pois, localCamera.lat, localCamera.lng, localCamera.zoom]);
 
   const polylineCoordinates = useMemo(() => decodeGooglePolyline(overviewPolyline ?? ''), [overviewPolyline]);
@@ -182,9 +182,24 @@ export function CampusMap({
       });
     });
 
-    // Map custom POIs (building landmarks) to native Apple Maps markers
+    // Map all POI types to native Apple Maps markers
     visiblePois.forEach((poi) => {
-      if (poi.type !== 'entrance') return;
+      let systemImage = 'door.left.hand.open'; // default entrance
+      let tintColor = '#5856D6'; // purple for regular entrances
+
+      if (poi.type === 'elevator') {
+        systemImage = 'arrow.up.arrow.down.square.fill';
+        tintColor = '#00C7DE'; // teal
+      } else if (poi.type === 'restroom') {
+        systemImage = 'toilet.fill';
+        tintColor = '#FF2D55'; // red
+      } else if (poi.type === 'ramp') {
+        systemImage = 'figure.roll.runningpace';
+        tintColor = '#34C759'; // green
+      } else if (poi.type === 'entrance' && poi.is_accessible) {
+        systemImage = 'figure.roll'; // wheelchair
+        tintColor = '#1A73E8'; // Google blue
+      }
 
       markers.push({
         id: `poi-${poi.id}`,
@@ -192,9 +207,9 @@ export function CampusMap({
           latitude: poi.location.lat,
           longitude: poi.location.lng,
         },
-        systemImage: 'building.2.fill',
-        tintColor: '#5856D6',
-        title: poi.name, // Renders the building name directly underneath the pin icon on native map tiles!
+        systemImage,
+        tintColor,
+        title: poi.name,
       });
     });
 
