@@ -255,6 +255,16 @@ class ApiTests(unittest.TestCase):
         self.assertGreater(len(chunks), 0)
         self.assertGreater(len(chunks[0]), 0)
 
+    def test_abbreviation_expansion(self) -> None:
+        from src.routes.navigation import expand_abbreviations
+        text = "Head NE on Stevens Way Ave for 100 ft (30 m). Turn S onto Montlake Blvd."
+        expanded = expand_abbreviations(text)
+        self.assertEqual(expanded, "Head North East on Stevens Way Avenue for 100 feet (30 meters). Turn South onto Montlake Boulevard.")
+
+        text_pkwy = "Drive W on Pacific Pkwy to Sand Point Way."
+        expanded_pkwy = expand_abbreviations(text_pkwy)
+        self.assertEqual(expanded_pkwy, "Drive West on Pacific Parkway to Sand Point Way.")
+
 
 if __name__ == '__main__':
     unittest.main()

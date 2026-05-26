@@ -2,7 +2,7 @@ import type { Coordinate, DirectionsResponse, DirectionsStep, RouteResponse } fr
 import { encodeGooglePolyline } from './polyline';
 
 export function mapRouteToDirections(route: RouteResponse): DirectionsResponse {
-  const distanceKm = (route.leg.distance_meters / 1000).toFixed(2);
+  const distanceMiles = (route.leg.distance_meters * 0.000621371).toFixed(2);
   const durationMins = Math.round(route.leg.duration_seconds / 60);
 
   const startLoc = route.polyline[0] || { lat: 0, lng: 0 };
@@ -20,9 +20,11 @@ export function mapRouteToDirections(route: RouteResponse): DirectionsResponse {
       fullInstruction += `\n(${step.accessibility_note})`;
     }
 
+    const stepDistanceFeet = Math.round(step.distance_meters * 3.28084);
+
     return {
       instruction: fullInstruction,
-      distance_text: `${step.distance_meters} m`,
+      distance_text: `${stepDistanceFeet} ft`,
       duration_text: `${Math.round(step.distance_meters / 1.4 / 60)} min`, // walk speed ~1.4 m/s
       end_location: stepEndLoc,
       accessibility_note: step.accessibility_note,
@@ -30,7 +32,7 @@ export function mapRouteToDirections(route: RouteResponse): DirectionsResponse {
   });
 
   return {
-    distance_text: `${distanceKm} km`,
+    distance_text: `${distanceMiles} mi`,
     duration_text: `${durationMins} min`,
     start_location: startLoc,
     end_location: endLoc,

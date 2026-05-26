@@ -379,9 +379,9 @@ export function MainMapScreen() {
       return `${directions.distance_text} • ${directions.duration_text}`;
     }
     if (route) {
-      const km = (route.leg.distance_meters / 1000).toFixed(2);
+      const miles = (route.leg.distance_meters * 0.000621371).toFixed(2);
       const min = Math.round(route.leg.duration_seconds / 60);
-      return `${km} km • ${min} min`;
+      return `${miles} mi • ${min} min`;
     }
     return null;
   }, [directions, route]);
