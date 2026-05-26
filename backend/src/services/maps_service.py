@@ -27,23 +27,30 @@ class MapsService:
         destination_lat: float | None = None,
         destination_lng: float | None = None,
         path_polyline: str | None = None,
+        path_color: str = '7B3FF3FF',
+        route_segments: list[tuple[str, str]] | None = None,
     ) -> bytes:
         api_key = self._require_api_key()
         lat, lng = self.UW_CENTER if center_lat is None or center_lng is None else (center_lat, center_lng)
 
-        params: dict[str, str] = {
-            'center': f'{lat},{lng}',
-            'zoom': str(zoom),
-            'size': f'{width}x{height}',
-            'scale': '2',
-            'maptype': 'roadmap',
-            'key': api_key,
-        }
+        params: list[tuple[str, str]] = [
+            ('center', f'{lat},{lng}'),
+            ('zoom', str(zoom)),
+            ('size', f'{width}x{height}'),
+            ('scale', '2'),
+            ('maptype', 'roadmap'),
+            ('key', api_key),
+        ]
         if destination_lat is not None and destination_lng is not None:
-            params['markers'] = f'color:blue|label:D|{destination_lat},{destination_lng}'
+            params.append(('markers', f'color:blue|label:D|{destination_lat},{destination_lng}'))
 
         if path_polyline:
-            params['path'] = f'weight:5|color:0x7B3FF3FF|enc:{path_polyline}'
+            safe_path_color = path_color if re.fullmatch(r'[0-9A-Fa-f]{6,8}', path_color) else '7B3FF3FF'
+            params.append(('path', f'weight:5|color:0x{safe_path_color}|enc:{path_polyline}'))
+
+        for segment_polyline, segment_color in route_segments or []:
+            safe_segment_color = segment_color if re.fullmatch(r'[0-9A-Fa-f]{6,8}', segment_color) else '7B3FF3FF'
+            params.append(('path', f'weight:5|color:0x{safe_segment_color}|enc:{segment_polyline}'))
 
         response = requests.get(
             'https://maps.googleapis.com/maps/api/staticmap',
@@ -100,6 +107,13 @@ class MapsService:
                     'place_id': str(item.get('place_id', '')),
                     'name': str(item.get('name', 'Unknown location')),
                     'address': str(item.get('formatted_address', '')),
+                    'hours_text': (
+                        'Open now'
+                        if item.get('opening_hours', {}).get('open_now') is True
+                        else 'Closed now'
+                        if item.get('opening_hours', {}).get('open_now') is False
+                        else None
+                    ),
                     'location': {'lat': float(lat), 'lng': float(lng)},
                 }
             )
@@ -185,6 +199,279 @@ class MapsService:
                 f'&origin={start_lat},{start_lng}'
                 f'&destination={destination_lat},{destination_lng}'
                 '&travelmode=walking'
+                '&dir_action=navigate'
+            ),
+        }
+
+    def get_transit_directions(
+        self,
+        destination_lat: float,
+        destination_lng: float,
+        origin_lat: float | None = None,
+        origin_lng: float | None = None,
+    ) -> dict[str, object]:
+        api_key = self._require_api_key()
+        start_lat = self.UW_CENTER[0] if origin_lat is None else origin_lat
+        start_lng = self.UW_CENTER[1] if origin_lng is None else origin_lng
+
+        response = requests.get(
+            'https://maps.googleapis.com/maps/api/directions/json',
+            params={
+                'origin': f'{start_lat},{start_lng}',
+                'destination': f'{destination_lat},{destination_lng}',
+                'mode': 'transit',
+                'transit_mode': 'bus',
+                'alternatives': 'true',
+                'key': api_key,
+            },
+            timeout=15,
+        )
+        if response.status_code != 200:
+            raise ValueError(f'Google Transit Directions failed: HTTP {response.status_code}')
+
+        payload = response.json()
+        status = payload.get('status')
+        if status != 'OK':
+            error_message = payload.get('error_message', 'Unknown Directions API error')
+            raise ValueError(f'Google Transit Directions failed ({status}): {error_message}')
+
+        routes = payload.get('routes', [])
+        if not routes:
+            raise ValueError('Google Transit Directions returned no routes.')
+
+        def parse_route(route: dict[str, object]) -> dict[str, object] | None:
+            route_legs = route.get('legs', [])
+            if not route_legs:
+                return None
+
+            leg = route_legs[0]
+            transit_legs = []
+            for step in leg.get('steps', []):
+                travel_mode = str(step.get('travel_mode', '')).lower()
+                step_start = step.get('start_location', {})
+                step_end = step.get('end_location', {})
+                encoded_polyline = str(step.get('polyline', {}).get('points', ''))
+                html_instruction = str(step.get('html_instructions', ''))
+                cleaned_instruction = re.sub(r'<[^>]*>', ' ', html_instruction)
+                cleaned_instruction = ' '.join(cleaned_instruction.split())
+
+                nested_steps = []
+                for substep in step.get('steps', []):
+                    sub_html_instruction = str(substep.get('html_instructions', ''))
+                    sub_instruction = re.sub(r'<[^>]*>', ' ', sub_html_instruction)
+                    sub_instruction = ' '.join(sub_instruction.split())
+                    nested_steps.append(
+                        {
+                            'instruction': sub_instruction,
+                            'distance_text': str(substep.get('distance', {}).get('text', '')),
+                            'duration_text': str(substep.get('duration', {}).get('text', '')),
+                            'end_location': {
+                                'lat': float(substep.get('end_location', {}).get('lat', step_end.get('lat', destination_lat))),
+                                'lng': float(substep.get('end_location', {}).get('lng', step_end.get('lng', destination_lng))),
+                            },
+                        }
+                    )
+
+                transit_details_payload = None
+                if travel_mode == 'transit':
+                    transit_details = step.get('transit_details', {})
+                    line = transit_details.get('line', {})
+                    vehicle = line.get('vehicle', {})
+                    transit_details_payload = {
+                        'headsign': str(transit_details.get('headsign', '')),
+                        'line_name': str(line.get('name', '')),
+                        'line_short_name': str(line.get('short_name', '')),
+                        'vehicle_type': str(vehicle.get('type', '')),
+                        'departure_stop': str(transit_details.get('departure_stop', {}).get('name', '')),
+                        'arrival_stop': str(transit_details.get('arrival_stop', {}).get('name', '')),
+                        'departure_location': {
+                            'lat': float(
+                                transit_details.get('departure_stop', {})
+                                .get('location', {})
+                                .get('lat', step_start.get('lat', start_lat))
+                            ),
+                            'lng': float(
+                                transit_details.get('departure_stop', {})
+                                .get('location', {})
+                                .get('lng', step_start.get('lng', start_lng))
+                            ),
+                        },
+                        'arrival_location': {
+                            'lat': float(
+                                transit_details.get('arrival_stop', {})
+                                .get('location', {})
+                                .get('lat', step_end.get('lat', destination_lat))
+                            ),
+                            'lng': float(
+                                transit_details.get('arrival_stop', {})
+                                .get('location', {})
+                                .get('lng', step_end.get('lng', destination_lng))
+                            ),
+                        },
+                        'departure_time': str(transit_details.get('departure_time', {}).get('text', '')),
+                        'arrival_time': str(transit_details.get('arrival_time', {}).get('text', '')),
+                        'num_stops': int(transit_details.get('num_stops', 0)),
+                    }
+
+                transit_legs.append(
+                    {
+                        'type': 'transit' if travel_mode == 'transit' else 'walk',
+                        'distance_text': str(step.get('distance', {}).get('text', '')),
+                        'duration_text': str(step.get('duration', {}).get('text', '')),
+                        'duration_seconds': int(step.get('duration', {}).get('value', 0)),
+                        'start_location': {
+                            'lat': float(step_start.get('lat', start_lat)),
+                            'lng': float(step_start.get('lng', start_lng)),
+                        },
+                        'end_location': {
+                            'lat': float(step_end.get('lat', destination_lat)),
+                            'lng': float(step_end.get('lng', destination_lng)),
+                        },
+                        'overview_polyline': encoded_polyline,
+                        'transit_details': transit_details_payload,
+                        'steps': nested_steps
+                        or [
+                            {
+                                'instruction': cleaned_instruction,
+                                'distance_text': str(step.get('distance', {}).get('text', '')),
+                                'duration_text': str(step.get('duration', {}).get('text', '')),
+                                'end_location': {
+                                    'lat': float(step_end.get('lat', destination_lat)),
+                                    'lng': float(step_end.get('lng', destination_lng)),
+                                },
+                            }
+                        ],
+                    }
+                )
+
+            return {
+                'total_distance_text': str(leg.get('distance', {}).get('text', '')),
+                'total_duration_text': str(leg.get('duration', {}).get('text', '')),
+                'duration_seconds': int(leg.get('duration', {}).get('value', 0)),
+                'legs': transit_legs,
+                'google_maps_url': (
+                    'https://www.google.com/maps/dir/?api=1'
+                    f'&origin={start_lat},{start_lng}'
+                    f'&destination={destination_lat},{destination_lng}'
+                    '&travelmode=transit'
+                    '&dir_action=navigate'
+                ),
+            }
+
+        parsed_routes = [parsed for route in routes[:4] if (parsed := parse_route(route))]
+        if not parsed_routes:
+            raise ValueError('Google Transit Directions returned no route legs.')
+
+        primary = parsed_routes[0]
+        primary['options'] = parsed_routes
+        return primary
+
+        transit_legs = []
+        for step in leg.get('steps', []):
+            travel_mode = str(step.get('travel_mode', '')).lower()
+            step_start = step.get('start_location', {})
+            step_end = step.get('end_location', {})
+            encoded_polyline = str(step.get('polyline', {}).get('points', ''))
+            html_instruction = str(step.get('html_instructions', ''))
+            cleaned_instruction = re.sub(r'<[^>]*>', ' ', html_instruction)
+            cleaned_instruction = ' '.join(cleaned_instruction.split())
+
+            nested_steps = []
+            for substep in step.get('steps', []):
+                sub_html_instruction = str(substep.get('html_instructions', ''))
+                sub_instruction = re.sub(r'<[^>]*>', ' ', sub_html_instruction)
+                sub_instruction = ' '.join(sub_instruction.split())
+                nested_steps.append(
+                    {
+                        'instruction': sub_instruction,
+                        'distance_text': str(substep.get('distance', {}).get('text', '')),
+                        'duration_text': str(substep.get('duration', {}).get('text', '')),
+                        'end_location': {
+                            'lat': float(substep.get('end_location', {}).get('lat', step_end.get('lat', destination_lat))),
+                            'lng': float(substep.get('end_location', {}).get('lng', step_end.get('lng', destination_lng))),
+                        },
+                    }
+                )
+
+            transit_details_payload = None
+            if travel_mode == 'transit':
+                transit_details = step.get('transit_details', {})
+                line = transit_details.get('line', {})
+                vehicle = line.get('vehicle', {})
+                transit_details_payload = {
+                    'headsign': str(transit_details.get('headsign', '')),
+                    'line_name': str(line.get('name', '')),
+                    'line_short_name': str(line.get('short_name', '')),
+                    'vehicle_type': str(vehicle.get('type', '')),
+                    'departure_stop': str(transit_details.get('departure_stop', {}).get('name', '')),
+                    'arrival_stop': str(transit_details.get('arrival_stop', {}).get('name', '')),
+                    'departure_location': {
+                        'lat': float(
+                            transit_details.get('departure_stop', {})
+                            .get('location', {})
+                            .get('lat', step_start.get('lat', start_lat))
+                        ),
+                        'lng': float(
+                            transit_details.get('departure_stop', {})
+                            .get('location', {})
+                            .get('lng', step_start.get('lng', start_lng))
+                        ),
+                    },
+                    'arrival_location': {
+                        'lat': float(
+                            transit_details.get('arrival_stop', {})
+                            .get('location', {})
+                            .get('lat', step_end.get('lat', destination_lat))
+                        ),
+                        'lng': float(
+                            transit_details.get('arrival_stop', {})
+                            .get('location', {})
+                            .get('lng', step_end.get('lng', destination_lng))
+                        ),
+                    },
+                    'num_stops': int(transit_details.get('num_stops', 0)),
+                }
+
+            transit_legs.append(
+                {
+                    'type': 'transit' if travel_mode == 'transit' else 'walk',
+                    'distance_text': str(step.get('distance', {}).get('text', '')),
+                    'duration_text': str(step.get('duration', {}).get('text', '')),
+                    'duration_seconds': int(step.get('duration', {}).get('value', 0)),
+                    'start_location': {
+                        'lat': float(step_start.get('lat', start_lat)),
+                        'lng': float(step_start.get('lng', start_lng)),
+                    },
+                    'end_location': {
+                        'lat': float(step_end.get('lat', destination_lat)),
+                        'lng': float(step_end.get('lng', destination_lng)),
+                    },
+                    'overview_polyline': encoded_polyline,
+                    'transit_details': transit_details_payload,
+                    'steps': nested_steps
+                    or [
+                        {
+                            'instruction': cleaned_instruction,
+                            'distance_text': str(step.get('distance', {}).get('text', '')),
+                            'duration_text': str(step.get('duration', {}).get('text', '')),
+                            'end_location': {
+                                'lat': float(step_end.get('lat', destination_lat)),
+                                'lng': float(step_end.get('lng', destination_lng)),
+                            },
+                        }
+                    ],
+                }
+            )
+
+        return {
+            'total_distance_text': str(leg.get('distance', {}).get('text', '')),
+            'total_duration_text': str(leg.get('duration', {}).get('text', '')),
+            'legs': transit_legs,
+            'google_maps_url': (
+                'https://www.google.com/maps/dir/?api=1'
+                f'&origin={start_lat},{start_lng}'
+                f'&destination={destination_lat},{destination_lng}'
+                '&travelmode=transit'
                 '&dir_action=navigate'
             ),
         }

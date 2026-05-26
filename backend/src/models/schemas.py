@@ -122,12 +122,15 @@ class GoogleLoginResponse(BaseModel):
 class UwStaticMapParams(BaseModel):
     width: int = Field(default=600, ge=200, le=1280)
     height: int = Field(default=320, ge=200, le=1280)
-    zoom: int = Field(default=15, ge=10, le=20)
+    zoom: int = Field(default=15, ge=10, le=21)
     center_lat: float | None = None
     center_lng: float | None = None
     destination_lat: float | None = None
     destination_lng: float | None = None
     path_polyline: str | None = None
+    path_color: str = "7B3FF3FF"
+    route_segment_polyline: list[str] = Field(default_factory=list)
+    route_segment_color: list[str] = Field(default_factory=list)
 
 
 class PlaceSuggestion(BaseModel):
@@ -135,6 +138,7 @@ class PlaceSuggestion(BaseModel):
     name: str
     address: str
     location: Coordinate
+    hours_text: str | None = None
 
 
 class RouteStepDirection(BaseModel):
@@ -142,6 +146,7 @@ class RouteStepDirection(BaseModel):
     distance_text: str
     duration_text: str
     end_location: Coordinate
+    accessibility_note: str | None = None
 
 
 class GoogleDirectionsResponse(BaseModel):
@@ -152,3 +157,38 @@ class GoogleDirectionsResponse(BaseModel):
     overview_polyline: str
     steps: list[RouteStepDirection]
     google_maps_url: str
+
+
+class TransitDetails(BaseModel):
+    headsign: str = ""
+    line_name: str = ""
+    line_short_name: str = ""
+    vehicle_type: str = ""
+    departure_stop: str = ""
+    arrival_stop: str = ""
+    departure_location: Coordinate | None = None
+    arrival_location: Coordinate | None = None
+    departure_time: str = ""
+    arrival_time: str = ""
+    num_stops: int = 0
+
+
+class TransitLeg(BaseModel):
+    type: str
+    distance_text: str
+    duration_text: str
+    duration_seconds: int
+    start_location: Coordinate
+    end_location: Coordinate
+    overview_polyline: str
+    transit_details: TransitDetails | None = None
+    steps: list[RouteStepDirection] = Field(default_factory=list)
+
+
+class TransitRouteResponse(BaseModel):
+    total_distance_text: str
+    total_duration_text: str
+    duration_seconds: int = 0
+    legs: list[TransitLeg]
+    google_maps_url: str
+    options: list["TransitRouteResponse"] = Field(default_factory=list)

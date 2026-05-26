@@ -95,6 +95,7 @@ export type PlaceSuggestion = {
   name: string;
   address: string;
   location: Coordinate;
+  hours_text?: string | null;
 };
 
 export type DirectionsStep = {
@@ -105,12 +106,53 @@ export type DirectionsStep = {
   accessibility_note?: string | null;
 };
 
+export type RouteSegment = {
+  overview_polyline: string;
+  color: string;
+};
+
 export type DirectionsResponse = {
   distance_text: string;
   duration_text: string;
   start_location: Coordinate;
   end_location: Coordinate;
   overview_polyline: string;
+  route_segments?: RouteSegment[];
   steps: DirectionsStep[];
   google_maps_url: string;
+};
+
+export type TransitDetails = {
+  headsign: string;
+  line_name: string;
+  line_short_name: string;
+  vehicle_type: string;
+  departure_stop: string;
+  arrival_stop: string;
+  departure_location?: Coordinate | null;
+  arrival_location?: Coordinate | null;
+  departure_time?: string;
+  arrival_time?: string;
+  num_stops: number;
+};
+
+export type TransitLeg = {
+  type: 'walk' | 'transit';
+  distance_text: string;
+  duration_text: string;
+  duration_seconds: number;
+  start_location: Coordinate;
+  end_location: Coordinate;
+  overview_polyline: string;
+  transit_details?: TransitDetails | null;
+  steps: DirectionsStep[];
+};
+
+export type TransitRouteResponse = {
+  total_distance_text: string;
+  total_duration_text: string;
+  duration_seconds?: number;
+  legs: TransitLeg[];
+  google_maps_url: string;
+  options?: TransitRouteResponse[];
 };

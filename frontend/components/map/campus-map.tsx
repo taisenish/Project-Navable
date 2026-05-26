@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
 
 import { InteractiveMap } from './interactive-map';
-import type { Coordinate, Alert as CampusAlert, Poi } from '../../types/api';
+import type { Coordinate, Alert as CampusAlert, Poi, RouteSegment } from '../../types/api';
 import { decodeGooglePolyline } from '../../utils/polyline';
 
 type Props = {
@@ -15,6 +15,13 @@ type Props = {
   userLocation?: Coordinate | null;
   destination?: Coordinate | null;
   overviewPolyline?: string;
+  routeSegments?: RouteSegment[];
+  routeLineColor?: string;
+  routeStopMarkers?: {
+    id: string;
+    location: Coordinate;
+    color: 'white' | 'red';
+  }[];
   alerts?: CampusAlert[];
   onAlertSelect?: (alert: CampusAlert) => void;
   pois?: Poi[];
@@ -60,6 +67,9 @@ export function CampusMap({
   userLocation,
   destination,
   overviewPolyline,
+  routeSegments,
+  routeLineColor = '#7B3FF3',
+  routeStopMarkers = [],
   alerts = [],
   onAlertSelect,
   pois = [],
@@ -108,6 +118,25 @@ export function CampusMap({
   }, [pois, localCamera.lat, localCamera.lng, localCamera.zoom]);
 
   const polylineCoordinates = useMemo(() => decodeGooglePolyline(overviewPolyline ?? ''), [overviewPolyline]);
+  const routePolylines = useMemo(() => {
+    if (routeSegments?.length) {
+      return routeSegments
+        .map((segment) => ({
+          color: segment.color,
+          coordinates: decodeGooglePolyline(segment.overview_polyline),
+        }))
+        .filter((segment) => segment.coordinates.length > 0);
+    }
+
+    return polylineCoordinates.length
+      ? [
+          {
+            color: routeLineColor,
+            coordinates: polylineCoordinates,
+          },
+        ]
+      : [];
+  }, [polylineCoordinates, routeLineColor, routeSegments]);
 
   if (Platform.OS === 'ios' && AppleMapsView) {
     const annotations = [] as Array<Record<string, unknown>>;
@@ -136,7 +165,18 @@ export function CampusMap({
       });
     }
 
-    // Render alert pins and affected areas on native Apple Maps view
+    routeStopMarkers.forEach((marker) => {
+      markers.push({
+        id: `route-stop-${marker.id}`,
+        coordinates: {
+          latitude: marker.location.lat,
+          longitude: marker.location.lng,
+        },
+        systemImage: 'circle.fill',
+        tintColor: marker.color === 'red' ? '#FF3B30' : '#FFFFFF',
+      });
+    });
+
     alerts.forEach((alert) => {
       if (!alert.location) return;
 
@@ -213,18 +253,14 @@ export function CampusMap({
       });
     });
 
-    const polylines = polylineCoordinates.length
-      ? [
-          {
-            coordinates: polylineCoordinates.map((point) => ({
+    const polylines = routePolylines.map((segment) => ({
+            coordinates: segment.coordinates.map((point) => ({
               latitude: point.lat,
               longitude: point.lng,
             })),
-            color: '#7B3FF3',
+            color: segment.color,
             width: 5,
-          },
-        ]
-      : [];
+          }));
 
     return (
       <View
@@ -305,8 +341,9 @@ export function CampusMap({
       onAlertSelect={onAlertSelect}
       pois={pois}
       onPoiSelect={onPoiSelect}
+      routeLineColor={routeLineColor}
+      routeStopMarkers={routeStopMarkers}
       onUserMapGesture={onUserMapGesture}
     />
   );
 }
-

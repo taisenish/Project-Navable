@@ -10,6 +10,7 @@ import type {
   Poi,
   RouteRequest,
   RouteResponse,
+  TransitRouteResponse,
   UserPreferenceRecord,
 } from '../types/api';
 
@@ -79,5 +80,23 @@ export const api = {
       params.set('origin_lng', String(payload.originLng));
     }
     return request<DirectionsResponse>(`/maps/directions?${params.toString()}`);
+  },
+  getTransitRoute: (payload: {
+    destinationLat: number;
+    destinationLng: number;
+    originLat?: number;
+    originLng?: number;
+  }) => {
+    const params = new URLSearchParams({
+      destination_lat: String(payload.destinationLat),
+      destination_lng: String(payload.destinationLng),
+    });
+    if (payload.originLat !== undefined) {
+      params.set('origin_lat', String(payload.originLat));
+    }
+    if (payload.originLng !== undefined) {
+      params.set('origin_lng', String(payload.originLng));
+    }
+    return request<TransitRouteResponse>(`/route/transit?${params.toString()}`);
   },
 };

@@ -31,6 +31,12 @@ type InteractiveMapProps = {
   onAlertSelect?: (alert: CampusAlert) => void;
   pois?: Poi[];
   onPoiSelect?: (poi: Poi) => void;
+  routeLineColor?: string;
+  routeStopMarkers?: {
+    id: string;
+    location: { lat: number; lng: number };
+    color: 'white' | 'red';
+  }[];
   onUserMapGesture?: () => void;
 };
 
@@ -93,6 +99,7 @@ export function InteractiveMap({
   onAlertSelect,
   pois = [],
   onPoiSelect,
+  routeStopMarkers = [],
   onUserMapGesture,
 }: InteractiveMapProps) {
   const viewportW = useSharedValue(1);
@@ -263,6 +270,21 @@ export function InteractiveMap({
       });
   }, [pois, centerLat, centerLng, zoom, viewport.width, viewport.height]);
 
+  const routeStopDots = useMemo(() => {
+    const mapCenterPx = latLngToWorldPixels(centerLat, centerLng, zoom);
+
+    return routeStopMarkers.map((marker) => {
+      const px = latLngToWorldPixels(marker.location.lat, marker.location.lng, zoom);
+      const dx = px.x - mapCenterPx.x;
+      const dy = px.y - mapCenterPx.y;
+      return {
+        ...marker,
+        left: viewport.width / 2 + dx - 7,
+        top: viewport.height / 2 + dy - 7,
+      };
+    });
+  }, [centerLat, centerLng, routeStopMarkers, viewport.height, viewport.width, zoom]);
+
   return (
     <View style={styles.wrapper} onLayout={onLayout}>
       <GestureDetector gesture={Gesture.Simultaneous(pan, pinch)}>
@@ -281,7 +303,20 @@ export function InteractiveMap({
               </View>
             ) : null}
 
-            {/* Custom styled absolute positioned alert overlays */}
+            {routeStopDots.map((marker) => (
+              <View
+                key={marker.id}
+                style={[
+                  styles.routeStopDot,
+                  {
+                    left: marker.left,
+                    top: marker.top,
+                    backgroundColor: marker.color === 'red' ? '#FF3B30' : '#FFFFFF',
+                  },
+                ]}
+              />
+            ))}
+
             {alertMarkers.map(({ alert, left, top, markerColor, iconName, isResolved }) => (
               <View key={`container-${alert.id}`} style={{ position: 'absolute' }}>
                 <View
@@ -472,5 +507,18 @@ const styles = StyleSheet.create({
     textShadowRadius: 1.5,
     maxWidth: 76,
   },
+  routeStopDot: {
+    position: 'absolute',
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    borderWidth: 2,
+    borderColor: '#1B1D27',
+    shadowColor: '#000000',
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 4,
+    zIndex: 13,
+  },
 });
-

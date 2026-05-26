@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 
 from src.models.schemas import GoogleDirectionsResponse, PlaceSuggestion, UwStaticMapParams
@@ -13,12 +15,15 @@ router = APIRouter()
 def get_uw_static_map(
     width: int = Query(default=600, ge=200, le=1280),
     height: int = Query(default=320, ge=200, le=1280),
-    zoom: int = Query(default=15, ge=10, le=20),
+    zoom: int = Query(default=15, ge=10, le=21),
     center_lat: float | None = Query(default=None),
     center_lng: float | None = Query(default=None),
     destination_lat: float | None = Query(default=None),
     destination_lng: float | None = Query(default=None),
     path_polyline: str | None = Query(default=None),
+    path_color: str = Query(default="7B3FF3FF", pattern=r"^[0-9A-Fa-f]{6,8}$"),
+    route_segment_polyline: Annotated[list[str], Query()] = [],
+    route_segment_color: Annotated[list[str], Query()] = [],
     maps_service: MapsService = Depends(get_maps_service),
 ) -> Response:
     try:
@@ -31,6 +36,9 @@ def get_uw_static_map(
             destination_lat=destination_lat,
             destination_lng=destination_lng,
             path_polyline=path_polyline,
+            path_color=path_color,
+            route_segment_polyline=route_segment_polyline,
+            route_segment_color=route_segment_color,
         )
         image_bytes = maps_service.get_uw_static_map(
             width=params.width,
@@ -41,6 +49,8 @@ def get_uw_static_map(
             destination_lat=params.destination_lat,
             destination_lng=params.destination_lng,
             path_polyline=params.path_polyline,
+            path_color=params.path_color,
+            route_segments=list(zip(params.route_segment_polyline, params.route_segment_color, strict=False)),
         )
     except Exception as exc:
         raise HTTPException(

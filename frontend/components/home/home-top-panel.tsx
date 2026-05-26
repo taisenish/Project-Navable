@@ -1,4 +1,6 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { ActivityIndicator, Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 
 import { homeStyles as styles } from '../../styles/home.styles';
@@ -11,11 +13,20 @@ type HomeTopPanelProps = {
   searchResults: PlaceSuggestion[];
   showSelectedPlaceIntroCard: boolean;
   selectedPlace: PlaceSuggestion | null;
-  routeSummary: string | null;
+  routeDistanceText: string | null;
+  routeArrivalText: string | null;
+  walkRouteSummary: string | null;
+  hasDirections: boolean;
+  isRouting: boolean;
+  routeMode: 'walk' | 'bus';
+  hasBusOption: boolean;
+  busRouteSummary: string | null;
   onSearchChange: (value: string) => void;
   onSubmitSearch: () => void;
   onClearSearch: () => void;
   onSelectPlace: (place: PlaceSuggestion) => void;
+  onSelectRouteMode: (mode: 'walk' | 'bus') => void;
+  onRequestDirections: () => void;
   onStartNavigation: () => void;
   onCancelRoute: () => void;
 };
@@ -27,11 +38,20 @@ export function HomeTopPanel({
   searchResults,
   showSelectedPlaceIntroCard,
   selectedPlace,
-  routeSummary,
+  routeDistanceText,
+  routeArrivalText,
+  walkRouteSummary,
+  hasDirections,
+  isRouting,
+  routeMode,
+  hasBusOption,
+  busRouteSummary,
   onSearchChange,
   onSubmitSearch,
   onClearSearch,
   onSelectPlace,
+  onSelectRouteMode,
+  onRequestDirections,
   onStartNavigation,
   onCancelRoute,
 }: HomeTopPanelProps) {
@@ -95,8 +115,57 @@ export function HomeTopPanel({
         <View style={styles.selectedPlaceCard}>
           <View style={styles.selectedPlaceTextWrap}>
             <Text style={styles.selectedPlaceName}>{selectedPlace?.name ?? ''}</Text>
-            <Text style={styles.selectedPlaceAddress}>{selectedPlace?.address ?? ''}</Text>
-            {routeSummary ? <Text style={styles.selectedPlaceMeta}>{routeSummary}</Text> : null}
+            {hasDirections ? (
+              <>
+                {routeArrivalText ? <Text style={styles.selectedPlaceAddress}>{routeArrivalText}</Text> : null}
+                {routeDistanceText ? <Text style={styles.selectedPlaceMeta}>{routeDistanceText}</Text> : null}
+              </>
+            ) : (
+              <>
+                <Text style={styles.selectedPlaceAddress}>{selectedPlace?.address ?? ''}</Text>
+                <Text style={styles.selectedPlaceMeta}>{selectedPlace?.hours_text ?? 'Hours unavailable'}</Text>
+              </>
+            )}
+            {hasDirections ? (
+              <>
+                <View style={styles.routeModeRow}>
+                  <Pressable
+                    style={[styles.routeModeButton, routeMode === 'walk' && styles.routeModeButtonActive]}
+                    onPress={() => onSelectRouteMode('walk')}
+                    accessibilityRole="button"
+                    accessibilityLabel="Use walking route">
+                    <FontAwesome5 name="walking" size={24} color="black" />
+                    {walkRouteSummary ? (
+                      <Text style={[styles.routeModeButtonText, routeMode === 'walk' && styles.routeModeButtonTextActive]}>
+                        {walkRouteSummary}
+                      </Text>
+                    ) : null}
+                  </Pressable>
+                  <Pressable
+                    disabled={!hasBusOption}
+                    style={[
+                      styles.routeModeButton,
+                      !hasBusOption && styles.routeModeButtonDisabled,
+                      routeMode === 'bus' && styles.routeModeButtonActive,
+                    ]}
+                    onPress={() => onSelectRouteMode('bus')}
+                    accessibilityRole="button"
+                    accessibilityLabel={hasBusOption ? 'Use public transport route' : 'No public transport route available'}>
+                    <FontAwesome6 name="train-subway" size={24} color="black" />
+                    {busRouteSummary ? (
+                      <Text
+                        style={[
+                          styles.routeModeButtonText,
+                          !hasBusOption && styles.routeModeButtonTextDisabled,
+                          routeMode === 'bus' && styles.routeModeButtonTextActive,
+                        ]}>
+                        {busRouteSummary}
+                      </Text>
+                    ) : null}
+                  </Pressable>
+                </View>
+              </>
+            ) : null}
           </View>
           <View style={styles.selectedPlaceActionStack}>
             <Pressable
@@ -106,13 +175,24 @@ export function HomeTopPanel({
               accessibilityLabel="Cancel route">
               <Text style={styles.selectedPlaceCancelButtonText}>Cancel</Text>
             </Pressable>
-            <Pressable
-              style={styles.selectedPlaceButton}
-              onPress={onStartNavigation}
-              accessibilityRole="button"
-              accessibilityLabel="Start navigation">
-              <Text style={styles.selectedPlaceButtonText}>Start</Text>
-            </Pressable>
+            {hasDirections ? (
+              <Pressable
+                style={styles.selectedPlaceButton}
+                onPress={onStartNavigation}
+                accessibilityRole="button"
+                accessibilityLabel="Start navigation">
+                <Text style={styles.selectedPlaceButtonText}>Start</Text>
+              </Pressable>
+            ) : (
+              <Pressable
+                disabled={isRouting}
+                style={[styles.selectedPlaceButton, isRouting && styles.selectedPlaceButtonDisabled]}
+                onPress={onRequestDirections}
+                accessibilityRole="button"
+                accessibilityLabel="Get directions">
+                <Text style={styles.selectedPlaceButtonText}>{isRouting ? 'Loading' : 'Directions'}</Text>
+              </Pressable>
+            )}
           </View>
         </View>
       ) : null}

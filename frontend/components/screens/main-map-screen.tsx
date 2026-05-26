@@ -11,6 +11,7 @@ import {
   Easing,
   Keyboard,
   Linking,
+  PanResponder,
   Pressable,
   ScrollView,
   Text,
@@ -25,15 +26,16 @@ import { useRouteCache } from '../../hooks/use-route-cache';
 import { api } from '../../services/api';
 import { config } from '../../services/config';
 import { homeStyles as styles } from '../../styles/home.styles';
-import type { AccessibilityPreferences, Alert as CampusAlert, DirectionsResponse, PlaceSuggestion, Poi, RouteResponse } from '../../types/api';
+import type { AccessibilityPreferences, Alert as CampusAlert, DirectionsResponse, PlaceSuggestion, Poi, RouteResponse, RouteSegment, TransitRouteResponse } from '../../types/api';
 import { decodeGooglePolyline } from '../../utils/polyline';
-import { mapRouteToDirections } from '../../utils/route-mapper';
+import { mapRouteToDirections, mapTransitRouteToDirections } from '../../utils/route-mapper';
 import { storage } from '../../utils/storage';
 import { ttsService } from '../../services/tts';
 
 const UW_CENTER = { lat: 47.6553, lng: -122.3035 };
 const UW_FOUNTAIN_CENTER = { lat: 47.6539, lng: -122.3078 };
 const DEFAULT_MAP_ZOOM = 14;
+const PLACE_FOCUS_ZOOM = 70;
 const NAVIGATION_MAP_ZOOM = 17;
 const OVERVIEW_MIN_ZOOM = 13;
 
@@ -45,6 +47,11 @@ type MapState = {
 };
 
 type NavigationCameraMode = 'follow' | 'overview' | 'free';
+type RouteStopMarker = {
+  id: string;
+  location: { lat: number; lng: number };
+  color: 'white' | 'red';
+};
 
 function buildMapState(params?: {
   centerLat?: number;
@@ -52,6 +59,8 @@ function buildMapState(params?: {
   destinationLat?: number;
   destinationLng?: number;
   pathPolyline?: string;
+  pathColor?: string;
+  routeSegments?: RouteSegment[];
   zoom?: number;
 }): MapState {
   const centerLat = params?.centerLat ?? UW_CENTER.lat;
@@ -71,9 +80,16 @@ function buildMapState(params?: {
   if (params?.destinationLng !== undefined) {
     search.set('destination_lng', String(params.destinationLng));
   }
-  if (params?.pathPolyline) {
+  if (params?.pathPolyline && !params.routeSegments?.length) {
     search.set('path_polyline', params.pathPolyline);
   }
+  if (params?.pathColor) {
+    search.set('path_color', params.pathColor);
+  }
+  params?.routeSegments?.forEach((segment) => {
+    search.append('route_segment_polyline', segment.overview_polyline);
+    search.append('route_segment_color', segment.color.replace('#', ''));
+  });
 
   return {
     url: `${config.apiBaseUrl}/maps/uw-static?${search.toString()}`,
@@ -162,6 +178,15 @@ export function MainMapScreen() {
   const [isSearching, setIsSearching] = useState(false);
   const [isRouting, setIsRouting] = useState(false);
   const [directions, setDirections] = useState<DirectionsResponse | null>(null);
+  const [walkingDirections, setWalkingDirections] = useState<DirectionsResponse | null>(null);
+  const [busDirections, setBusDirections] = useState<DirectionsResponse | null>(null);
+  const [transitOptions, setTransitOptions] = useState<TransitRouteResponse[]>([]);
+  const [selectedTransitOptionIndex, setSelectedTransitOptionIndex] = useState(0);
+  const [isTransitDetailsOpen, setIsTransitDetailsOpen] = useState(false);
+  const [isTransitDetailsVisible, setIsTransitDetailsVisible] = useState(false);
+  const [isTransitSheetOpen, setIsTransitSheetOpen] = useState(false);
+  const [busStopMarkers, setBusStopMarkers] = useState<RouteStopMarker[]>([]);
+  const [routeMode, setRouteMode] = useState<'walk' | 'bus'>('walk');
   const [isNavigating, setIsNavigating] = useState(false);
   const [navigationCameraMode, setNavigationCameraMode] = useState<NavigationCameraMode>('follow');
   const [activeStepIndex, setActiveStepIndex] = useState(0);
@@ -185,6 +210,8 @@ export function MainMapScreen() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number; heading?: number } | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
   const suppressMapGestureUntilRef = useRef(0);
+  const transitSheetAnim = useRef(new Animated.Value(0)).current;
+  const transitDetailsAnim = useRef(new Animated.Value(0)).current;
 
   const spoofedCoords = useMemo(() => {
     if (!config.spoofLocation) {
@@ -390,13 +417,246 @@ export function MainMapScreen() {
     return null;
   }, [directions, route]);
 
-  const onSelectPlace = async (place: PlaceSuggestion) => {
+  const busRouteSummary = useMemo(() => {
+    if (!busDirections) {
+      return null;
+    }
+    return `${busDirections.duration_text}`;
+  }, [busDirections]);
+
+  const walkRouteSummary = useMemo(() => {
+    if (!walkingDirections) {
+      return null;
+    }
+    return walkingDirections.duration_text;
+  }, [walkingDirections]);
+
+  const routeDistanceText = directions?.distance_text ?? null;
+
+  const routeArrivalText = useMemo(() => {
+    if (!directions?.duration_text) {
+      return null;
+    }
+
+    const hoursMatch = directions.duration_text.match(/(\d+)\s*hour/i);
+    const minsMatch = directions.duration_text.match(/(\d+)\s*min/i);
+    const totalMinutes = (hoursMatch ? Number(hoursMatch[1]) * 60 : 0) + (minsMatch ? Number(minsMatch[1]) : 0);
+    if (!totalMinutes) {
+      return `Arrive in ${directions.duration_text}`;
+    }
+
+    const arrival = new Date(Date.now() + totalMinutes * 60 * 1000);
+    return `Arrive by ${arrival.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
+  }, [directions]);
+
+  const publicTransportOptions = useMemo(
+    () =>
+      transitOptions.map((option, index) => {
+        const transitLegs = option.legs.filter((leg) => leg.type === 'transit');
+        const busName =
+          transitLegs
+            .map((leg) => leg.transit_details?.line_short_name || leg.transit_details?.line_name)
+            .filter(Boolean)
+            .join(' + ') || 'Transit';
+        const firstTransit = transitLegs[0]?.transit_details;
+        const lastTransit = transitLegs[transitLegs.length - 1]?.transit_details;
+        const timeline = option.legs
+          .map((leg) => {
+            if (leg.type === 'walk') {
+              return `Walk ${leg.duration_text}`;
+            }
+            const details = leg.transit_details;
+            const line = details?.line_short_name || details?.line_name || 'Bus';
+            return `${line} ${leg.duration_text}`;
+          })
+          .join(' -> ');
+        const details = option.legs.map((leg) => {
+          if (leg.type === 'walk') {
+            return `Walk ${leg.duration_text} (${leg.distance_text})`;
+          }
+          const details = leg.transit_details;
+          const line = details?.line_short_name || details?.line_name || 'Bus';
+          const departure = details?.departure_time ? ` at ${details.departure_time}` : '';
+          const arrival = details?.arrival_time ? `, arrive ${details.arrival_time}` : '';
+          return `Take ${line} from ${details?.departure_stop || 'stop'}${departure} to ${details?.arrival_stop || 'stop'}${arrival}`;
+        });
+
+        return {
+          id: `transit-option-${index}`,
+          busName,
+          timeline,
+          durationText: option.total_duration_text,
+          leaveText: firstTransit?.departure_time ? `Leave by ${firstTransit.departure_time}` : null,
+          arrivalText: lastTransit?.arrival_time ? `Arrive ${lastTransit.arrival_time}` : null,
+          details,
+          isSelected: index === selectedTransitOptionIndex,
+        };
+      }),
+    [selectedTransitOptionIndex, transitOptions],
+  );
+
+  const selectedPublicTransportOption = publicTransportOptions.find((option) => option.isSelected) ?? publicTransportOptions[0] ?? null;
+
+  const transitSheetPanResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_, gestureState) => Math.abs(gestureState.dy) > 12,
+        onPanResponderRelease: (_, gestureState) => {
+          if (gestureState.dy > 36) {
+            setIsTransitSheetOpen(false);
+          } else if (gestureState.dy < -36) {
+            setIsTransitSheetOpen(true);
+          }
+        },
+      }),
+    [],
+  );
+
+  useEffect(() => {
+    Animated.timing(transitSheetAnim, {
+      toValue: isTransitSheetOpen ? 1 : 0,
+      duration: 240,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, [isTransitSheetOpen, transitSheetAnim]);
+
+  useEffect(() => {
+    if (isTransitDetailsOpen) {
+      setIsTransitDetailsVisible(true);
+      Animated.timing(transitDetailsAnim, {
+        toValue: 1,
+        duration: 220,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }).start();
+      return;
+    }
+
+    Animated.timing(transitDetailsAnim, {
+      toValue: 0,
+      duration: 180,
+      easing: Easing.in(Easing.cubic),
+      useNativeDriver: true,
+    }).start(({ finished }) => {
+      if (finished) {
+        setIsTransitDetailsVisible(false);
+      }
+    });
+  }, [isTransitDetailsOpen, transitDetailsAnim]);
+
+  const applyActiveDirections = (nextDirections: DirectionsResponse, mode: 'walk' | 'bus') => {
+    setDirections(nextDirections);
+    setRouteMode(mode);
+    setIsNavigating(false);
+    setHasStartedNavigationForSelection(false);
+    setNavigationCameraMode('follow');
+    setActiveStepIndex(0);
+    setMapState(
+      buildMapState({
+        centerLat: nextDirections.end_location.lat,
+        centerLng: nextDirections.end_location.lng,
+        destinationLat: nextDirections.end_location.lat,
+        destinationLng: nextDirections.end_location.lng,
+        pathPolyline: nextDirections.overview_polyline,
+        pathColor: '7B3FF3FF',
+        routeSegments: nextDirections.route_segments,
+        zoom: DEFAULT_MAP_ZOOM,
+      }),
+    );
+  };
+
+  const buildTransitStopMarkers = (transitRoute: TransitRouteResponse): RouteStopMarker[] => {
+    const transitLegs = transitRoute.legs.filter((leg) => leg.type === 'transit');
+    return transitLegs.flatMap((leg, index) => {
+      const details = leg.transit_details;
+      return [
+        {
+          id: `bus-stop-${index}-departure`,
+          location: details?.departure_location ?? leg.start_location,
+          color: 'white' as const,
+        },
+        {
+          id: `bus-stop-${index}-arrival`,
+          location: details?.arrival_location ?? leg.end_location,
+          color: index === transitLegs.length - 1 ? ('red' as const) : ('white' as const),
+        },
+      ];
+    });
+  };
+
+  const selectTransitOption = (index: number, options = transitOptions) => {
+    const transitRoute = options[index];
+    if (!transitRoute) {
+      return;
+    }
+
+    const nextDirections = mapTransitRouteToDirections(transitRoute);
+    setSelectedTransitOptionIndex(index);
+    setBusDirections(nextDirections);
+    setBusStopMarkers(buildTransitStopMarkers(transitRoute));
+    if (routeMode === 'bus') {
+      setIsTransitSheetOpen(true);
+    }
+    if (routeMode === 'bus') {
+      applyActiveDirections(nextDirections, 'bus');
+    }
+  };
+
+  const onSelectRouteMode = (mode: 'walk' | 'bus') => {
+    const nextDirections = mode === 'bus' ? busDirections : walkingDirections;
+    if (!nextDirections) {
+      return;
+    }
+    if (mode === 'bus') {
+      setIsTransitSheetOpen(true);
+    }
+    applyActiveDirections(nextDirections, mode);
+  };
+
+  const clearRouteSelection = () => {
+    setDirections(null);
+    setWalkingDirections(null);
+    setBusDirections(null);
+    setTransitOptions([]);
+    setSelectedTransitOptionIndex(0);
+    setIsTransitDetailsOpen(false);
+    setIsTransitDetailsVisible(false);
+    setIsTransitSheetOpen(false);
+    setBusStopMarkers([]);
+    setRouteMode('walk');
+    setIsNavigating(false);
+    setHasStartedNavigationForSelection(false);
+    setNavigationCameraMode('follow');
+    setActiveStepIndex(0);
+  };
+
+  const onSelectPlace = (place: PlaceSuggestion, options: { focusMap?: boolean } = { focusMap: true }) => {
     Keyboard.dismiss();
     setSearchQuery(place.name);
     setSelectedPlace(place);
     setSearchResults([]);
+    clearRouteSelection();
     setError(null);
+    if (options.focusMap) {
+      setMapState(
+        buildMapState({
+          centerLat: place.location.lat,
+          centerLng: place.location.lng,
+          destinationLat: place.location.lat,
+          destinationLng: place.location.lng,
+          zoom: PLACE_FOCUS_ZOOM,
+        }),
+      );
+    }
+  };
 
+  const onRequestDirections = async () => {
+    if (!selectedPlace) {
+      return;
+    }
+
+    const place = selectedPlace;
     try {
       setIsRouting(true);
       const origin = userLocation ?? UW_CENTER;
@@ -467,22 +727,26 @@ export function MainMapScreen() {
 
       // Convert backend route segments into compatible front-end DirectionsResponse
       const nextDirections = mapRouteToDirections(routeResponse);
+      setWalkingDirections(nextDirections);
+      applyActiveDirections(nextDirections, 'walk');
 
-      setDirections(nextDirections);
-      setIsNavigating(false);
-      setHasStartedNavigationForSelection(false);
-      setNavigationCameraMode('follow');
-      setActiveStepIndex(0);
-      setMapState(
-        buildMapState({
-          centerLat: place.location.lat,
-          centerLng: place.location.lng,
-          destinationLat: nextDirections.end_location.lat,
-          destinationLng: nextDirections.end_location.lng,
-          pathPolyline: nextDirections.overview_polyline,
-          zoom: DEFAULT_MAP_ZOOM,
-        }),
-      );
+      try {
+        const transitRoute = await api.getTransitRoute({
+          originLat: origin.lat,
+          originLng: origin.lng,
+          destinationLat: routingDestination.lat,
+          destinationLng: routingDestination.lng,
+        });
+        const nextTransitOptions = (transitRoute.options?.length ? transitRoute.options : [transitRoute]).filter((option) =>
+          option.legs.some((leg) => leg.type === 'transit'),
+        );
+        if (nextTransitOptions.length) {
+          setTransitOptions(nextTransitOptions);
+          selectTransitOption(0, nextTransitOptions);
+        }
+      } catch (transitErr) {
+        console.warn('No bus route available for this destination.', transitErr);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to build navigation route');
     } finally {
@@ -513,15 +777,15 @@ export function MainMapScreen() {
     setSearchQuery(value);
     if (selectedPlace && value.trim() !== selectedPlace.name) {
       setSelectedPlace(null);
+      clearRouteSelection();
     }
   };
 
   const onClearSearch = () => {
     setSearchQuery('');
     setSearchResults([]);
-    if (!directions) {
-      setSelectedPlace(null);
-    }
+    setSelectedPlace(null);
+    clearRouteSelection();
     Keyboard.dismiss();
   };
 
@@ -529,6 +793,8 @@ export function MainMapScreen() {
     if (!directions) {
       return;
     }
+    setIsTransitSheetOpen(false);
+    setIsTransitDetailsOpen(false);
     setIsNavigating(true);
     setHasStartedNavigationForSelection(true);
     setNavigationCameraMode('follow');
@@ -543,11 +809,7 @@ export function MainMapScreen() {
 
   const exitRoute = () => {
     Keyboard.dismiss();
-    setDirections(null);
-    setIsNavigating(false);
-    setHasStartedNavigationForSelection(false);
-    setNavigationCameraMode('follow');
-    setActiveStepIndex(0);
+    clearRouteSelection();
     setSearchResults([]);
     setSelectedPlace(null);
     setSearchQuery('');
@@ -561,7 +823,7 @@ export function MainMapScreen() {
   };
 
   const activeStep = isNavigating ? directions?.steps[activeStepIndex] ?? null : null;
-  const showSelectedPlaceIntroCard = Boolean(selectedPlace && directions && !isNavigating && !hasStartedNavigationForSelection);
+  const showSelectedPlaceIntroCard = Boolean(selectedPlace && !isNavigating && !hasStartedNavigationForSelection);
   const followCameraHeading = useMemo(() => {
     if (isNavigating && navigationCameraMode === 'follow' && userLocation && activeStep) {
       return bearingDegrees(userLocation, activeStep.end_location);
@@ -630,6 +892,8 @@ export function MainMapScreen() {
           destinationLat: directions.end_location.lat,
           destinationLng: directions.end_location.lng,
           pathPolyline: directions.overview_polyline,
+          pathColor: '7B3FF3FF',
+          routeSegments: directions.route_segments,
           zoom: overview.zoom,
         }),
       );
@@ -647,6 +911,8 @@ export function MainMapScreen() {
         destinationLat: directions.end_location.lat,
         destinationLng: directions.end_location.lng,
         pathPolyline: directions.overview_polyline,
+        pathColor: '7B3FF3FF',
+        routeSegments: directions.route_segments,
         zoom: NAVIGATION_MAP_ZOOM,
       }),
     );
@@ -661,11 +927,20 @@ export function MainMapScreen() {
         searchResults={searchResults}
         showSelectedPlaceIntroCard={showSelectedPlaceIntroCard}
         selectedPlace={selectedPlace}
-        routeSummary={routeSummary}
+        routeDistanceText={routeDistanceText}
+        routeArrivalText={routeArrivalText}
+        walkRouteSummary={walkRouteSummary}
+        hasDirections={Boolean(directions)}
+        isRouting={isRouting}
+        routeMode={routeMode}
+        hasBusOption={Boolean(busDirections)}
+        busRouteSummary={busRouteSummary}
         onSearchChange={onSearchChange}
         onSubmitSearch={() => void onSubmitSearch()}
         onClearSearch={onClearSearch}
         onSelectPlace={(place) => void onSelectPlace(place)}
+        onSelectRouteMode={onSelectRouteMode}
+        onRequestDirections={() => void onRequestDirections()}
         onStartNavigation={startNavigation}
         onCancelRoute={exitRoute}
       />
@@ -705,20 +980,26 @@ export function MainMapScreen() {
             centerLng={mapState.centerLng}
             zoom={mapState.zoom}
             userLocation={userLocation}
-            destination={directions?.end_location ?? null}
+            destination={directions?.end_location ?? selectedPlace?.location ?? null}
             overviewPolyline={directions?.overview_polyline}
+            routeSegments={directions?.route_segments}
+            routeLineColor="#7B3FF3"
+            routeStopMarkers={routeMode === 'bus' ? busStopMarkers : []}
             isNavigating={isNavigating && navigationCameraMode === 'follow'}
             cameraHeading={followCameraHeading}
             alerts={alerts}
             onAlertSelect={setSelectedAlert}
             pois={pois}
             onPoiSelect={(poi) => {
-              void onSelectPlace({
-                place_id: poi.id,
-                name: poi.name,
-                address: `Campus POI: ${poi.type}`,
-                location: poi.location,
-              });
+              void onSelectPlace(
+                {
+                  place_id: poi.id,
+                  name: poi.name,
+                  address: `Campus POI: ${poi.type}`,
+                  location: poi.location,
+                },
+                { focusMap: false },
+              );
             }}
             onUserMapGesture={() => {
               if (Date.now() < suppressMapGestureUntilRef.current) {
@@ -764,6 +1045,105 @@ export function MainMapScreen() {
                 void ttsService.speak(speechText);
               }}
             />
+          ) : null}
+
+          {routeMode === 'bus' && publicTransportOptions.length && !isNavigating && !hasStartedNavigationForSelection ? (
+            <Animated.View
+              style={[
+                styles.transitSheet,
+                {
+                  transform: [
+                    {
+                      translateY: transitSheetAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [262, 0],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+              {...transitSheetPanResponder.panHandlers}>
+              <Pressable
+                style={styles.transitSheetHandleArea}
+                onPress={() => setIsTransitSheetOpen((open) => !open)}
+                accessibilityRole="button"
+                accessibilityLabel={isTransitSheetOpen ? 'Hide public transport options' : 'Show public transport options'}>
+                <View style={styles.transitSheetHandle} />
+                <View style={styles.transitSheetHeader}>
+                  <Text style={styles.transitSheetTitle}>Public transport options</Text>
+                  <Text style={styles.transitSheetMeta}>
+                    {selectedPublicTransportOption?.busName ?? 'Transit'} · {selectedPublicTransportOption?.durationText ?? ''}
+                  </Text>
+                </View>
+              </Pressable>
+
+              {isTransitSheetOpen ? (
+                <ScrollView style={styles.transitSheetScroll} contentContainerStyle={styles.transitSheetContent} nestedScrollEnabled>
+                  {publicTransportOptions.map((option, index) => (
+                    <Pressable
+                      key={option.id}
+                      style={[styles.transitOption, option.isSelected && styles.transitOptionActive]}
+                      onPress={() => selectTransitOption(index)}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Select ${option.busName} public transport option`}>
+                      <View style={styles.transitOptionHeader}>
+                        <Text style={styles.transitOptionName}>{option.busName}</Text>
+                        <Text style={styles.transitOptionDuration}>{option.durationText}</Text>
+                      </View>
+                      <Text style={styles.transitTimeline}>{option.timeline}</Text>
+                      <Text style={styles.transitMeta}>{option.leaveText ?? option.arrivalText ?? 'Next available departure'}</Text>
+                      {option.isSelected ? (
+                        <Pressable style={styles.transitDetailsInlineButton} onPress={() => setIsTransitDetailsOpen(true)}>
+                          <Text style={styles.transitDetailsButtonText}>Details</Text>
+                        </Pressable>
+                      ) : null}
+                    </Pressable>
+                  ))}
+                </ScrollView>
+              ) : null}
+            </Animated.View>
+          ) : null}
+
+          {isTransitDetailsVisible && selectedPublicTransportOption ? (
+            <View style={styles.transitDetailsOverlay}>
+              <Pressable style={styles.transitDetailsBackdrop} onPress={() => setIsTransitDetailsOpen(false)} />
+              <Animated.View
+                style={[
+                  styles.transitDetailsPopup,
+                  {
+                    opacity: transitDetailsAnim,
+                    transform: [
+                      {
+                        translateY: transitDetailsAnim.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [28, 0],
+                        }),
+                      },
+                    ],
+                  },
+                ]}>
+                <View style={styles.transitDetailsPopupHeader}>
+                  <View>
+                    <Text style={styles.transitDetailsPopupTitle}>{selectedPublicTransportOption.busName}</Text>
+                    <Text style={styles.transitDetailsPopupMeta}>{selectedPublicTransportOption.durationText}</Text>
+                  </View>
+                  <Pressable
+                    style={styles.transitDetailsCloseButton}
+                    onPress={() => setIsTransitDetailsOpen(false)}
+                    accessibilityRole="button"
+                    accessibilityLabel="Close transit route details">
+                    <AntDesign name="close" size={16} color="#FFFFFF" />
+                  </Pressable>
+                </View>
+                <ScrollView style={styles.transitDetailsPopupScroll} contentContainerStyle={styles.transitDetailsList}>
+                  {selectedPublicTransportOption.details.map((detail, index) => (
+                    <Text key={`${detail}-${index}`} style={styles.transitDetailText}>
+                      {index + 1}. {detail}
+                    </Text>
+                  ))}
+                </ScrollView>
+              </Animated.View>
+            </View>
           ) : null}
 
           {/* 🔴 Active / Resolved Alert Details Popup Card */}
