@@ -47,6 +47,7 @@ class RouteStep(BaseModel):
     instruction: str
     distance_meters: int
     accessibility_note: str | None = None
+    end_location: Coordinate | None = None
 
 
 class RouteLeg(BaseModel):

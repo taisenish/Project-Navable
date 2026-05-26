@@ -42,6 +42,57 @@ def haversine_distance(lat1: float, lon1: float, lat2: float, lon2: float) -> fl
     return R * c
 
 
+def calculate_bearing(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Calculate bearing from point 1 to point 2 in degrees (0-360)."""
+    d_lon = math.radians(lon2 - lon1)
+    lat1_rad = math.radians(lat1)
+    lat2_rad = math.radians(lat2)
+    y = math.sin(d_lon) * math.cos(lat2_rad)
+    x = math.cos(lat1_rad) * math.sin(lat2_rad) - math.sin(lat1_rad) * math.cos(lat2_rad) * math.cos(d_lon)
+    bearing = math.atan2(y, x)
+    return (math.degrees(bearing) + 360) % 360
+
+
+def get_cardinal_direction(bearing: float) -> str:
+    """Map bearing degrees to the nearest cardinal/intercardinal direction."""
+    if bearing < 22.5 or bearing >= 337.5:
+        return "North"
+    elif bearing < 67.5:
+        return "Northeast"
+    elif bearing < 112.5:
+        return "East"
+    elif bearing < 157.5:
+        return "Southeast"
+    elif bearing < 202.5:
+        return "South"
+    elif bearing < 247.5:
+        return "Southwest"
+    elif bearing < 292.5:
+        return "West"
+    else:
+        return "Northwest"
+
+
+def get_turn_instruction(angle_diff: float) -> str:
+    """Determine the turn type description from the bearing difference."""
+    if abs(angle_diff) < 25:
+        return "Continue straight"
+    elif 25 <= angle_diff < 70:
+        return "Turn slight right"
+    elif 70 <= angle_diff < 110:
+        return "Turn right"
+    elif 110 <= angle_diff < 165:
+        return "Turn sharp right"
+    elif -70 < angle_diff <= -25:
+        return "Turn slight left"
+    elif -110 < angle_diff <= -70:
+        return "Turn left"
+    elif -165 < angle_diff <= -110:
+        return "Turn sharp left"
+    else:
+        return "Make a U-turn"
+
+
 class RoutingEngine:
     def __init__(
         self,
@@ -368,9 +419,12 @@ class RoutingEngine:
                         instruction="Walk from origin to the nearest campus walkway.",
                         distance_meters=dist_init,
                         accessibility_note="Off-campus connection; path accessibility is unverified.",
+                        end_location=Coordinate(lat=snap_origin[0], lng=snap_origin[1]),
                     )
                 )
 
+        # Process campus walkways
+        segments = []
         curr_node = snap_origin
         for edge in path:
             next_node = (
@@ -378,27 +432,99 @@ class RoutingEngine:
                 if (round(edge.start.lat, 6), round(edge.start.lng, 6)) == curr_node
                 else (edge.start.lat, edge.start.lng)
             )
+            bearing = calculate_bearing(curr_node[0], curr_node[1], next_node[0], next_node[1])
+            segments.append({
+                "start": curr_node,
+                "end": next_node,
+                "distance_meters": edge.distance_meters,
+                "bearing": bearing,
+                "edge": edge
+            })
+            polyline.append(Coordinate(lat=next_node[0], lng=next_node[1]))
+            curr_node = next_node
 
-            instruction = f"Walk from {curr_node[0]:.6f},{curr_node[1]:.6f} to {next_node[0]:.6f},{next_node[1]:.6f}"
-            violations = self._violates(edge, req.preferences)
+        # Aggregate segments
+        aggregated_groups = []
+        if segments:
+            current_group = [segments[0]]
+            for next_seg in segments[1:]:
+                last_seg = current_group[-1]
+                diff = (next_seg["bearing"] - last_seg["bearing"] + 180) % 360 - 180
+                
+                # Consolidate if the direction change is less than 25 degrees
+                if abs(diff) < 25:
+                    current_group.append(next_seg)
+                else:
+                    aggregated_groups.append(current_group)
+                    current_group = [next_seg]
+            if current_group:
+                aggregated_groups.append(current_group)
 
-            if violations:
-                acc_note = f"Warning: violates {', '.join(violations)}. Surface: {edge.surface.value}, slope: {edge.slope_percent}%"
-            elif edge.is_closed:
-                acc_note = "Warning: segment is closed."
+        # Generate friendly instructions for each aggregated step
+        for i, group in enumerate(aggregated_groups):
+            tot_dist = sum(seg["distance_meters"] for seg in group)
+            dist_feet = int(round(tot_dist * 3.28084))
+            
+            # Map bearing of the step
+            init_bearing = group[0]["bearing"]
+            cardinal = get_cardinal_direction(init_bearing)
+            
+            # Determine turn type
+            if i == 0:
+                # First campus step
+                instruction = f"Head {cardinal} on campus walkway and proceed for {dist_feet} ft ({tot_dist} m)"
             else:
-                acc_note = f"Surface: {edge.surface.value}, slope: {edge.slope_percent}%"
+                # Subsequent campus steps
+                prev_bearing = aggregated_groups[i - 1][-1]["bearing"]
+                diff = (init_bearing - prev_bearing + 180) % 360 - 180
+                turn_desc = get_turn_instruction(diff)
+                instruction = f"{turn_desc} onto campus walkway and proceed for {dist_feet} ft ({tot_dist} m)"
 
+            # Aggregate accessibility notes
+            warnings_set = set()
+            surfaces_set = set()
+            max_slope = 0.0
+            has_stairs = False
+            is_closed = False
+            
+            for seg in group:
+                edge = seg["edge"]
+                violations = self._violates(edge, req.preferences)
+                for v in violations:
+                    warnings_set.add(v)
+                surfaces_set.add(edge.surface.value)
+                if edge.slope_percent > max_slope:
+                    max_slope = edge.slope_percent
+                if edge.has_stairs:
+                    has_stairs = True
+                if edge.is_closed:
+                    is_closed = True
+
+            acc_parts = []
+            if warnings_set:
+                acc_parts.append(f"Warning: violates {', '.join(sorted(warnings_set))}")
+            elif is_closed:
+                acc_parts.append("Warning: segment is closed")
+                
+            acc_details = []
+            if surfaces_set:
+                acc_details.append(f"Surface: {', '.join(sorted(surfaces_set))}")
+            acc_details.append(f"max slope: {max_slope:.1f}%")
+            if has_stairs:
+                acc_details.append("has stairs")
+                
+            acc_parts.append(", ".join(acc_details))
+            acc_note = ". ".join(acc_parts)
+
+            last_seg_end = group[-1]["end"]
             steps.append(
                 RouteStep(
                     instruction=instruction,
-                    distance_meters=edge.distance_meters,
+                    distance_meters=tot_dist,
                     accessibility_note=acc_note,
+                    end_location=Coordinate(lat=last_seg_end[0], lng=last_seg_end[1]),
                 )
             )
-
-            polyline.append(Coordinate(lat=next_node[0], lng=next_node[1]))
-            curr_node = next_node
 
         dest_stitched = False
         if dist_dest > 15.0 and self.maps_api and self.maps_api.api_key:
@@ -415,11 +541,15 @@ class RoutingEngine:
                     dest_stitched = True
 
                 for step in google_route.get('steps', []):
+                    step_end = None
+                    if 'end_location' in step:
+                        step_end = Coordinate(lat=step['end_location']['lat'], lng=step['end_location']['lng'])
                     steps.append(
                         RouteStep(
                             instruction=step['instruction'],
                             distance_meters=step['distance_meters'],
                             accessibility_note="Off-campus connection via Google Maps walking directions.",
+                            end_location=step_end,
                         )
                     )
             except Exception:
@@ -433,6 +563,7 @@ class RoutingEngine:
                         instruction="Walk from campus walkway to destination.",
                         distance_meters=dist_final,
                         accessibility_note="Off-campus connection; path accessibility is unverified.",
+                        end_location=req.destination,
                     )
                 )
                 polyline.append(req.destination)

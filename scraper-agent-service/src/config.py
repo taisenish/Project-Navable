@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     log_level: str = "info"
     backend_poi_path: str = "../backend/src/data/uw_pois.json"
     state_file_path: str = "data/state.json"
+    mode: str = "prod"
 
     model_config = SettingsConfigDict(
         env_file=".env",

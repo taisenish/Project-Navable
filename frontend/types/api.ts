@@ -22,7 +22,9 @@ export type RouteStep = {
   instruction: string;
   distance_meters: number;
   accessibility_note?: string | null;
+  end_location?: Coordinate | null;
 };
+
 
 export type RouteResponse = {
   route_id: string;
@@ -99,6 +101,7 @@ export type DirectionsStep = {
   distance_text: string;
   duration_text: string;
   end_location: Coordinate;
+  accessibility_note?: string | null;
 };
 
 export type DirectionsResponse = {

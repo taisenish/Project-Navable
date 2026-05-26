@@ -11,8 +11,8 @@ export function mapRouteToDirections(route: RouteResponse): DirectionsResponse {
   const encodedPolyline = encodeGooglePolyline(route.polyline);
 
   const steps: DirectionsStep[] = route.leg.steps.map((step, idx) => {
-    // The end location of step idx corresponds to coordinate at index idx + 1 in polyline.
-    const stepEndLoc = route.polyline[idx + 1] || endLoc;
+    // Use step.end_location if provided by backend, else fallback to polyline index
+    const stepEndLoc = step.end_location || route.polyline[idx + 1] || endLoc;
 
     let fullInstruction = step.instruction;
     if (step.accessibility_note) {
@@ -25,6 +25,7 @@ export function mapRouteToDirections(route: RouteResponse): DirectionsResponse {
       distance_text: `${step.distance_meters} m`,
       duration_text: `${Math.round(step.distance_meters / 1.4 / 60)} min`, // walk speed ~1.4 m/s
       end_location: stepEndLoc,
+      accessibility_note: step.accessibility_note,
     };
   });
 

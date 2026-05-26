@@ -9,6 +9,7 @@ from src.services.scraper import fetch_emergency_page, parse_articles
 from src.services.openai_agent import OpenAiAgent
 from src.services.geocoder import Geocoder, Coordinate
 from src.services.state_manager import StateManager
+from src.config import settings
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/alerts")
@@ -107,14 +108,34 @@ async def run_scrape_and_process_cycle(force: bool = False) -> Dict[str, Any]:
         logger.warning("No articles found on the emergency page.")
         return {"updated": False, "message": "No articles found.", "alert": None}
         
+    if settings.mode == "dev":
+        print(f"\n--- [DEV MODE] SCRAPED ARTICLES FROM UW EMERGENCY PAGE ({len(articles)} FOUND) ---")
+        for i, art in enumerate(articles[:3], 1):
+            print(f"  [{i}] ID: {art.id} | Title: {art.title} | Published: {art.published_date} | Updated: {art.updated_date}")
+        if len(articles) > 3:
+            print(f"  ... and {len(articles) - 3} more articles.")
+        print("------------------------------------------------------------------------\n")
+        
     latest_article = articles[0]
     last_id = state_manager.get_last_processed_id()
+    cached_alert = state_manager.get_latest_alert()
     
     logger.info(f"Scraped latest article ID: '{latest_article.id}', last processed ID: '{last_id}'")
     
-    is_new = latest_article.id != last_id
+    is_new_id = latest_article.id != last_id
+    
+    # Check if the post itself was updated (e.g. content updates inside the same article ID)
+    current_updated = latest_article.updated_date or latest_article.published_date
+    cached_updated = cached_alert.get("last_updated") if (cached_alert and not is_new_id) else None
+    
+    is_updated = (not is_new_id) and cached_alert is not None and (cached_updated != current_updated)
+    is_new = is_new_id or is_updated
+    
     if is_new or force:
-        logger.info(f"Processing alert update (is_new={is_new}, force={force})")
+        if is_updated:
+            logger.info(f"Processing updated alert content for ID '{latest_article.id}' (was: {cached_updated}, now: {current_updated})")
+        else:
+            logger.info(f"Processing alert update (is_new_id={is_new_id}, force={force})")
         
         extracted = await openai_agent.extract_alert_details(
             title=latest_article.title,
@@ -131,7 +152,7 @@ async def run_scrape_and_process_cycle(force: bool = False) -> Dict[str, Any]:
             location=coord,
             status=extracted.status,
             is_resolved=(extracted.status == "resolved"),
-            last_updated=latest_article.updated_date or latest_article.published_date,
+            last_updated=current_updated,
             link=latest_article.link
         )
         
@@ -145,13 +166,18 @@ async def run_scrape_and_process_cycle(force: bool = False) -> Dict[str, Any]:
         if webhooks:
             asyncio.create_task(broadcast_alert_to_webhooks(webhooks, payload_dict))
             
+        if settings.mode == "dev":
+            import json
+            print("\n=== [DEV MODE] EXTRACTED & PROCESSED ALERT DETAILS ===")
+            print(json.dumps(payload_dict, indent=2))
+            print("======================================================\n")
+            
         return {
             "updated": True,
-            "message": "Scraped and processed new alert successfully.",
+            "message": "Scraped and processed new alert successfully." if is_new_id else "Scraped and processed updated alert successfully.",
             "alert": payload_dict
         }
     else:
-        cached_alert = state_manager.get_latest_alert()
         return {
             "updated": False,
             "message": "No new alerts or updates found since last scrape.",

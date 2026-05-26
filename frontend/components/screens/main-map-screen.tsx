@@ -29,6 +29,7 @@ import type { AccessibilityPreferences, Alert as CampusAlert, DirectionsResponse
 import { decodeGooglePolyline } from '../../utils/polyline';
 import { mapRouteToDirections } from '../../utils/route-mapper';
 import { storage } from '../../utils/storage';
+import { ttsService } from '../../services/tts';
 
 const UW_CENTER = { lat: 47.6553, lng: -122.3035 };
 const UW_FOUNTAIN_CENTER = { lat: 47.6539, lng: -122.3078 };
@@ -554,6 +555,24 @@ export function MainMapScreen() {
   }, [chipBarAnim, showBaseChips]);
 
   useEffect(() => {
+    if (isNavigating && directions && directions.steps[activeStepIndex]) {
+      const step = directions.steps[activeStepIndex];
+      let speechText = step.instruction;
+      if (step.accessibility_note) {
+        const cleanNote = step.accessibility_note.replace(/Warning:\s*/i, '');
+        speechText += `. Note: ${cleanNote}`;
+      }
+      void ttsService.speak(speechText);
+    } else {
+      void ttsService.stop();
+    }
+
+    return () => {
+      void ttsService.stop();
+    };
+  }, [activeStepIndex, isNavigating, directions]);
+
+  useEffect(() => {
     if (!isNavigating || !directions || !userLocation) {
       return;
     }
@@ -703,6 +722,14 @@ export function MainMapScreen() {
               instruction={activeStep.instruction}
               distanceText={activeStep.distance_text}
               durationText={activeStep.duration_text}
+              onSpeakPress={() => {
+                let speechText = activeStep.instruction;
+                if (activeStep.accessibility_note) {
+                  const cleanNote = activeStep.accessibility_note.replace(/Warning:\s*/i, '');
+                  speechText += `. Note: ${cleanNote}`;
+                }
+                void ttsService.speak(speechText);
+              }}
             />
           ) : null}
 

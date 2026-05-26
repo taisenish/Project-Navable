@@ -195,6 +195,66 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(route.source, "uw+google")
         self.assertTrue(any("Greek Row" in step.instruction for step in route.leg.steps))
 
+    def test_custom_direction_aggregation(self) -> None:
+        payload = RouteRequest(
+            origin=Coordinate(lat=47.6539, lng=-122.3078),
+            destination=Coordinate(lat=47.6557, lng=-122.3094),
+            preferences=AccessibilityPreferences(
+                avoid_stairs=True,
+                max_slope_percent=8.0,
+                allowed_surfaces=['paved', 'brick', 'mixed'],
+                avoid_closures=True,
+            ),
+        )
+        route = generate_route(payload=payload, engine=self.engine)
+        self.assertEqual(route.source, "uw+google")
+        self.assertGreater(len(route.leg.steps), 0)
+        
+        campus_steps = [
+            s for s in route.leg.steps 
+            if "campus walkway" in s.instruction 
+            and not s.instruction.startswith("Walk from")
+        ]
+        self.assertGreater(len(campus_steps), 0)
+        
+        first_campus_step = campus_steps[0]
+        self.assertIn("Head", first_campus_step.instruction)
+        self.assertIn("ft", first_campus_step.instruction)
+        self.assertIsNotNone(first_campus_step.end_location)
+        self.assertIsInstance(first_campus_step.end_location.lat, float)
+        self.assertIsInstance(first_campus_step.end_location.lng, float)
+        
+        if len(campus_steps) > 1:
+            second_campus_step = campus_steps[1]
+            has_turn_or_continue = any(
+                term in second_campus_step.instruction
+                for term in ["Turn", "Continue", "Make a U-turn"]
+            )
+            self.assertTrue(has_turn_or_continue)
+            self.assertIsNotNone(second_campus_step.end_location)
+
+    def test_tts_endpoint(self) -> None:
+        from src.routes.navigation import text_to_speech
+        response = text_to_speech(text="Verify text-to-speech functionality.")
+        self.assertEqual(response.media_type, "audio/mpeg")
+        
+        import asyncio
+        async def read_chunks():
+            chunks = []
+            async for chunk in response.body_iterator:
+                chunks.append(chunk)
+                break
+            return chunks
+        
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            chunks = loop.run_until_complete(read_chunks())
+        finally:
+            loop.close()
+        self.assertGreater(len(chunks), 0)
+        self.assertGreater(len(chunks[0]), 0)
+
 
 if __name__ == '__main__':
     unittest.main()

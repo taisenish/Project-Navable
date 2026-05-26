@@ -46,7 +46,10 @@ class OpenAiAgent:
                     "Rules:\n"
                     "1. severity: must be one of 'info', 'warning', or 'critical'. Use 'critical' for violent crimes, active shooter, fires in progress, or severe life-safety threats. Use 'warning' for active advisories (gas leaks, power outages, localized building closures). Use 'info' for resolved alerts, minor updates, or general advisories.\n"
                     "2. status: must be one of 'active', 'resolved', or 'investigating'. If the text says 'extinguished', 'restored', 'clear', 'all clear', 'no longer need to remain inside', use 'resolved'.\n"
-                    "3. location_name: Extract the primary UW building name (e.g., 'Fluke Hall', 'Nordheim Court', 'Denny Hall', 'Red Square'). Only output the building name, or null if none is mentioned."
+                    "3. location_name: Extract the primary UW building name (e.g., 'Fluke Hall', 'Nordheim Court', 'Denny Hall', 'Red Square'). Only output the building name, or null if none is mentioned.\n"
+                    "4. title: A concise, descriptive title summarizing the alert or advisory.\n"
+                    "5. description: A clear description of the incident, latest active updates, and safety instructions. Do NOT leave this empty; summarize the key updates in a readable format.\n\n"
+                    "You must output a JSON object containing all 5 fields: 'title', 'description', 'severity', 'location_name', and 'status'."
                 )
                 
                 user_content = f"Post Title: {title}\n\nRaw Content HTML/Text:\n{raw_content_html}"

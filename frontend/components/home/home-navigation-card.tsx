@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Pressable, Text, View } from 'react-native';
 
 import { homeStyles as styles } from '../../styles/home.styles';
 
@@ -8,6 +9,7 @@ type HomeNavigationCardProps = {
   instruction: string;
   distanceText: string;
   durationText: string;
+  onSpeakPress?: () => void;
 };
 
 export function HomeNavigationCard({
@@ -16,6 +18,7 @@ export function HomeNavigationCard({
   instruction,
   distanceText,
   durationText,
+  onSpeakPress,
 }: HomeNavigationCardProps) {
   return (
     <View style={styles.navCard}>
@@ -26,6 +29,16 @@ export function HomeNavigationCard({
       <Text style={styles.navMeta}>
         {distanceText} • {durationText}
       </Text>
+
+      {onSpeakPress ? (
+        <Pressable
+          style={styles.navCardSpeakButton}
+          onPress={onSpeakPress}
+          accessibilityRole="button"
+          accessibilityLabel="Repeat instruction out loud">
+          <MaterialIcons name="volume-up" size={18} color="#CDB7FF" />
+        </Pressable>
+      ) : null}
     </View>
   );
 }
