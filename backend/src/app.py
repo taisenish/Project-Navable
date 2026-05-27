@@ -21,6 +21,10 @@ def create_app() -> FastAPI:
     )
     app.include_router(base_router, prefix=settings.api_prefix)
 
+    @app.get("/health")
+    def health_check() -> dict[str, str]:
+        return {"status": "healthy"}
+
     @app.on_event("startup")
     def on_startup() -> None:
         init_db()
