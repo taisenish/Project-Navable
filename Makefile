@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: run run-backend run-frontend run-frontend-dev-client run-ios-dev run-ios-dev-client ios-check-install ios-launch-app setup setup-backend setup-frontend setup-scraper run-scraper scrape test lint map-extraction
+.PHONY: run run-backend run-frontend run-frontend-dev-client run-ios-dev run-ios-dev-client ios-check-install ios-launch-app setup setup-backend setup-frontend setup-scraper run-scraper scrape test lint map-extraction build-android-standalone build-ios-standalone
 
 run:
 	@set -euo pipefail; \
@@ -64,3 +64,9 @@ lint:
 
 kill-backend:
 	kill -9 $(lsof -t -i:8000)
+
+build-android-standalone:
+	cd frontend && npm run build:android-standalone
+
+build-ios-standalone:
+	cd frontend && npm run build:ios-standalone

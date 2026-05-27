@@ -5,7 +5,10 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/NavAble.png",
-    "scheme": "frontend2",
+    "scheme": [
+      "frontend2",
+      "com.googleusercontent.apps.147401588179-pp6a7j35v6rp5j6psqlfjq4j9e98rn40"
+    ],
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

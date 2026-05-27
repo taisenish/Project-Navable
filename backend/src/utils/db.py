@@ -38,7 +38,8 @@ def _can_connect(engine) -> bool:
         with Session(engine) as session:
             session.exec(text("SELECT 1"))
         return True
-    except Exception:
+    except Exception as exc:
+        logger.exception("Database connection verification failed: %s", exc)
         return False
 
 

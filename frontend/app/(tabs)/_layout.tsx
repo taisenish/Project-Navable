@@ -45,6 +45,7 @@ export default function TabsLayout() {
         name="view-3d"
         options={{
           title: '3D View',
+          href: null,
           tabBarIcon: ({ color }) => <FontAwesome6 name="cube" size={20} color={color} />,
         }}
       />

@@ -21,6 +21,8 @@ class PreferenceStore:
             max_slope_percent=row.max_slope_percent,
             allowed_surfaces=surfaces,  # type: ignore[arg-type]
             avoid_closures=row.avoid_closures,
+            use_voice_instructions=getattr(row, "use_voice_instructions", True),
+            use_accessible_routing=getattr(row, "use_accessible_routing", True),
         )
 
     def set(
@@ -37,12 +39,16 @@ class PreferenceStore:
                 max_slope_percent=preferences.max_slope_percent,
                 allowed_surfaces_csv=surfaces_csv,
                 avoid_closures=preferences.avoid_closures,
+                use_voice_instructions=preferences.use_voice_instructions,
+                use_accessible_routing=preferences.use_accessible_routing,
             )
         else:
             row.avoid_stairs = preferences.avoid_stairs
             row.max_slope_percent = preferences.max_slope_percent
             row.allowed_surfaces_csv = surfaces_csv
             row.avoid_closures = preferences.avoid_closures
+            row.use_voice_instructions = preferences.use_voice_instructions
+            row.use_accessible_routing = preferences.use_accessible_routing
 
         self.session.add(row)
         self.session.commit()

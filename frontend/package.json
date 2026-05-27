@@ -8,7 +8,9 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build:android-standalone": "cp .env.production .env.production.bak || true; cp .env.development .env && cp .env.development .env.production && npx expo prebuild --clean && npx expo run:android --configuration Release --device; mv .env.production.bak .env.production || true",
+    "build:ios-standalone": "cp .env.production .env.production.bak || true; cp .env.development .env && cp .env.development .env.production && npx expo prebuild --clean && npx expo run:ios --configuration Release --device; mv .env.production.bak .env.production || true"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

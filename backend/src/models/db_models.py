@@ -11,6 +11,8 @@ class UserPreference(SQLModel, table=True):
     max_slope_percent: float = Field(default=8.0)
     allowed_surfaces_csv: str = Field(default='paved,brick,mixed')
     avoid_closures: bool = Field(default=True)
+    use_voice_instructions: bool = Field(default=True)
+    use_accessible_routing: bool = Field(default=True)
 
 
 class UserAccount(SQLModel, table=True):

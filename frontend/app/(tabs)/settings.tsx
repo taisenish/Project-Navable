@@ -27,6 +27,7 @@ export default function SettingsScreen() {
     communityReports: true,
     routeAlerts: true,
     voiceGuidance: true,
+    useAccessibleRouting: true,
     largeText: false,
   });
 
@@ -51,6 +52,7 @@ export default function SettingsScreen() {
       {
         title: 'Accessibility Preferences',
         rows: [
+          { key: 'useAccessibleRouting', label: 'Use Accessible Routing', icon: <MaterialCommunityIcons name="wheelchair-accessibility" size={18} color="#111" /> },
           { key: 'avoidStairs', label: 'Avoid Stairs', icon: <MaterialCommunityIcons name="stairs" size={18} color="#111" /> },
           { key: 'preferElevators', label: 'Prefer Elevators', icon: <Ionicons name="swap-vertical" size={18} color="#111" /> },
           { key: 'avoidSteepSlopes', label: 'Avoid Steep Slopes', icon: <FontAwesome6 name="mountain" size={16} color="#111" /> },

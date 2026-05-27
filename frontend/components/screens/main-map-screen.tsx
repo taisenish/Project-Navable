@@ -687,13 +687,14 @@ export function MainMapScreen() {
       try {
         const saved = await storage.get<Record<string, boolean>>('navable:settings');
         if (saved) {
+          const isAccessible = saved.useAccessibleRouting !== false;
           prefs = {
-            avoid_stairs: saved.avoidStairs !== false,
-            max_slope_percent: saved.avoidSteepSlopes === false ? 15.0 : 8.0,
-            allowed_surfaces: saved.surfacePreferences === false
-              ? ['paved', 'brick', 'gravel', 'mixed']
-              : ['paved', 'brick', 'mixed'],
-            avoid_closures: saved.routeAlerts !== false,
+            avoid_stairs: isAccessible ? saved.avoidStairs !== false : false,
+            max_slope_percent: isAccessible ? (saved.avoidSteepSlopes === false ? 15.0 : 8.0) : 25.0,
+            allowed_surfaces: isAccessible
+              ? (saved.surfacePreferences === false ? ['paved', 'brick', 'gravel', 'mixed'] : ['paved', 'brick', 'mixed'])
+              : ['paved', 'brick', 'gravel', 'mixed'],
+            avoid_closures: isAccessible ? saved.routeAlerts !== false : false,
           };
         }
       } catch (prefErr) {
@@ -795,13 +796,14 @@ export function MainMapScreen() {
         try {
           const saved = await storage.get<Record<string, boolean>>('navable:settings');
           if (saved) {
+            const isAccessible = saved.useAccessibleRouting !== false;
             prefs = {
-              avoid_stairs: saved.avoidStairs !== false,
-              max_slope_percent: saved.avoidSteepSlopes === false ? 15.0 : 8.0,
-              allowed_surfaces: saved.surfacePreferences === false
-                ? ['paved', 'brick', 'gravel', 'mixed']
-                : ['paved', 'brick', 'mixed'],
-              avoid_closures: saved.routeAlerts !== false,
+              avoid_stairs: isAccessible ? saved.avoidStairs !== false : false,
+              max_slope_percent: isAccessible ? (saved.avoidSteepSlopes === false ? 15.0 : 8.0) : 25.0,
+              allowed_surfaces: isAccessible
+                ? (saved.surfacePreferences === false ? ['paved', 'brick', 'gravel', 'mixed'] : ['paved', 'brick', 'mixed'])
+                : ['paved', 'brick', 'gravel', 'mixed'],
+              avoid_closures: isAccessible ? saved.routeAlerts !== false : false,
             };
           }
         } catch (prefErr) {
@@ -940,13 +942,20 @@ export function MainMapScreen() {
   }, [chipBarAnim, showBaseChips]);
 
   useEffect(() => {
-    if (isNavigating && directions && directions.steps[activeStepIndex]) {
-      const step = directions.steps[activeStepIndex];
-      const speechText = step.instruction.replace(/\s*\([^)]*\)\s*$/, '');
-      void ttsService.speak(speechText);
-    } else {
+    const handleVoiceGuidance = async () => {
+      if (isNavigating && directions && directions.steps[activeStepIndex]) {
+        const saved = await storage.get<Record<string, boolean>>('navable:settings');
+        const voiceEnabled = saved ? saved.voiceGuidance !== false : true;
+        if (voiceEnabled) {
+          const step = directions.steps[activeStepIndex];
+          const speechText = step.instruction.replace(/\s*\([^)]*\)\s*$/, '');
+          void ttsService.speak(speechText);
+          return;
+        }
+      }
       void ttsService.stop();
-    }
+    };
+    void handleVoiceGuidance();
 
     return () => {
       void ttsService.stop();

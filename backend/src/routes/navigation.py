@@ -6,7 +6,7 @@ import requests
 from fastapi import APIRouter, Depends, Query
 from fastapi.responses import StreamingResponse
 
-from src.models.schemas import Coordinate, ErrorResponse, RouteRequest, RouteResponse, TransitRouteResponse
+from src.models.schemas import Coordinate, ErrorResponse, RouteRequest, RouteResponse, TransitRouteResponse, RouteLeg, RouteStep
 from src.routes.deps import get_maps_service, get_routing_engine
 from src.services.maps_service import MapsService
 from src.services.routing_engine import RoutingEngine
@@ -56,7 +56,51 @@ def expand_abbreviations(text: str) -> str:
 def generate_route(
     payload: RouteRequest,
     engine: RoutingEngine = Depends(get_routing_engine),
+    maps_service: MapsService = Depends(get_maps_service),
 ) -> RouteResponse:
+    if not payload.preferences.use_accessible_routing:
+        # Query standard Google Maps walking directions
+        raw = maps_service.get_walking_directions(
+            origin_lat=payload.origin.lat,
+            origin_lng=payload.origin.lng,
+            destination_lat=payload.destination.lat,
+            destination_lng=payload.destination.lng,
+        )
+        
+        # Decode the overview polyline
+        polyline_points = engine._decode_polyline(raw.get("overview_polyline", ""))
+        
+        # Parse Google Steps into RouteSteps
+        steps = []
+        for step in raw.get("steps", []):
+            steps.append(
+                RouteStep(
+                    instruction=step["instruction"],
+                    distance_meters=step["distance_meters"],
+                    end_location=Coordinate(lat=step["end_location"]["lat"], lng=step["end_location"]["lng"]),
+                    accessibility_note=None
+                )
+            )
+            
+        # Compute total distance and duration (using 1.4 m/s walking speed)
+        total_distance = sum(step.distance_meters for step in steps)
+        total_duration = int(total_distance / 1.4)
+        
+        route_leg = RouteLeg(
+            distance_meters=total_distance,
+            duration_seconds=total_duration,
+            steps=steps
+        )
+        
+        return RouteResponse(
+            route_id="google-maps-fallback",
+            source="google_maps",
+            is_fully_accessible=True,
+            warnings=[],
+            polyline=polyline_points,
+            leg=route_leg
+        )
+
     return engine.build_route(payload)
 
 

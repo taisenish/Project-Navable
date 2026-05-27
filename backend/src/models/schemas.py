@@ -35,6 +35,8 @@ class AccessibilityPreferences(BaseModel):
     max_slope_percent: float = Field(default=8.0, ge=0, le=100)
     allowed_surfaces: list[SurfaceType] = Field(default_factory=lambda: [SurfaceType.paved, SurfaceType.brick, SurfaceType.mixed])
     avoid_closures: bool = True
+    use_voice_instructions: bool = True
+    use_accessible_routing: bool = True
 
 
 class RouteRequest(BaseModel):
