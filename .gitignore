@@ -140,6 +140,7 @@ web_modules/
 
 !.env.example
 
+data/*
 
 
 # parcel-bundler cache (https://parceljs.org/)

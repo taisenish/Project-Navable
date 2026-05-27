@@ -5,7 +5,7 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
-from src.models.schemas import Alert, Poi
+from src.models.schemas import Alert, Poi, CommunityAlert
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
@@ -53,6 +53,46 @@ class UWDataService:
             json.dump(alerts, f, indent=2)
 
         self.load_alerts.cache_clear()
+
+    @lru_cache(maxsize=1)
+    def load_community_alerts(self) -> list[CommunityAlert]:
+        file_path = self.data_dir / "uw_community_alerts.json"
+        if not file_path.exists():
+            return []
+        try:
+            with file_path.open("r", encoding="utf-8") as f:
+                raw = json.load(f)
+            return [CommunityAlert.model_validate(item) for item in raw]
+        except Exception:
+            return []
+
+    def save_community_alert(self, alert: CommunityAlert) -> None:
+        """Saves or updates a community alert in the backend JSON file, clearing the cache."""
+        file_path = self.data_dir / "uw_community_alerts.json"
+        alerts = []
+        if file_path.exists():
+            try:
+                with file_path.open("r", encoding="utf-8") as f:
+                    alerts = json.load(f)
+            except Exception:
+                alerts = []
+
+        new_alert_dict = alert.model_dump()
+        
+        updated = False
+        for i, existing in enumerate(alerts):
+            if existing.get("id") == alert.id:
+                alerts[i] = new_alert_dict
+                updated = True
+                break
+
+        if not updated:
+            alerts.append(new_alert_dict)
+
+        with file_path.open("w", encoding="utf-8") as f:
+            json.dump(alerts, f, indent=2)
+
+        self.load_community_alerts.cache_clear()
 
     @lru_cache(maxsize=1)
     def load_edges(self) -> list[dict[str, str]]:

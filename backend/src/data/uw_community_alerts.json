@@ -1,0 +1,16 @@
+[
+  {
+    "id": "c_ax5l8wa",
+    "title": "Test",
+    "description": "Test",
+    "category": "warning",
+    "location": {
+      "lat": 47.6553,
+      "lng": -122.3035
+    },
+    "image_url": null,
+    "created_at": "2026-05-27T06:45:02.561Z",
+    "created_by": "Dev Dhawan",
+    "is_approved": true
+  }
+]

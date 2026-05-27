@@ -585,6 +585,47 @@ class RoutingEngine:
         )
 
     def _build_fallback_route(self, req: RouteRequest, warnings: list[str]) -> RouteResponse:
+        # Attempt to use Google Maps walking directions as the primary fallback
+        if self.maps_api and self.maps_api.api_key:
+            try:
+                raw = self.maps_api.get_walking_directions(
+                    origin_lat=req.origin.lat,
+                    origin_lng=req.origin.lng,
+                    destination_lat=req.destination.lat,
+                    destination_lng=req.destination.lng,
+                )
+                polyline_points = self._decode_polyline(raw.get("overview_polyline", ""))
+                if polyline_points:
+                    steps = []
+                    for step in raw.get("steps", []):
+                        steps.append(
+                            RouteStep(
+                                instruction=step["instruction"],
+                                distance_meters=step["distance_meters"],
+                                end_location=Coordinate(lat=step["end_location"]["lat"], lng=step["end_location"]["lng"]),
+                                accessibility_note="Google Maps walking route fallback."
+                            )
+                        )
+                    total_distance = sum(step.distance_meters for step in steps)
+                    total_duration = int(total_distance / 1.4)
+                    
+                    return RouteResponse(
+                        route_id="google-maps-fallback",
+                        source="google_maps",
+                        is_fully_accessible=False,
+                        warnings=warnings or ["Using Google Maps walking directions fallback."],
+                        polyline=polyline_points,
+                        leg=RouteLeg(
+                            distance_meters=total_distance,
+                            duration_seconds=total_duration,
+                            steps=steps
+                        )
+                    )
+            except Exception as exc:
+                # Log or print error and proceed to absolute fallback
+                print(f"Fallback Google routing failed: {exc}")
+
+        # Ultimate safety fallback (straight line) if Google API is unavailable
         fallback_distance = self.maps.distance_meters(req.origin, req.destination)
         fallback_duration = self.maps.estimate_duration_seconds(fallback_distance)
         leg = RouteLeg(
