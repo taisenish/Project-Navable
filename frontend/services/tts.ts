@@ -13,7 +13,7 @@ class TtsService {
         allowsRecordingIOS: false,
         playsInSilentModeIOS: true,
         playThroughEarpieceAndroid: false,
-        staysActiveInBackground: false,
+        staysActiveInBackground: true,
       });
 
       const ttsUrl = `${config.apiBaseUrl}/tts?text=${encodeURIComponent(text)}`;

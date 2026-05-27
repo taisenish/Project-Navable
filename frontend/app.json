@@ -13,9 +13,15 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.navable.app",
+      "bundleIdentifier": "com.devdhawan.navable",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "NavAble uses your location to show your position on the campus map.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "NavAble uses your location in the background to provide live navigation updates and voice announcements.",
+        "NSLocationAlwaysUsageDescription": "NavAble uses your location in the background to provide live navigation updates and voice announcements.",
+        "UIBackgroundModes": [
+          "location",
+          "audio"
+        ],
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         },
@@ -42,10 +48,13 @@
     "plugins": [
       "expo-router",
       "./plugins/with-google-street-view-ios",
+      "./plugins/with-strip-aps-environment",
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "NavAble uses your location to show your position on the campus map."
+          "locationWhenInUsePermission": "NavAble uses your location to show your position on the campus map.",
+          "locationAlwaysPermission": "NavAble uses your location in the background to provide live navigation updates and voice announcements.",
+          "isIosBackgroundLocationEnabled": true
         }
       ],
       [

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import heapq
 import math
+import time
 from dataclasses import dataclass
 
 from src.models.schemas import (
@@ -325,6 +326,73 @@ class RoutingEngine:
 
         return None
 
+    def _a_star(
+        self,
+        start: tuple[float, float],
+        end: tuple[float, float],
+        preferences: AccessibilityPreferences,
+        strict: bool,
+    ) -> tuple[float, list[CampusEdge], list[str]] | None:
+        """Run A* (A-Star) search from start node to end node.
+        
+        Uses great-circle distance as the heuristic function.
+        If strict is True, edges violating accessibility preferences are ignored.
+        If strict is False, violations add penalty weights.
+        """
+        # Priority queue stores (f_score, g_score, current_node)
+        pq = [(haversine_distance(start[0], start[1], end[0], end[1]), 0.0, start)]
+        g_scores = {start: 0.0}
+        predecessors = {}
+
+        while pq:
+            f_score, g_score, curr = heapq.heappop(pq)
+            if g_score > g_scores[curr]:
+                continue
+            if curr == end:
+                path = []
+                temp = end
+                while temp != start:
+                    parent, edge = predecessors[temp]
+                    path.append(edge)
+                    temp = parent
+                path.reverse()
+
+                warnings = []
+                for edge in path:
+                    violations = self._violates(edge, preferences)
+                    if violations:
+                        warnings.append(
+                            f"Segment {edge.start.lat:.4f},{edge.start.lng:.4f} -> "
+                            f"{edge.end.lat:.4f},{edge.end.lng:.4f} has: {', '.join(violations)}"
+                        )
+                return g_scores[end], path, warnings
+
+            for neighbor, edge in self.graph.get(curr, []):
+                violations = self._violates(edge, preferences)
+                if strict and violations:
+                    continue
+
+                weight = haversine_distance(curr[0], curr[1], neighbor[0], neighbor[1])
+                if not strict and violations:
+                    if "closure" in violations:
+                        weight += 100000.0
+                    if "stairs" in violations:
+                        weight += 1000.0
+                    if "slope" in violations:
+                        weight += edge.slope_percent * 50.0
+                    if "surface" in violations:
+                        weight += 500.0
+
+                new_g_score = g_score + weight
+                if neighbor not in g_scores or new_g_score < g_scores[neighbor]:
+                    g_scores[neighbor] = new_g_score
+                    predecessors[neighbor] = (curr, edge)
+                    h_score = haversine_distance(neighbor[0], neighbor[1], end[0], end[1])
+                    f_score = new_g_score + h_score
+                    heapq.heappush(pq, (f_score, new_g_score, neighbor))
+
+        return None
+
     def build_route(self, req: RouteRequest) -> RouteResponse:
         """Build an optimal route from origin to destination.
         
@@ -380,6 +448,28 @@ class RoutingEngine:
             return self._build_fallback_route(req, ["No path could be navigated between endpoints."])
 
         path, warnings, snap_origin, dist_origin, snap_dest, dist_dest = best_result
+
+        # Concurrent Benchmark: Run both in-house solvers side-by-side on optimalSnapped endpoints
+        t0 = time.perf_counter()
+        dijkstra_res = self._dijkstra(snap_origin, snap_dest, req.preferences, strict=is_fully_accessible)
+        dijkstra_time = (time.perf_counter() - t0) * 1000.0
+
+        t1 = time.perf_counter()
+        a_star_res = self._a_star(snap_origin, snap_dest, req.preferences, strict=is_fully_accessible)
+        a_star_time = (time.perf_counter() - t1) * 1000.0
+
+        print("\n=== CONCURRENT ROUTING SOLVER PERFORMANCE COMPARISON ===")
+        print(f"Start snap: {snap_origin} -> End snap: {snap_dest} (Strict constraints: {is_fully_accessible})")
+        print(f"Dijkstra Solver Execution: {dijkstra_time:.3f} ms")
+        print(f"A* (A-Star) Solver Execution: {a_star_time:.3f} ms")
+        if dijkstra_res and a_star_res:
+            print(f"Dijkstra Cost: {dijkstra_res[0]:.2f}m | A* Cost: {a_star_res[0]:.2f}m")
+            # Verify cost correctness parity
+            assert abs(dijkstra_res[0] - a_star_res[0]) < 1e-4, "Shortest paths found by Dijkstra and A* have cost discrepancy!"
+            print("Solvers verified: Cost parity holds perfectly.")
+        else:
+            print("Solvers could not find any path between endpoints.")
+        print("=========================================================\n")
 
         polyline: list[Coordinate] = []
         steps: list[RouteStep] = []

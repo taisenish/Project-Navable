@@ -2,6 +2,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import * as Location from 'expo-location';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
@@ -192,6 +193,7 @@ export function MainMapScreen() {
   const [routeMode, setRouteMode] = useState<'walk' | 'bus' | 'bike'>('walk');
   const [isNavigating, setIsNavigating] = useState(false);
   const [isRerouting, setIsRerouting] = useState(false);
+  const [hasArrived, setHasArrived] = useState(false);
   const [navigationCameraMode, setNavigationCameraMode] = useState<NavigationCameraMode>('follow');
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [isStepsExpanded, setIsStepsExpanded] = useState(false);
@@ -257,7 +259,7 @@ export function MainMapScreen() {
     let headingSub: Location.LocationSubscription | null = null;
     let appStateSub: { remove: () => void } | null = null;
 
-    const startLocation = async (showDeniedAlert = false) => {
+    const startLocation = async (showDeniedAlert = false, isInitial = false) => {
       try {
         positionSub?.remove();
         headingSub?.remove();
@@ -266,6 +268,15 @@ export function MainMapScreen() {
 
         if (spoofedCoords) {
           setUserLocation({ ...spoofedCoords, heading: 0 });
+          if (isInitial && !directions && !selectedPlace) {
+            setMapState(
+              buildMapState({
+                centerLat: spoofedCoords.lat,
+                centerLng: spoofedCoords.lng,
+                zoom: DEFAULT_MAP_ZOOM,
+              })
+            );
+          }
           return;
         }
 
@@ -285,19 +296,46 @@ export function MainMapScreen() {
 
         setLocationError(null);
 
-        const current = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.BestForNavigation,
-        });
+        // Safely fetch position with a timeout race to avoid freezing/hanging on startup
+        let current: Location.LocationObject | null = null;
+        try {
+          current = await Promise.race([
+            Location.getCurrentPositionAsync({
+              accuracy: Location.Accuracy.Balanced,
+            }),
+            new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000)),
+          ]);
+        } catch (e) {
+          console.warn('getCurrentPositionAsync failed, falling back to last known location:', e);
+        }
+
+        if (!current) {
+          current = await Location.getLastKnownPositionAsync();
+        }
+
         if (!mounted) {
           return;
         }
 
-        const nextUserLocation = {
-          lat: current.coords.latitude,
-          lng: current.coords.longitude,
-          heading: current.coords.heading ?? 0,
-        };
-        setUserLocation(nextUserLocation);
+        if (current) {
+          const nextUserLocation = {
+            lat: current.coords.latitude,
+            lng: current.coords.longitude,
+            heading: current.coords.heading ?? 0,
+          };
+          setUserLocation(nextUserLocation);
+
+          // Center map on user location when first loading and before selecting directions
+          if (isInitial && !directions && !selectedPlace) {
+            setMapState(
+              buildMapState({
+                centerLat: nextUserLocation.lat,
+                centerLng: nextUserLocation.lng,
+                zoom: DEFAULT_MAP_ZOOM,
+              })
+            );
+          }
+        }
 
         positionSub = await Location.watchPositionAsync(
           {
@@ -310,11 +348,32 @@ export function MainMapScreen() {
               return;
             }
 
-            setUserLocation((prev) => ({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-              heading: position.coords.heading ?? prev?.heading ?? 0,
-            }));
+            setUserLocation((prev) => {
+              if (!prev) {
+                return {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                  heading: position.coords.heading ?? 0,
+                };
+              }
+              // Smoothing factor (alpha). 0.35 smooths out micro-jumps cleanly.
+              const alpha = 0.35;
+              const smoothLat = prev.lat + alpha * (position.coords.latitude - prev.lat);
+              const smoothLng = prev.lng + alpha * (position.coords.longitude - prev.lng);
+
+              let prevHeading = prev.heading ?? 0;
+              let nextHeading = position.coords.heading ?? prevHeading;
+              let diff = nextHeading - prevHeading;
+              if (diff > 180) diff -= 360;
+              if (diff < -180) diff += 360;
+              const smoothHeading = (prevHeading + alpha * diff + 360) % 360;
+
+              return {
+                lat: smoothLat,
+                lng: smoothLng,
+                heading: smoothHeading,
+              };
+            });
           },
         );
 
@@ -340,11 +399,11 @@ export function MainMapScreen() {
       }
     };
 
-    void startLocation(true);
+    void startLocation(true, true);
 
     appStateSub = AppState.addEventListener('change', (state) => {
       if (state === 'active') {
-        void startLocation(false);
+        void startLocation(false, false);
       }
     });
 
@@ -355,6 +414,18 @@ export function MainMapScreen() {
       appStateSub?.remove();
     };
   }, []);
+
+  // Control screen awake status based on active navigation
+  useEffect(() => {
+    if (isNavigating) {
+      void activateKeepAwakeAsync('navigating');
+    } else {
+      void deactivateKeepAwake('navigating');
+    }
+    return () => {
+      void deactivateKeepAwake('navigating');
+    };
+  }, [isNavigating]);
 
   const fetchMapData = useCallback(async (showLoadingSpinner: boolean) => {
     if (showLoadingSpinner) {
@@ -588,10 +659,12 @@ export function MainMapScreen() {
     });
   }, [isTransitDetailsOpen, transitDetailsAnim]);
 
-  const applyActiveDirections = (nextDirections: DirectionsResponse, mode: 'walk' | 'bus' | 'bike') => {
+  const applyActiveDirections = (nextDirections: DirectionsResponse, mode: 'walk' | 'bus' | 'bike', keepNavigating: boolean = false) => {
     setDirections(nextDirections);
     setRouteMode(mode);
-    setIsNavigating(false);
+    if (!keepNavigating) {
+      setIsNavigating(false);
+    }
     setHasStartedNavigationForSelection(false);
     setNavigationCameraMode('follow');
     setActiveStepIndex(0);
@@ -850,7 +923,7 @@ export function MainMapScreen() {
 
         const nextDirections = mapRouteToDirections(routeResponse);
         setWalkingDirections(nextDirections);
-        applyActiveDirections(nextDirections, 'walk');
+        applyActiveDirections(nextDirections, 'walk', true);
       } else if (routeMode === 'bike') {
         const bikeRoute = await api.getBikeDirections({
           originLat: origin.lat,
@@ -859,7 +932,7 @@ export function MainMapScreen() {
           destinationLng: destination.lng,
         });
         setBikeDirections(bikeRoute);
-        applyActiveDirections(bikeRoute, 'bike');
+        applyActiveDirections(bikeRoute, 'bike', true);
       } else if (routeMode === 'bus') {
         const transitRoute = await api.getTransitRoute({
           originLat: origin.lat,
@@ -874,7 +947,7 @@ export function MainMapScreen() {
           setTransitOptions(nextTransitOptions);
           const nextDirections = mapTransitRouteToDirections(nextTransitOptions[0]);
           setBusDirections(nextDirections);
-          applyActiveDirections(nextDirections, 'bus');
+          applyActiveDirections(nextDirections, 'bus', true);
         }
       }
       setActiveStepIndex(0);
@@ -932,12 +1005,14 @@ export function MainMapScreen() {
     setHasStartedNavigationForSelection(true);
     setNavigationCameraMode('follow');
     setActiveStepIndex(0);
+    setHasArrived(false);
   };
 
   const stopNavigation = () => {
     setIsNavigating(false);
     setNavigationCameraMode('follow');
     setActiveStepIndex(0);
+    setHasArrived(false);
   };
 
   const exitRoute = () => {
@@ -946,6 +1021,7 @@ export function MainMapScreen() {
     setSearchResults([]);
     setSelectedPlace(null);
     setSearchQuery('');
+    setHasArrived(false);
     setMapState(
       buildMapState({
         centerLat: UW_FOUNTAIN_CENTER.lat,
@@ -995,7 +1071,7 @@ export function MainMapScreen() {
   }, [activeStepIndex, isNavigating, directions]);
 
   useEffect(() => {
-    if (!isNavigating || !directions || !userLocation) {
+    if (!isNavigating || !directions || !userLocation || hasArrived) {
       return;
     }
 
@@ -1009,10 +1085,23 @@ export function MainMapScreen() {
       if (activeStepIndex < directions.steps.length - 1) {
         setActiveStepIndex((index) => index + 1);
       } else {
+        // User has successfully arrived!
+        setHasArrived(true);
         setIsNavigating(false);
+        setHasStartedNavigationForSelection(false);
+
+        // Speak out loud
+        const announceArrival = async () => {
+          const saved = await storage.get<Record<string, boolean>>('navable:settings');
+          const voiceEnabled = saved ? saved.voiceGuidance !== false : true;
+          if (voiceEnabled) {
+            void ttsService.speak("You have arrived at your destination.");
+          }
+        };
+        void announceArrival();
       }
     }
-  }, [activeStepIndex, directions, isNavigating, userLocation]);
+  }, [activeStepIndex, directions, isNavigating, userLocation, hasArrived]);
 
   useEffect(() => {
     if (!isNavigating || !userLocation || !directions || isRerouting) {
@@ -1221,6 +1310,83 @@ export function MainMapScreen() {
               expanded={isStepsExpanded}
               onToggleExpanded={() => setIsStepsExpanded((v) => !v)}
             />
+          ) : null}
+
+          {isRerouting ? (
+            <View style={{
+              position: 'absolute',
+              top: 100,
+              alignSelf: 'center',
+              backgroundColor: 'rgba(123, 63, 243, 0.95)',
+              borderRadius: 24,
+              paddingHorizontal: 20,
+              paddingVertical: 12,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 10,
+              shadowColor: '#7B3FF3',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.3,
+              shadowRadius: 10,
+              elevation: 6,
+              zIndex: 9999,
+            }}>
+              <ActivityIndicator size="small" color="#FFFFFF" />
+              <Text style={{ color: '#FFFFFF', fontWeight: '700', fontSize: 15 }}>Rerouting...</Text>
+            </View>
+          ) : null}
+
+          {hasArrived ? (
+            <View style={{
+              position: 'absolute',
+              bottom: 24,
+              left: 20,
+              right: 20,
+              backgroundColor: '#FFFFFF',
+              borderRadius: 20,
+              padding: 22,
+              alignItems: 'center',
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.15,
+              shadowRadius: 12,
+              elevation: 8,
+              zIndex: 9999,
+            }}>
+              <View style={{
+                width: 56,
+                height: 56,
+                borderRadius: 28,
+                backgroundColor: '#E8F5E9',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 12,
+              }}>
+                <Text style={{ fontSize: 28 }}>🏁</Text>
+              </View>
+              <Text style={{ fontSize: 20, fontWeight: '800', color: '#1C1C1E', marginBottom: 6 }}>
+                You have arrived!
+              </Text>
+              <Text style={{ fontSize: 14, color: '#636366', textAlign: 'center', marginBottom: 18 }}>
+                You have reached your destination. Thank you for using NavAble!
+              </Text>
+              <Pressable
+                style={{
+                  backgroundColor: '#7B3FF3',
+                  borderRadius: 12,
+                  paddingVertical: 14,
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onPress={() => {
+                  setHasArrived(false);
+                  clearRouteSelection();
+                }}
+              >
+                <Text style={{ color: '#FFF', fontSize: 16, fontWeight: '700' }}>Done</Text>
+              </Pressable>
+            </View>
           ) : null}
 
           {routeMode === 'bus' && publicTransportOptions.length && !isNavigating && !hasStartedNavigationForSelection ? (
