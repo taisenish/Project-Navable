@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-import ssl
 from collections.abc import Generator
 from functools import lru_cache
 
@@ -17,12 +16,18 @@ def _create_engine(database_url: str):
     if database_url.startswith("sqlite"):
         connect_args = {"check_same_thread": False}
     elif "postgresql" in database_url:
-        if not database_url.startswith("postgresql+"):
-            database_url = database_url.replace("postgresql://", "postgresql+pg8000://")
-        ssl_context = ssl.create_default_context()
-        ssl_context.check_hostname = False
-        ssl_context.verify_mode = ssl.CERT_NONE
-        connect_args = {"ssl_context": ssl_context}
+        # Enforce modern psycopg (v3) dialect, automatically upgrading psycopg2
+        if "postgresql+psycopg2://" in database_url:
+            database_url = database_url.replace("postgresql+psycopg2://", "postgresql+psycopg://")
+        elif not database_url.startswith("postgresql+"):
+            database_url = database_url.replace("postgresql://", "postgresql+psycopg://")
+        
+        # Enforce sslmode=require for Azure PostgreSQL connections
+        if "sslmode=" not in database_url:
+            separator = "&" if "?" in database_url else "?"
+            database_url = f"{database_url}{separator}sslmode=require"
+            
+        connect_args = {}
     else:
         connect_args = {}
     return create_engine(database_url, connect_args=connect_args)
