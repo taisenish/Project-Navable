@@ -13,4 +13,6 @@ typing-inspection==0.4.2
 typing_extensions==4.15.0
 uvicorn==0.35.0
 pg8000==1.31.5
-psycopg2>=2.9.9
+psycopg==3.2.9
+psycopg-binary==3.2.9
+psycopg-pool==3.3.0
