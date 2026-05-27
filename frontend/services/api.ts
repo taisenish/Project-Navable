@@ -12,6 +12,7 @@ import type {
   RouteResponse,
   TransitRouteResponse,
   UserPreferenceRecord,
+  CommunityAlert,
 } from '../types/api';
 
 const MOCK_ALERTS_ENABLED = process.env.EXPO_PUBLIC_MOCK_ALERTS === 'true';
@@ -117,4 +118,10 @@ export const api = {
     }
     return request<TransitRouteResponse>(`/route/transit?${params.toString()}`);
   },
+  getCommunityAlerts: () => request<CommunityAlert[]>('/community-alerts'),
+  createCommunityAlert: (payload: CommunityAlert) =>
+    request<CommunityAlert>('/community-alerts', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
 };

@@ -156,3 +156,17 @@ export type TransitRouteResponse = {
   google_maps_url: string;
   options?: TransitRouteResponse[];
 };
+
+export type CommunityAlertCategory = 'construction' | 'warning' | 'danger' | 'other';
+
+export type CommunityAlert = {
+  id: string;
+  title: string;
+  description: string;
+  category: CommunityAlertCategory;
+  location: Coordinate;
+  image_url?: string | null;
+  created_at: string;
+  created_by?: string | null;
+  is_approved?: boolean;
+};

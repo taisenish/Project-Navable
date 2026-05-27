@@ -2,7 +2,8 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import * as Location from 'expo-location';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -24,6 +25,7 @@ import { HomeTopPanel } from '../home/home-top-panel';
 import { CampusMap } from '../map/campus-map';
 import { useRouteCache } from '../../hooks/use-route-cache';
 import { api } from '../../services/api';
+import { notificationService } from '../../services/notifications';
 import { config } from '../../services/config';
 import { homeStyles as styles } from '../../styles/home.styles';
 import type { AccessibilityPreferences, Alert as CampusAlert, DirectionsResponse, PlaceSuggestion, Poi, RouteResponse, RouteSegment, TransitRouteResponse } from '../../types/api';
@@ -354,27 +356,57 @@ export function MainMapScreen() {
     };
   }, []);
 
-  useEffect(() => {
-    const load = async () => {
-      setError(null);
+  const fetchMapData = useCallback(async (showLoadingSpinner: boolean) => {
+    if (showLoadingSpinner) {
       setIsLoading(true);
-      try {
-        const [cachedRoute, fetchedPois, fetchedAlerts] = await Promise.all([getRoute(), api.getPois(), api.getAlerts()]);
-        setRoute(cachedRoute);
-        setPois(fetchedPois);
-        setAlerts(fetchedAlerts);
-        await savePois(fetchedPois);
-      } catch (err) {
-        const cachedPois = await getPois();
-        setPois(cachedPois ?? []);
-        setError(err instanceof Error ? err.message : 'Failed to load map overlays');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    }
+    setError(null);
+    try {
+      const [cachedRoute, fetchedPois, fetchedAlerts, fetchedCommunityAlerts] = await Promise.all([
+        getRoute(),
+        api.getPois(),
+        api.getAlerts(),
+        api.getCommunityAlerts().catch(() => []), // Fail-safe for community alerts
+      ]);
 
-    void load();
+      const mappedCommunity: CampusAlert[] = fetchedCommunityAlerts.map((item) => ({
+        id: item.id,
+        title: `${item.category === 'construction' ? '🚧' : item.category === 'danger' ? '🚨' : '⚠️'} ${item.title}`,
+        description: `${item.description}\n\nReported by: ${item.created_by || 'AnonymousStudent'}`,
+        severity: item.category === 'danger' ? 'critical' : 'warning',
+        location: item.location,
+        status: 'active',
+        is_resolved: false,
+      }));
+
+      // Trigger push notifications for any newly discovered alerts
+      void notificationService.notifyNewAlerts(fetchedAlerts, 'UW Alert');
+      void notificationService.notifyNewAlerts(fetchedCommunityAlerts, 'Community Alert');
+
+      setRoute(cachedRoute);
+      setPois(fetchedPois);
+      setAlerts([...fetchedAlerts, ...mappedCommunity]);
+      await savePois(fetchedPois);
+    } catch (err) {
+      const cachedPois = await getPois();
+      setPois(cachedPois ?? []);
+      setError(err instanceof Error ? err.message : 'Failed to load map overlays');
+    } finally {
+      setIsLoading(false);
+    }
   }, [getPois, getRoute, savePois]);
+
+  // Refresh map data in real-time when the Map tab comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      void fetchMapData(false);
+    }, [fetchMapData])
+  );
+
+  useEffect(() => {
+    // Initial fetch on component mount
+    void fetchMapData(true);
+  }, [fetchMapData]);
 
   useEffect(() => {
     const nextQuery = searchQuery.trim();

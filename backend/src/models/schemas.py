@@ -86,6 +86,25 @@ class Alert(BaseModel):
     is_resolved: bool = False
 
 
+class CommunityAlertCategory(str, Enum):
+    construction = "construction"
+    warning = "warning"
+    danger = "danger"
+    other = "other"
+
+
+class CommunityAlert(BaseModel):
+    id: str
+    title: str
+    description: str
+    category: CommunityAlertCategory
+    location: Coordinate
+    image_url: str | None = None
+    created_at: str
+    created_by: str | None = None
+    is_approved: bool = False
+
+
 class UserPreferenceRecord(BaseModel):
     user_id: str
     preferences: AccessibilityPreferences

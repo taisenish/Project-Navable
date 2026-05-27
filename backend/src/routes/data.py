@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Query
 
-from src.models.schemas import Alert, Poi, PoiType
+from src.models.schemas import Alert, Poi, PoiType, CommunityAlert
 from src.routes.deps import get_uw_data_service
 from src.services.uw_data_service import UWDataService
 
@@ -31,4 +31,18 @@ def create_or_update_alert(
     data: UWDataService = Depends(get_uw_data_service),
 ) -> Alert:
     data.save_alert(alert)
+    return alert
+
+
+@router.get("/community-alerts", response_model=list[CommunityAlert])
+def list_community_alerts(data: UWDataService = Depends(get_uw_data_service)) -> list[CommunityAlert]:
+    return data.load_community_alerts()
+
+
+@router.post("/community-alerts", response_model=CommunityAlert)
+def create_or_update_community_alert(
+    alert: CommunityAlert,
+    data: UWDataService = Depends(get_uw_data_service),
+) -> CommunityAlert:
+    data.save_community_alert(alert)
     return alert
