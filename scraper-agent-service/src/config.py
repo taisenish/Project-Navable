@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     backend_poi_path: str = "../backend/src/data/uw_pois.json"
     state_file_path: str = "data/state.json"
     mode: str = "prod"
+    backend_url: str = "http://127.0.0.1:8000/api/v1"
 
     model_config = SettingsConfigDict(
         env_file=".env",

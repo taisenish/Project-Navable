@@ -70,7 +70,7 @@ async def send_webhook(client: httpx.AsyncClient, url: str, alert_data: Dict[str
 
 async def push_alert_to_backend(alert_data: Dict[str, Any]):
     """Attempts to automatically push a scraped alert to the main Navable backend."""
-    backend_url = "http://127.0.0.1:8000/api/v1/alerts"
+    backend_url = f"{settings.backend_url}/alerts"
     try:
         logger.info(f"Automatically pushing scraped alert to backend: {backend_url}")
         async with httpx.AsyncClient() as client:
