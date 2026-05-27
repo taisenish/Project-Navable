@@ -1,6 +1,7 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { ActivityIndicator, Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 
 import { homeStyles as styles } from '../../styles/home.styles';
@@ -18,14 +19,16 @@ type HomeTopPanelProps = {
   walkRouteSummary: string | null;
   hasDirections: boolean;
   isRouting: boolean;
-  routeMode: 'walk' | 'bus';
+  routeMode: 'walk' | 'bus' | 'bike';
   hasBusOption: boolean;
   busRouteSummary: string | null;
+  hasBikeOption: boolean;
+  bikeRouteSummary: string | null;
   onSearchChange: (value: string) => void;
   onSubmitSearch: () => void;
   onClearSearch: () => void;
   onSelectPlace: (place: PlaceSuggestion) => void;
-  onSelectRouteMode: (mode: 'walk' | 'bus') => void;
+  onSelectRouteMode: (mode: 'walk' | 'bus' | 'bike') => void;
   onRequestDirections: () => void;
   onStartNavigation: () => void;
   onCancelRoute: () => void;
@@ -46,6 +49,8 @@ export function HomeTopPanel({
   routeMode,
   hasBusOption,
   busRouteSummary,
+  hasBikeOption,
+  bikeRouteSummary,
   onSearchChange,
   onSubmitSearch,
   onClearSearch,
@@ -160,6 +165,28 @@ export function HomeTopPanel({
                           routeMode === 'bus' && styles.routeModeButtonTextActive,
                         ]}>
                         {busRouteSummary}
+                      </Text>
+                    ) : null}
+                  </Pressable>
+                  <Pressable
+                    disabled={!hasBikeOption}
+                    style={[
+                      styles.routeModeButton,
+                      !hasBikeOption && styles.routeModeButtonDisabled,
+                      routeMode === 'bike' && styles.routeModeButtonActive,
+                    ]}
+                    onPress={() => onSelectRouteMode('bike')}
+                    accessibilityRole="button"
+                    accessibilityLabel={hasBikeOption ? 'Use bike route' : 'No bike route available'}>
+                    <MaterialCommunityIcons name="bicycle" size={24} color="black" />
+                    {bikeRouteSummary ? (
+                      <Text
+                        style={[
+                          styles.routeModeButtonText,
+                          !hasBikeOption && styles.routeModeButtonTextDisabled,
+                          routeMode === 'bike' && styles.routeModeButtonTextActive,
+                        ]}>
+                        {bikeRouteSummary}
                       </Text>
                     ) : null}
                   </Pressable>

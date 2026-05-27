@@ -141,6 +141,11 @@ class PlaceSuggestion(BaseModel):
     hours_text: str | None = None
 
 
+class RouteSegmentDirection(BaseModel):
+    overview_polyline: str
+    color: str
+
+
 class RouteStepDirection(BaseModel):
     instruction: str
     distance_text: str
@@ -156,6 +161,7 @@ class GoogleDirectionsResponse(BaseModel):
     end_location: Coordinate
     overview_polyline: str
     steps: list[RouteStepDirection]
+    route_segments: list[RouteSegmentDirection] = Field(default_factory=list)
     google_maps_url: str
 
 

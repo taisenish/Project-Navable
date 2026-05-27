@@ -81,6 +81,24 @@ export const api = {
     }
     return request<DirectionsResponse>(`/maps/directions?${params.toString()}`);
   },
+  getBikeDirections: (payload: {
+    destinationLat: number;
+    destinationLng: number;
+    originLat?: number;
+    originLng?: number;
+  }) => {
+    const params = new URLSearchParams({
+      destination_lat: String(payload.destinationLat),
+      destination_lng: String(payload.destinationLng),
+    });
+    if (payload.originLat !== undefined) {
+      params.set('origin_lat', String(payload.originLat));
+    }
+    if (payload.originLng !== undefined) {
+      params.set('origin_lng', String(payload.originLng));
+    }
+    return request<DirectionsResponse>(`/maps/bike-directions?${params.toString()}`);
+  },
   getTransitRoute: (payload: {
     destinationLat: number;
     destinationLng: number;

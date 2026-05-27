@@ -180,14 +180,16 @@ export function MainMapScreen() {
   const [directions, setDirections] = useState<DirectionsResponse | null>(null);
   const [walkingDirections, setWalkingDirections] = useState<DirectionsResponse | null>(null);
   const [busDirections, setBusDirections] = useState<DirectionsResponse | null>(null);
+  const [bikeDirections, setBikeDirections] = useState<DirectionsResponse | null>(null);
   const [transitOptions, setTransitOptions] = useState<TransitRouteResponse[]>([]);
   const [selectedTransitOptionIndex, setSelectedTransitOptionIndex] = useState(0);
   const [isTransitDetailsOpen, setIsTransitDetailsOpen] = useState(false);
   const [isTransitDetailsVisible, setIsTransitDetailsVisible] = useState(false);
   const [isTransitSheetOpen, setIsTransitSheetOpen] = useState(false);
   const [busStopMarkers, setBusStopMarkers] = useState<RouteStopMarker[]>([]);
-  const [routeMode, setRouteMode] = useState<'walk' | 'bus'>('walk');
+  const [routeMode, setRouteMode] = useState<'walk' | 'bus' | 'bike'>('walk');
   const [isNavigating, setIsNavigating] = useState(false);
+  const [isRerouting, setIsRerouting] = useState(false);
   const [navigationCameraMode, setNavigationCameraMode] = useState<NavigationCameraMode>('follow');
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [isStepsExpanded, setIsStepsExpanded] = useState(false);
@@ -432,6 +434,13 @@ export function MainMapScreen() {
     return walkingDirections.duration_text;
   }, [walkingDirections]);
 
+  const bikeRouteSummary = useMemo(() => {
+    if (!bikeDirections) {
+      return null;
+    }
+    return bikeDirections.duration_text;
+  }, [bikeDirections]);
+
   const routeDistanceText = directions?.distance_text ?? null;
 
   const routeArrivalText = useMemo(() => {
@@ -547,7 +556,7 @@ export function MainMapScreen() {
     });
   }, [isTransitDetailsOpen, transitDetailsAnim]);
 
-  const applyActiveDirections = (nextDirections: DirectionsResponse, mode: 'walk' | 'bus') => {
+  const applyActiveDirections = (nextDirections: DirectionsResponse, mode: 'walk' | 'bus' | 'bike') => {
     setDirections(nextDirections);
     setRouteMode(mode);
     setIsNavigating(false);
@@ -606,8 +615,8 @@ export function MainMapScreen() {
     }
   };
 
-  const onSelectRouteMode = (mode: 'walk' | 'bus') => {
-    const nextDirections = mode === 'bus' ? busDirections : walkingDirections;
+  const onSelectRouteMode = (mode: 'walk' | 'bus' | 'bike') => {
+    const nextDirections = mode === 'bus' ? busDirections : mode === 'bike' ? bikeDirections : walkingDirections;
     if (!nextDirections) {
       return;
     }
@@ -621,6 +630,7 @@ export function MainMapScreen() {
     setDirections(null);
     setWalkingDirections(null);
     setBusDirections(null);
+    setBikeDirections(null);
     setTransitOptions([]);
     setSelectedTransitOptionIndex(0);
     setIsTransitDetailsOpen(false);
@@ -751,10 +761,94 @@ export function MainMapScreen() {
       } catch (transitErr) {
         console.warn('No bus route available for this destination.', transitErr);
       }
+
+      try {
+        const bikeRoute = await api.getBikeDirections({
+          originLat: origin.lat,
+          originLng: origin.lng,
+          destinationLat: routingDestination.lat,
+          destinationLng: routingDestination.lng,
+        });
+        setBikeDirections(bikeRoute);
+      } catch (bikeErr) {
+        console.warn('No bike route available for this destination.', bikeErr);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to build navigation route');
     } finally {
       setIsRouting(false);
+    }
+  };
+
+  const triggerReroute = async (origin: { lat: number; lng: number }, destination: { lat: number; lng: number }) => {
+    if (isRerouting || !directions) return;
+    setIsRerouting(true);
+    try {
+      if (routeMode === 'walk') {
+        let prefs: AccessibilityPreferences = {
+          avoid_stairs: true,
+          max_slope_percent: 8.0,
+          allowed_surfaces: ['paved', 'brick', 'mixed'],
+          avoid_closures: true,
+        };
+
+        try {
+          const saved = await storage.get<Record<string, boolean>>('navable:settings');
+          if (saved) {
+            prefs = {
+              avoid_stairs: saved.avoidStairs !== false,
+              max_slope_percent: saved.avoidSteepSlopes === false ? 15.0 : 8.0,
+              allowed_surfaces: saved.surfacePreferences === false
+                ? ['paved', 'brick', 'gravel', 'mixed']
+                : ['paved', 'brick', 'mixed'],
+              avoid_closures: saved.routeAlerts !== false,
+            };
+          }
+        } catch (prefErr) {
+          console.warn('Failed to load user preferences; falling back to default access controls.', prefErr);
+        }
+
+        const routeResponse = await api.createRoute({
+          origin: { lat: origin.lat, lng: origin.lng },
+          destination: { lat: destination.lat, lng: destination.lng },
+          preferences: prefs,
+        });
+
+        const nextDirections = mapRouteToDirections(routeResponse);
+        setWalkingDirections(nextDirections);
+        applyActiveDirections(nextDirections, 'walk');
+      } else if (routeMode === 'bike') {
+        const bikeRoute = await api.getBikeDirections({
+          originLat: origin.lat,
+          originLng: origin.lng,
+          destinationLat: destination.lat,
+          destinationLng: destination.lng,
+        });
+        setBikeDirections(bikeRoute);
+        applyActiveDirections(bikeRoute, 'bike');
+      } else if (routeMode === 'bus') {
+        const transitRoute = await api.getTransitRoute({
+          originLat: origin.lat,
+          originLng: origin.lng,
+          destinationLat: destination.lat,
+          destinationLng: destination.lng,
+        });
+        const nextTransitOptions = (transitRoute.options?.length ? transitRoute.options : [transitRoute]).filter((option) =>
+          option.legs.some((leg) => leg.type === 'transit'),
+        );
+        if (nextTransitOptions.length) {
+          setTransitOptions(nextTransitOptions);
+          const nextDirections = mapTransitRouteToDirections(nextTransitOptions[0]);
+          setBusDirections(nextDirections);
+          applyActiveDirections(nextDirections, 'bus');
+        }
+      }
+      setActiveStepIndex(0);
+      console.log('Successfully rerouted user back to target destination.');
+    } catch (err) {
+      console.warn('Failed to reroute:', err);
+    } finally {
+      setIsRerouting(false);
     }
   };
 
@@ -880,6 +974,49 @@ export function MainMapScreen() {
   }, [activeStepIndex, directions, isNavigating, userLocation]);
 
   useEffect(() => {
+    if (!isNavigating || !userLocation || !directions || isRerouting) {
+      return;
+    }
+
+    const points = decodeGooglePolyline(directions.overview_polyline);
+    if (points.length < 2) {
+      return;
+    }
+
+    let minDistance = Infinity;
+    for (let i = 0; i < points.length - 1; i++) {
+      const A = points[i];
+      const B = points[i + 1];
+
+      const dx = B.lng - A.lng;
+      const dy = B.lat - A.lat;
+
+      let t = 0;
+      const denominator = dx * dx + dy * dy;
+      if (denominator > 1e-12) {
+        t = ((userLocation.lng - A.lng) * dx + (userLocation.lat - A.lat) * dy) / denominator;
+        t = Math.max(0, Math.min(1, t));
+      }
+
+      const projectedPoint = {
+        lat: A.lat + t * dy,
+        lng: A.lng + t * dx,
+      };
+
+      const dist = distanceMeters(userLocation, projectedPoint);
+      if (dist < minDistance) {
+        minDistance = dist;
+      }
+    }
+
+    const STRAY_THRESHOLD_METERS = 22;
+    if (minDistance > STRAY_THRESHOLD_METERS) {
+      console.log(`User strayed from route (distance: ${minDistance.toFixed(1)}m). Triggering automatic rerouting...`);
+      void triggerReroute(userLocation, directions.end_location);
+    }
+  }, [directions, isNavigating, userLocation, isRerouting]);
+
+  useEffect(() => {
     if (!isNavigating || !userLocation || !directions) {
       return;
     }
@@ -936,6 +1073,8 @@ export function MainMapScreen() {
         routeMode={routeMode}
         hasBusOption={Boolean(busDirections)}
         busRouteSummary={busRouteSummary}
+        hasBikeOption={Boolean(bikeDirections)}
+        bikeRouteSummary={bikeRouteSummary}
         onSearchChange={onSearchChange}
         onSubmitSearch={() => void onSubmitSearch()}
         onClearSearch={onClearSearch}

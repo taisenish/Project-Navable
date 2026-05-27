@@ -4,7 +4,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 
-from src.models.schemas import GoogleDirectionsResponse, PlaceSuggestion, UwStaticMapParams
+from src.models.schemas import GoogleDirectionsResponse, PlaceSuggestion, RouteSegmentDirection, UwStaticMapParams
 from src.routes.deps import get_maps_service
 from src.services.maps_service import MapsService
 
@@ -96,4 +96,27 @@ def get_directions(
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=f"Unable to fetch directions: {exc}",
+        ) from exc
+
+
+@router.get("/maps/bike-directions", response_model=GoogleDirectionsResponse)
+def get_bike_directions(
+    destination_lat: float = Query(...),
+    destination_lng: float = Query(...),
+    origin_lat: float | None = Query(default=None),
+    origin_lng: float | None = Query(default=None),
+    maps_service: MapsService = Depends(get_maps_service),
+) -> GoogleDirectionsResponse:
+    try:
+        payload = maps_service.get_bicycling_directions(
+            destination_lat=destination_lat,
+            destination_lng=destination_lng,
+            origin_lat=origin_lat,
+            origin_lng=origin_lng,
+        )
+        return GoogleDirectionsResponse.model_validate(payload)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"Unable to fetch bike directions: {exc}",
         ) from exc

@@ -3,7 +3,7 @@ import { Platform, View } from 'react-native';
 
 import { InteractiveMap } from './interactive-map';
 import type { Coordinate, Alert as CampusAlert, Poi, RouteSegment } from '../../types/api';
-import { decodeGooglePolyline } from '../../utils/polyline';
+import { decodeGooglePolyline, splitSegmentsAtUserLocation } from '../../utils/polyline';
 
 type Props = {
   centerLat: number;
@@ -119,24 +119,30 @@ export function CampusMap({
 
   const polylineCoordinates = useMemo(() => decodeGooglePolyline(overviewPolyline ?? ''), [overviewPolyline]);
   const routePolylines = useMemo(() => {
+    let rawSegments = [] as Array<{ color: string; coordinates: Coordinate[] }>;
+
     if (routeSegments?.length) {
-      return routeSegments
+      rawSegments = routeSegments
         .map((segment) => ({
           color: segment.color,
           coordinates: decodeGooglePolyline(segment.overview_polyline),
         }))
         .filter((segment) => segment.coordinates.length > 0);
+    } else if (polylineCoordinates.length) {
+      rawSegments = [
+        {
+          color: routeLineColor,
+          coordinates: polylineCoordinates,
+        },
+      ];
     }
 
-    return polylineCoordinates.length
-      ? [
-          {
-            color: routeLineColor,
-            coordinates: polylineCoordinates,
-          },
-        ]
-      : [];
-  }, [polylineCoordinates, routeLineColor, routeSegments]);
+    if (rawSegments.length && userLocation) {
+      return splitSegmentsAtUserLocation(userLocation, rawSegments);
+    }
+
+    return rawSegments;
+  }, [polylineCoordinates, routeLineColor, routeSegments, userLocation]);
 
   if (Platform.OS === 'ios' && AppleMapsView) {
     const annotations = [] as Array<Record<string, unknown>>;
