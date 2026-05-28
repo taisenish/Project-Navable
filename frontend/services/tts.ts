@@ -4,10 +4,12 @@ import { config } from './config';
 
 class TtsService {
   private sound: Audio.Sound | null = null;
+  private currentPlayId: number = 0;
 
   async speak(text: string) {
     try {
       await this.stop();
+      const playId = ++this.currentPlayId;
 
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: false,
@@ -16,17 +18,27 @@ class TtsService {
         staysActiveInBackground: true,
       });
 
+      if (playId !== this.currentPlayId) {
+        return;
+      }
+
       const ttsUrl = `${config.apiBaseUrl}/tts?text=${encodeURIComponent(text)}`;
 
       const { sound } = await Audio.Sound.createAsync(
         { uri: ttsUrl },
         { shouldPlay: true }
       );
+
+      if (playId !== this.currentPlayId) {
+        void sound.unloadAsync().catch(() => {});
+        return;
+      }
+
       this.sound = sound;
 
       sound.setOnPlaybackStatusUpdate((status) => {
         if (status.isLoaded && status.didJustFinish) {
-          void sound.unloadAsync();
+          void sound.unloadAsync().catch(() => {});
           if (this.sound === sound) {
             this.sound = null;
           }
@@ -38,6 +50,7 @@ class TtsService {
   }
 
   async stop() {
+    this.currentPlayId++;
     if (this.sound) {
       try {
         await this.sound.stopAsync();

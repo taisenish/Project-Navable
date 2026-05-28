@@ -217,6 +217,7 @@ export function MainMapScreen() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number; heading?: number } | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
   const suppressMapGestureUntilRef = useRef(0);
+  const lastRerouteTimeRef = useRef(0);
   const transitSheetAnim = useRef(new Animated.Value(0)).current;
   const transitDetailsAnim = useRef(new Animated.Value(0)).current;
 
@@ -1013,6 +1014,7 @@ export function MainMapScreen() {
     setNavigationCameraMode('follow');
     setActiveStepIndex(0);
     setHasArrived(false);
+    void ttsService.stop();
   };
 
   const exitRoute = () => {
@@ -1022,6 +1024,7 @@ export function MainMapScreen() {
     setSelectedPlace(null);
     setSearchQuery('');
     setHasArrived(false);
+    void ttsService.stop();
     setMapState(
       buildMapState({
         centerLat: UW_FOUNTAIN_CENTER.lat,
@@ -1108,6 +1111,11 @@ export function MainMapScreen() {
       return;
     }
 
+    const now = Date.now();
+    if (now - lastRerouteTimeRef.current < 12000) {
+      return;
+    }
+
     const points = decodeGooglePolyline(directions.overview_polyline);
     if (points.length < 2) {
       return;
@@ -1142,6 +1150,7 @@ export function MainMapScreen() {
     const STRAY_THRESHOLD_METERS = 22;
     if (minDistance > STRAY_THRESHOLD_METERS) {
       console.log(`User strayed from route (distance: ${minDistance.toFixed(1)}m). Triggering automatic rerouting...`);
+      lastRerouteTimeRef.current = Date.now();
       void triggerReroute(userLocation, directions.end_location);
     }
   }, [directions, isNavigating, userLocation, isRerouting]);
