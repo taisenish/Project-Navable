@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 
 let API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL?.trim();
 
-if (__DEV__) {
+if (__DEV__ && API_BASE_URL && (API_BASE_URL.includes('localhost') || API_BASE_URL.includes('127.0.0.1'))) {
   // expoConfig.hostUri contains the developer machine IP:Metro port (e.g., '192.168.1.10:8081')
   const hostUri = Constants.expoConfig?.hostUri;
   if (hostUri) {
@@ -14,8 +14,11 @@ if (__DEV__) {
 }
 
 if (!API_BASE_URL) {
-  API_BASE_URL = 'http://127.0.0.1:8000/api/v1';
+  API_BASE_URL = 'https://navable-dev-backend-a2f6dkdqg2ebdmc5.centralus-01.azurewebsites.net/api/v1';
 }
+
+console.log('Resolved Navable API Base URL:', API_BASE_URL);
+console.log('Resolved Spoof Location Env:', process.env.EXPO_PUBLIC_SPOOF_LOCATION);
 
 export const config = {
   apiBaseUrl: API_BASE_URL,
